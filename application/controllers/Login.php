@@ -40,4 +40,48 @@ class Login extends CI_Controller
 
 		$this->load->view('login');
 	}
+	
+	function changePassword()
+	{
+		//notifications
+		$this->Main_model->alertPromt('Current password incorrect', 'currentPasswordWrong');
+		$this->Main_model->alertPromt('Confirm password not the same', 'confirmPasswordWrong');
+		$this->Main_model->alertPromt('Password changed successfully', 'changedPassword');
+
+		$this->form_validation->set_rules('currentPassword', 'Current Password', 'required');
+		$this->form_validation->set_rules('newPassword', 'New Password', 'required');
+		$this->form_validation->set_rules('confirmPassword', 'Confirm Password', 'required');
+		if ($this->form_validation->run()) {
+			$currentPassword = $this->input->post('currentPassword');
+			$newPassword = $this->input->post('newPassword');
+			$confirmPassword = $this->input->post('confirmPassword');
+
+			//validate current password
+			$where['id'] = $_SESSION['credentials_id'];
+			$where['password'] = $this->Main_model->passwordEncryptor($currentPassword);
+			$credentialsTable = $this->Main_model->multiple_where('credentials', $where);
+
+			if (count($credentialsTable->result_array()) == 0) {
+				//wala siyang nahanap meaning wrong password
+				$this->session->set_userdata('currentPasswordWrong', 1);
+				redirect("Login/changePassword");
+			}
+
+			//validate newPassword and confirm password
+			if ($newPassword != $confirmPassword) {
+				$this->session->set_userdata('confirmPasswordWrong', 1);
+				redirect("Login/changePassword");
+			}
+
+			//change the password
+			$update['password'] = $this->Main_model->passwordEncryptor($newPassword);
+			$this->Main_model->_update('credentials', 'id', $_SESSION['credentials_id'], $update);
+
+			#notify and redirect
+			$this->session->set_userdata('changedPassword', 1);
+			redirect("Login/changePassword");
+		}
+
+		$this->load->view('changePassword');
+	}
 }
