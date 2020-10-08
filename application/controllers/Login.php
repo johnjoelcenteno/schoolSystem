@@ -31,6 +31,7 @@ class Login extends CI_Controller
 
 				//validate and take account the user type
 				$credentialsTable = $credentialsTable->row();
+				redirect('Dashboard');
 			} else {
 				//wala siyang nahanap
 				$this->session->set_userdata('userInvalid', 1);
@@ -40,7 +41,7 @@ class Login extends CI_Controller
 
 		$this->load->view('login');
 	}
-	
+
 	function changePassword()
 	{
 		//notifications
