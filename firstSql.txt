@@ -1,0 +1,12 @@
+CREATE DATABASE karaokeFavorites;
+CREATE TABLE users(
+	id int (65) AUTO_INCREMENT,
+    firstname varchar (65), 
+    lastname varchar (65)
+);
+
+CREATE TABLE credentials(
+	id int (65) AUTO_INCREMENT, 
+    username varchar(65),
+    password varchar (65)
+);
