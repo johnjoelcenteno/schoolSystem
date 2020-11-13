@@ -3,6 +3,24 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Main_model extends CI_Model
 {
+	
+	function getJsonData($apiUrl)
+    {
+        $api_url = 'http://localhost/expressCart/Sandbox/renderShippingAddress?denomination=1';
+        // http://localhost/restApi/api
+        $client = curl_init($api_url);
+
+        curl_setopt($client, CURLOPT_RETURNTRANSFER, true); //wil give the json
+
+        $response = curl_exec($client);
+
+        curl_close($client); //close the resources. 
+
+        $result = json_decode($response, true);
+
+        // var_dump($result);
+        $this->Main_model->showNormalArray($result);
+    }
 
     //every time you will click a new nav. the system will let you 
     //login again to access the voucher sending
