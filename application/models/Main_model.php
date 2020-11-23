@@ -288,14 +288,6 @@ class Main_model extends CI_Model
         echo "</pre>";
     }
 
-    function getPartyListName($id)
-    {
-        $partyListTable = $this->get_where('party_list', 'party_list_id', $id);
-        foreach ($partyListTable->result() as $row) {
-            return $row->name;
-        }
-    }
-
     function alertPromt($message, $sessionName)
     {
         if (isset($_SESSION[$sessionName])) {
@@ -316,5 +308,14 @@ class Main_model extends CI_Model
     {
         $this->session->set_userdata($sessionName, 1);
         redirect($redirect);
+    }
+
+    function formValidation($postNames)
+    {
+        foreach ($postNames as $key => $value) {
+            $this->form_validation->set_rules($key, $value, 'required');
+        }
+
+        return $this->form_validation->run();
     }
 }

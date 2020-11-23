@@ -14,23 +14,25 @@ class Login extends CI_Controller
 	{
 		//notifications
 		$this->Main_model->alertPromt('Invalid user', 'userInvalid');
+		$this->Main_model->alertPromt('Register Success', 'registerSuccess');
 
-		$this->form_validation->set_rules('username', 'Username', 'required');
-		$this->form_validation->set_rules('password', 'Password', 'required');
-		if ($this->form_validation->run()) {
+		$postNames['username'] = 'Username';
+		$postNames['password'] = 'Password';
+		if ($this->Main_model->formValidation($postNames)) {
 			$username = $this->input->post('username');
 			$password = $this->input->post('password');
-
+			
 			//validate username and password
 			$where['username'] = $username;
 			$where['password'] = $this->Main_model->passwordEncryptor($password);
 			$credentialsTable = $this->Main_model->multiple_where('credentials', $where);
-
+			
 			if (count($credentialsTable->result_array()) != 0) {
 				//meron siyang nahanap
 
 				//validate and take account the user type
 				$credentialsTable = $credentialsTable->row();
+				$this->session->set_userdata('credentialsId', $credentialsTable->id);
 				redirect('Dashboard');
 			} else {
 				//wala siyang nahanap
@@ -84,5 +86,11 @@ class Login extends CI_Controller
 		}
 
 		$this->load->view('changePassword');
+	}
+
+	function logout()
+	{
+		session_destroy();
+		redirect('Login');
 	}
 }

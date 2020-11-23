@@ -12,7 +12,6 @@ class Dashboard extends CI_Controller
 
     public function index()
     {
-        echo "welcome to dashboard";
-        //$this->load->view('login');
+        $this->load->view('dashboard');
     }
 }
