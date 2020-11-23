@@ -9,4 +9,6 @@
     <input type="password" name="password" placeholder="Enter password" autocomplete="off"><br><br>
 
     <button type="submit">Login</button>
+    <?php $register = base_url() . "Register" ?>
+    <a href="<?= $register ?>">Register</a>
 </form>
