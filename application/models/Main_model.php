@@ -3,12 +3,10 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Main_model extends CI_Model
 {
-	
-	function getJsonData($apiUrl)
+
+    function getJsonData($apiUrl)
     {
-        $api_url = 'http://localhost/expressCart/Sandbox/renderShippingAddress?denomination=1';
-        // http://localhost/restApi/api
-        $client = curl_init($api_url);
+        $client = curl_init($apiUrl);
 
         curl_setopt($client, CURLOPT_RETURNTRANSFER, true); //wil give the json
 

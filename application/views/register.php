@@ -8,14 +8,8 @@
     <label for="">Password</label><br>
     <input type="password" name="password" placeholder="Password" autocomplete="off"><br><br>
 
-    <label for="">First name</label><br>
-    <input type="text" name="firstname" placeholder="Last name" autocomplete="off"><br><br>
-
-    <label for="">Middle name</label><br>
-    <input type="text" name="middlename" placeholder="Middle name" autocomplete="off"><br><br>
-
-    <label for="">Last name</label><br>
-    <input type="text" name="lastname" placeholder="Last name" autocomplete="off"><br><br>
+    <label for="">Full name</label><br>
+    <input type="text" name="fullname" placeholder="Full name" autocomplete="off"><br><br>
 
     <label for="">Email</label><br>
     <input type="email" name="email" placeholder="Email" autocomplete="off"><br><br>

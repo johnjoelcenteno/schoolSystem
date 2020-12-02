@@ -21,12 +21,12 @@ class Login extends CI_Controller
 		if ($this->Main_model->formValidation($postNames)) {
 			$username = $this->input->post('username');
 			$password = $this->input->post('password');
-			
+
 			//validate username and password
 			$where['username'] = $username;
 			$where['password'] = $this->Main_model->passwordEncryptor($password);
 			$credentialsTable = $this->Main_model->multiple_where('credentials', $where);
-			
+
 			if (count($credentialsTable->result_array()) != 0) {
 				//meron siyang nahanap
 
