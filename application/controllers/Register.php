@@ -36,6 +36,8 @@ class Register extends CI_Controller
             //notify and redirect
             $this->Main_model->notifyAndRedirect('registerSuccess', 'Login');
         }
-        $this->load->view('register');
+        $this->load->view('components/authentication/auth_header');
+        $this->load->view('components/authentication/register');
+        $this->load->view('components/authentication/auth_footer');
     }
 }
