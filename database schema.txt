@@ -1,0 +1,73 @@
+first to be done.
+
+in the credentials table the admin account type is 3
+here are the user types and their corresponding numbers 
+1 -> principal
+2 -> adviser
+3 -> teacher
+4 -> student
+5 -> parent 
+
+tables 
+	-> students 
+		-> id
+		-> firstname
+		-> middlename
+		-> lastname
+		-> contact_number
+		-> parent_id
+
+	-> parents
+		-> id
+		-> firstname
+		-> middlename
+		-> lastname
+		-> contact_number
+
+	-> teachers *
+		-> id
+		-> firstname
+		-> middlename
+		-> lastname
+		-> contact_number
+
+	-> advisers *
+		-> id
+		-> teacher_id
+		-> section_id
+
+	-> sections *
+		-> id
+		-> section_name
+		-> grade_level
+		-> students : json
+
+	-> attendance
+		-> id
+		-> student_id
+		-> date
+		-> time
+
+	-> student_grades
+		-> id
+		-> student_id
+		-> quarter
+		-> subject_id
+
+	-> subjects
+		-> id
+		-> subject_name
+
+	-> teacher_loads
+		-> id 
+		-> subject_id
+		-> teacher_id
+		-> section_id
+
+
+things to do tomorrow
+	-> manage subjects in principal
+
+
+
+
