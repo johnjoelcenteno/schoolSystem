@@ -59,7 +59,6 @@ class Teacher extends CI_Controller
 
     public function getParentById()
     {
-        $_POST['id'] = 1;
         $id = $this->input->post("id");
 
         echo json_encode($this->Main_model->get_where("parents", "id", $id)->result_array());
