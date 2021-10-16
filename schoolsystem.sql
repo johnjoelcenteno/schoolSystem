@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 14, 2021 at 05:18 PM
+-- Generation Time: Oct 16, 2021 at 06:37 PM
 -- Server version: 10.4.20-MariaDB
 -- PHP Version: 7.3.29
 
@@ -82,6 +82,13 @@ CREATE TABLE `parents` (
   `contact_number` varchar(65) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `parents`
+--
+
+INSERT INTO `parents` (`id`, `firstname`, `middlename`, `lastname`, `contact_number`) VALUES
+(1, 'update', 'update', 'update', 'update');
+
 -- --------------------------------------------------------
 
 --
@@ -107,7 +114,8 @@ CREATE TABLE `students` (
   `middlename` varchar(65) NOT NULL,
   `lastname` varchar(65) NOT NULL,
   `contact_number` varchar(65) NOT NULL,
-  `parent_id` int(65) NOT NULL
+  `parent_id` int(65) NOT NULL,
+  `grade_level` int(65) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -167,6 +175,13 @@ CREATE TABLE `teacher_loads` (
   `teacher_id` int(65) NOT NULL,
   `section_id` int(65) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `teacher_loads`
+--
+
+INSERT INTO `teacher_loads` (`id`, `subject_id`, `teacher_id`, `section_id`) VALUES
+(2, 3, 33, 333);
 
 --
 -- Indexes for dumped tables
@@ -258,7 +273,7 @@ ALTER TABLE `credentials`
 -- AUTO_INCREMENT for table `parents`
 --
 ALTER TABLE `parents`
-  MODIFY `id` int(65) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(65) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `sections`
@@ -270,7 +285,7 @@ ALTER TABLE `sections`
 -- AUTO_INCREMENT for table `students`
 --
 ALTER TABLE `students`
-  MODIFY `id` int(65) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(65) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `student_grades`
@@ -282,7 +297,7 @@ ALTER TABLE `student_grades`
 -- AUTO_INCREMENT for table `subjects`
 --
 ALTER TABLE `subjects`
-  MODIFY `id` int(65) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(65) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `teachers`
@@ -294,7 +309,7 @@ ALTER TABLE `teachers`
 -- AUTO_INCREMENT for table `teacher_loads`
 --
 ALTER TABLE `teacher_loads`
-  MODIFY `id` int(65) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(65) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -16,8 +16,9 @@ tables
 		-> lastname
 		-> contact_number
 		-> parent_id
+		->grade_level
 
-	-> parents
+	-> parents *
 		-> id
 		-> firstname
 		-> middlename
@@ -54,11 +55,11 @@ tables
 		-> quarter
 		-> subject_id
 
-	-> subjects
+	-> subjects *
 		-> id
 		-> subject_name
 
-	-> teacher_loads
+	-> teacher_loads *
 		-> id 
 		-> subject_id
 		-> teacher_id

@@ -159,4 +159,114 @@ class Principal extends CI_Controller
         echo json_encode($this->Main_model->get_where("advisers", "teacher_id", $teacherId)->result_array());
     }
     //END: Adviser management
+
+
+    // START: Manage subjects
+    public function manageSubjects()
+    {
+        $this->load->view("");
+    }
+
+    public function createSubject()
+    {
+        $insert['subject_name'] = $this->input->post("subject_name");
+        
+        $this->Main_model->_insert("subjects", $insert);
+    }
+
+    public function updateSubject()
+    {
+        $id = $this->input->post("id");
+        $update['subject_name'] = $this->input->post("subject_name");
+        
+        $this->Main_model->_update("subjects", "id", $id, $update);
+    }
+
+    public function deleteSubject()
+    {
+        $_POST['id'] = 1;
+        $id = $this->input->post("id");
+        
+        $this->Main_model->_delete("subjects", "id", $id);
+    }
+
+    public function getAllSubjects()
+    {
+        echo json_encode($this->Main_model->get("subjects", "id")->result_array());
+    }
+
+    public function getSubjectById()
+    {
+        $subjectId = $this->input->post('id');
+        echo json_encode($this->Main_model->get_where("subjects", 'id', $subjectId)->result_array());
+    }
+    // END: Manage subjects
+
+    // START: Teacher load management
+    public function manageTeacherLoad()
+    {
+        $this->load->view("");
+    }
+
+    public function createTeacherLoad()
+    {
+        $insert['teacher_id'] = $this->input->post('teacher_id');
+        $insert['subject_id'] = $this->input->post('subject_id');
+        $insert['section_id'] = $this->input->post('section_id');
+
+        $this->Main_model->_insert("teacher_loads", $insert);
+    }
+
+    public function updateTeacherLoad()
+    {
+        $id = $this->input->post("id");
+        
+        $update['teacher_id'] = $this->input->post('teacher_id');
+        $update['subject_id'] = $this->input->post('subject_id');
+        $update['section_id'] = $this->input->post('section_id');
+
+        $this->Main_model->_update("teacher_loads","id", $id , $update);
+    }
+
+    public function deleteTeacherLoad()
+    {
+        $id = $this->input->post("id");
+
+        $this->Main_model->_delete("teacher_loads", "id", $id);
+    }
+
+    public function getTeacherLoads()
+    {
+        echo json_encode($this->Main_model->get("teacher_loads", "id")->result_array());
+    }
+
+    public function getTeacherLoadById()
+    {
+        $id = $this->input->post("id");
+
+        echo json_encode($this->Main_model->get_where("teacher_loads", "id", $id)->result_array());
+    }
+
+    public function getTeacherLoadBySubjectId()
+    {
+        $id = $this->input->post("id");
+
+        echo json_encode($this->Main_model->get_where("teacher_loads", "subject_id", $id)->result_array());
+    }
+
+    public function getTeacherLoadByTeacherId()
+    {
+        $id = $this->input->post("id");
+
+        echo json_encode($this->Main_model->get_where("teacher_loads", "teacher_id", $id)->result_array());
+    }
+
+    public function getTeacherLoadBySectionId()
+    {
+        $id = $this->input->post("id");
+
+        echo json_encode($this->Main_model->get_where("teacher_loads", "section_id", $id)->result_array());
+    }
+    // END: Teacher load management
+
 }
