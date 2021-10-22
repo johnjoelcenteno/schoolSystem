@@ -91,7 +91,8 @@ class Login extends CI_Controller
 
 	public function splashScreen()
 	{
-		// load view here
+		$this->load->view('components/authentication/auth_header');
+		$this->load->view('components/splash_screen');
 	}
 
 	function logout()
