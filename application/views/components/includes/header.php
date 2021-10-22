@@ -99,7 +99,7 @@
                             <ul class="dropdown-menu dropdown-menu-default">
 
                                 <li>
-                                    <a href="login.html">
+                                    <a href="<?= base_url() . "Login/logout" ?>">
                                         <i class="icon-key"></i> Log Out </a>
                                 </li>
                             </ul>
@@ -150,7 +150,7 @@
                                     Manage Parent</a>
                             </li>
                             <li>
-                                <a href="<?= base_url() . 'Principal/manageTeachers' ?>">
+                                <a href="<?= base_url() . 'Principal/loadManageStudent' ?>">
                                     <i class="icon-users"></i>
                                     Manage Student</a>
                             </li>

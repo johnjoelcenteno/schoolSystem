@@ -271,4 +271,11 @@ class Principal extends CI_Controller
     }
     // END: Teacher load management
 
+
+    public function loadManageStudent()
+    {
+        $this->load->view("components/includes/header");
+        $this->load->view("components/roles_management/manage_student");
+        // $this->load->view("components/includes/footer");
+    }
 }
