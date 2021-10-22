@@ -27,6 +27,10 @@
     <!-- END PAGE LEVEL PLUGIN STYLES -->
     <!-- BEGIN PAGE STYLES -->
     <link href="<?= base_url() ?>assets/admin/pages/css/tasks.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/global/plugins/select2/select2.css" />
+    <link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/global/plugins/datatables/extensions/Scroller/css/dataTables.scroller.min.css" />
+    <link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/global/plugins/datatables/extensions/ColReorder/css/dataTables.colReorder.min.css" />
+    <link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/global/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.css" />
     <!-- END PAGE STYLES -->
     <!-- BEGIN THEME STYLES -->
     <!-- DOC: To use 'rounded corners' style just load 'components-rounded.css' stylesheet instead of 'components.css' in the below style tag -->
@@ -128,7 +132,7 @@
                 <!-- DOC: Set data-auto-speed="200" to adjust the sub menu slide up/down speed -->
                 <ul class="page-sidebar-menu " data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
                     <li class="start active ">
-                        <a href=''>
+                        <a href=<?= base_url() . "Dashboard" ?>>
                             <i class="icon-home"></i>
                             <span class="title">Dashboard</span>
                         </a>
@@ -141,12 +145,12 @@
                         </a>
                         <ul class="sub-menu">
                             <li>
-                                <a href="ecommerce_index.html">
+                                <a href="<?= base_url() . 'Principal/manageTeachers' ?>">
                                     <i class="icon-user"></i>
                                     Manage Parent</a>
                             </li>
                             <li>
-                                <a href="ecommerce_orders.html">
+                                <a href="<?= base_url() . 'Principal/manageTeachers' ?>">
                                     <i class="icon-users"></i>
                                     Manage Student</a>
                             </li>

@@ -23,7 +23,7 @@ class Principal extends CI_Controller
     {
         $this->load->view("components/includes/header");
         $this->load->view("components/roles_management/manage_teachers");
-        $this->load->view("components/includes/footer");
+        // $this->load->view("components/includes/footer");
     }
 
     public function createTeacher()
