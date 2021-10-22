@@ -151,7 +151,7 @@
                                     Manage Student</a>
                             </li>
                             <li>
-                                <a href="ecommerce_orders_view.html">
+                                <a href="<?= base_url() . 'Principal/manageTeachers' ?>">
                                     <i class="icon-plus"></i>
                                     Manage Teacher</a>
                             </li>

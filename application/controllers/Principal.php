@@ -21,7 +21,9 @@ class Principal extends CI_Controller
     // START: Teacher management
     public function manageTeachers()
     {
-        $this->load->view("");
+        $this->load->view("components/includes/header");
+        $this->load->view("components/roles_management/manage_teachers");
+        $this->load->view("components/includes/footer");
     }
 
     public function createTeacher()
@@ -87,11 +89,11 @@ class Principal extends CI_Controller
 
     // will update the name or grade_level of the section
     public function updateSection()
-    {   
+    {
         $id = $this->input->post("id");
         $update['section_name'] = $this->input->post('section_name');
         $update['grade_level'] = $this->input->post('grade_level');
-        
+
 
         $update['id'] = $this->Main_model->_update("sections", "id", $id, $update);
 
@@ -124,19 +126,19 @@ class Principal extends CI_Controller
 
     public function createAdviser()
     {
-        $insert['teacher_id'] = $this->input->post("teacher_id");        
+        $insert['teacher_id'] = $this->input->post("teacher_id");
         $insert['section_id'] = $this->input->post("section_id");
-        
+
         $this->Main_model->_insert("advisers", $insert);
     }
 
     public function updateAdviser()
     {
         $id = $this->input->post("id");
-        
-        $update['teacher_id'] = $this->input->post("teacher_id");        
+
+        $update['teacher_id'] = $this->input->post("teacher_id");
         $update['section_id'] = $this->input->post("section_id");
-        
+
         $this->Main_model->_update("advisers", "id", $id, $update);
     }
 
@@ -155,7 +157,7 @@ class Principal extends CI_Controller
     public function getAdviserByTeacherId()
     {
         $teacherId = $this->input->post("teacher_id");
-        
+
         echo json_encode($this->Main_model->get_where("advisers", "teacher_id", $teacherId)->result_array());
     }
     //END: Adviser management
@@ -170,7 +172,7 @@ class Principal extends CI_Controller
     public function createSubject()
     {
         $insert['subject_name'] = $this->input->post("subject_name");
-        
+
         $this->Main_model->_insert("subjects", $insert);
     }
 
@@ -178,7 +180,7 @@ class Principal extends CI_Controller
     {
         $id = $this->input->post("id");
         $update['subject_name'] = $this->input->post("subject_name");
-        
+
         $this->Main_model->_update("subjects", "id", $id, $update);
     }
 
@@ -186,7 +188,7 @@ class Principal extends CI_Controller
     {
         $_POST['id'] = 1;
         $id = $this->input->post("id");
-        
+
         $this->Main_model->_delete("subjects", "id", $id);
     }
 
@@ -220,12 +222,12 @@ class Principal extends CI_Controller
     public function updateTeacherLoad()
     {
         $id = $this->input->post("id");
-        
+
         $update['teacher_id'] = $this->input->post('teacher_id');
         $update['subject_id'] = $this->input->post('subject_id');
         $update['section_id'] = $this->input->post('section_id');
 
-        $this->Main_model->_update("teacher_loads","id", $id , $update);
+        $this->Main_model->_update("teacher_loads", "id", $id, $update);
     }
 
     public function deleteTeacherLoad()
