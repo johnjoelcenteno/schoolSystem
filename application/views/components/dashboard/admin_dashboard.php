@@ -59,7 +59,7 @@
                       <div class="display">
                           <div class="number">
                               <h3 class="font-blue-sharp">12</h3>
-                              <small>NEW ENROLLEE</small>
+                              <small>SECTIONS</small>
                           </div>
                           <div class="icon">
                               <i class="icon-users"></i>
