@@ -148,9 +148,10 @@ class Main_model extends CI_Model
         if (count($table->result_array()) != 0) {
             foreach ($table->result() as $row) {
                 $firstname = ucfirst($row->firstname);
+                $middlename = ucfirst($row->middlename);
                 $lastname = ucfirst($row->lastname);
 
-                $fullName = "$firstname $lastname";
+                $fullName = "$firstname $middlename $lastname";
             }
 
             return $fullName;

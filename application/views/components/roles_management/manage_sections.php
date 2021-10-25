@@ -5,7 +5,7 @@
           <div class="page-head">
               <!-- BEGIN PAGE TITLE -->
               <div class="page-title">
-                  <h1> Teacher Management</h1>
+                  <h1> Section management</h1>
               </div>
               <!-- END PAGE TITLE -->
               <!-- BEGIN PAGE TOOLBAR -->
@@ -20,12 +20,12 @@
               <div class="col-md-12">
                   <!-- BEGIN EXAMPLE TABLE PORTLET-->
                   <div class="" style="margin-bottom:5px">
-                      <button type="button" class="btn btn-circle green-meadow" data-toggle="modal" data-target="#createModal"><i class="fa fa-plus"> Add Teacher</i></button>
+                      <button type="button" class="btn btn-circle green-meadow" data-toggle="modal" data-target="#createModal"><i class="fa fa-plus"> Add section</i></button>
                   </div>
                   <div class="portlet box blue-hoki">
                       <div class="portlet-title">
                           <div class="caption">
-                              <i class="fa fa-globe"></i>Manage teachers
+                              <i class="fa fa-globe"></i>Manage sections
                           </div>
                           <div class="tools">
 
@@ -39,15 +39,10 @@
                                           #
                                       </th>
                                       <th>
-                                          Firstname
+                                          Section name
                                       </th>
                                       <th>
-                                          Middlename </th>
-                                      <th>
-                                          Lastname
-                                      </th>
-                                      <th>
-                                          Contact Number
+                                          Grade level
                                       </th>
                                       <th>
                                           Actions
@@ -120,28 +115,18 @@
       <div class="modal-dialog" role="document">
           <div class="modal-content">
               <div class="modal-header">
-                  <h2 align="center" class="modal-title" id="createModalLabel">Create Teacher</h2>
+                  <h2 align="center" class="modal-title" id="createModalLabel">Create subject</h2>
               </div>
               <div class="modal-body">
                   <form id="createForm">
                       <div class="form-group">
-                          <label>First name</label>
-                          <input type="text" id="firstname" class="form-control" placeholder="Enter first name here">
+                          <label>Section name</label>
+                          <input type="text" id="sectionName" class="form-control" placeholder="Enter section name here">
                       </div>
 
                       <div class="form-group">
-                          <label>Middle name</label>
-                          <input type="text" id="middlename" class="form-control" placeholder="Enter middle name here">
-                      </div>
-
-                      <div class="form-group">
-                          <label>Last name</label>
-                          <input type="text" id="lastname" class="form-control" placeholder="Enter last name here">
-                      </div>
-
-                      <div class="form-group">
-                          <label>Contact number</label>
-                          <input type="text" id="contactNumber" class="form-control" placeholder="Enter contact number here">
+                          <label>Grade level</label>
+                          <input type="number" id="gradeLevel" class="form-control" placeholder="Enter grade level here">
                       </div>
               </div>
               <div class="modal-footer">
@@ -164,23 +149,13 @@
               <div class="modal-body">
                   <form id="updateForm">
                       <div class="form-group">
-                          <label>First name</label>
-                          <input type="text" id="updateFirstname" class="form-control" placeholder="Enter first name here">
+                          <label>Section name</label>
+                          <input type="text" id="sectionNameUpdate" class="form-control" placeholder="Enter section name here">
                       </div>
 
                       <div class="form-group">
-                          <label>Middle name</label>
-                          <input type="text" id="updateMiddlename" class="form-control" placeholder="Enter middle name here">
-                      </div>
-
-                      <div class="form-group">
-                          <label>Last name</label>
-                          <input type="text" id="updateLastname" class="form-control" placeholder="Enter last name here">
-                      </div>
-
-                      <div class="form-group">
-                          <label>Contact number</label>
-                          <input type="text" id="updateContactNumber" class="form-control" placeholder="Enter contact number here">
+                          <label>Grade level</label>
+                          <input type="number" id="gradeLevelUpdate" class="form-control" placeholder="Enter grade level here">
                       </div>
               </div>
               <div class="modal-footer">
@@ -196,24 +171,22 @@
   <script>
       $(document).ready(function() {
           function refresh() {
-              $('tbody').load("<?= base_url() ?>Principal/getAllTeachersForTable");
+              $('tbody').load("<?= base_url() ?>Principal/getAllSectionsForTable");
           }
           refresh();
 
           // CREATE POST AJAX
           $('#createForm').submit(function(e) {
               e.preventDefault();
-              $.post("<?= base_url() ?>/Principal/createTeacher", {
-                  firstname: $('#firstname').val(),
-                  middlename: $('#middlename').val(),
-                  lastname: $('#lastname').val(),
-                  contact_number: $('#contactNumber').val(),
+              $.post("<?= base_url() ?>Principal/createSection", {
+                  section_name: $('#sectionName').val(),
+                  grade_level: $('#gradeLevel').val(),
               }, function(resp) {
                   console.clear();
                   Swal.fire({
                       position: 'center',
                       icon: 'success',
-                      title: 'Teacher create successfully',
+                      title: 'Section created successfully',
                       showConfirmButton: false,
                       timer: 1500
                   });
@@ -227,15 +200,13 @@
               let id = $(this).val();
               console.clear();
 
-              $.post("<?= base_url() ?>/Principal/getTeacherById", {
+              $.post("<?= base_url() ?>/Principal/getSectionById", {
                   id: id
               }, function(resp) {
                   resp = JSON.parse(resp)[0];
 
-                  $("#updateFirstname").val(resp.firstname);
-                  $("#updateMiddlename").val(resp.middlename);
-                  $("#updateLastname").val(resp.lastname);
-                  $("#updateContactNumber").val(resp.contact_number);
+                  $("#sectionNameUpdate").val(resp.section_name);
+                  $("#gradeLevelUpdate").val(resp.grade_level);
 
                   $('#updateSubmitButton').val(resp.id);
 
@@ -246,18 +217,17 @@
           // UPDATE POST AJAX
           $('#updateForm').submit(function(e) {
               e.preventDefault();
-              $.post("<?= base_url() ?>/Principal/updateTeacher", {
-                  firstname: $('#updateFirstname').val(),
-                  middlename: $('#updateMiddlename').val(),
-                  lastname: $('#updateLastname').val(),
-                  contact_number: $('#updateContactNumber').val(),
+              $.post("<?= base_url() ?>/Principal/updateSection", {
+                  section_name: $('#sectionNameUpdate').val(),
+                  grade_level: $('#gradeLevelUpdate').val(),
+
                   id: $('#updateSubmitButton').val(),
               }, function(resp) {
                   console.clear();
                   Swal.fire({
                       position: 'center',
                       icon: 'success',
-                      title: 'Teacher updated successfully',
+                      title: 'Section updated successfully',
                       showConfirmButton: false,
                       timer: 1500
                   });
@@ -280,14 +250,14 @@
                   confirmButtonText: 'Yes, delete it!'
               }).then((result) => {
                   if (result.isConfirmed) {
-                      $.post("<?= base_url() ?>/Principal/deleteTeacher", {
+                      $.post("<?= base_url() ?>/Principal/deleteSection", {
                           id: id
                       }, function() {
-                        refresh();
+                          refresh();
 
                           Swal.fire(
                               'Deleted!',
-                              'Teacher has been deleted.',
+                              'Subject has been deleted.',
                               'success'
                           );
                       });
