@@ -15,8 +15,6 @@ class Dashboard extends CI_Controller
     {
         $data["userType"] = $this->Credentials_model->getUserType();
         $data["claim"] = $this->Credentials_model->determineUserType($data['userType']);
-        
-
         $this->load->view('components/includes/header.php');
         $this->load->view('components/dashboard/admin_dashboard');
         $this->load->view('components/includes/footer.php');
