@@ -216,8 +216,18 @@
                                 <a href="<?= base_url() . 'Teacher/ClassManagement' ?>">
                                     <i class="fa fa-edit"></i> Class Management</a>
                             </li>
+                            <li>
+                                <a href="<?= base_url() . 'Teacher/AdvisoryClassManagement' ?>">
+                                    <i class="fa fa-edit"></i> Advisory Management</a>
+                            </li>
 
                         </ul>
+                    </li>
+                    <li class=" ">
+                        <a href=<?= base_url() . "Teacher/ParentManagement" ?>>
+                            <i class="fa fa-users"></i>
+                            <span class="title">Parent Management</span>
+                        </a>
                     </li>
 
                     </li>

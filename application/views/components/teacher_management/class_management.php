@@ -37,7 +37,7 @@
                                           #
                                       </th>
                                       <th>
-                                          Class Code
+                                          Class Load
                                       </th>
                                       <th>
                                           Subject Name
