@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 17, 2021 at 11:19 AM
+-- Generation Time: Oct 25, 2021 at 01:03 PM
 -- Server version: 10.4.20-MariaDB
 -- PHP Version: 7.3.29
 
@@ -18,8 +18,40 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `dentalsystem`
+-- Database: `schoolsystem`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `advisers`
+--
+
+CREATE TABLE `advisers` (
+  `id` int(11) NOT NULL,
+  `teacher_id` int(11) NOT NULL,
+  `section_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `advisers`
+--
+
+INSERT INTO `advisers` (`id`, `teacher_id`, `section_id`) VALUES
+(2, 7, 3);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `attendance`
+--
+
+CREATE TABLE `attendance` (
+  `id` int(65) NOT NULL,
+  `student_id` int(65) NOT NULL,
+  `date` date NOT NULL,
+  `time` time NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -41,28 +73,15 @@ CREATE TABLE `credentials` (
 INSERT INTO `credentials` (`id`, `username`, `password`, `user_type`) VALUES
 (1, 'admin', '81dc9bdb52d04dc20036dbd8313ed055', 3),
 (5, 'joel', '81dc9bdb52d04dc20036dbd8313ed055', 1),
-(6, 'testing', '81dc9bdb52d04dc20036dbd8313ed055', 1);
+(6, 'test', '81dc9bdb52d04dc20036dbd8313ed055', 1);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `diagnose_to_seek`
+-- Table structure for table `parents`
 --
 
-CREATE TABLE `diagnose_to_seek` (
-  `id` int(65) NOT NULL,
-  `patient_id` int(65) NOT NULL,
-  `date` date NOT NULL,
-  `time` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `doctor_record`
---
-
-CREATE TABLE `doctor_record` (
+CREATE TABLE `parents` (
   `id` int(65) NOT NULL,
   `firstname` varchar(65) NOT NULL,
   `middlename` varchar(65) NOT NULL,
@@ -71,234 +90,130 @@ CREATE TABLE `doctor_record` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `doctor_record`
+-- Dumping data for table `parents`
 --
 
-INSERT INTO `doctor_record` (`id`, `firstname`, `middlename`, `lastname`, `contact_number`) VALUES
-(1, 'firstname', 'middlename', 'lastname', '09565791354985');
+INSERT INTO `parents` (`id`, `firstname`, `middlename`, `lastname`, `contact_number`) VALUES
+(1, 'update', 'update', 'update', 'update');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `doctor_time_in`
+-- Table structure for table `sections`
 --
 
-CREATE TABLE `doctor_time_in` (
+CREATE TABLE `sections` (
   `id` int(65) NOT NULL,
-  `doctor_id` int(65) NOT NULL,
-  `date` date NOT NULL,
-  `time` time NOT NULL
+  `section_name` varchar(65) NOT NULL,
+  `grade_level` int(65) NOT NULL,
+  `students` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL CHECK (json_valid(`students`))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `doctor_time_in`
+-- Dumping data for table `sections`
 --
 
-INSERT INTO `doctor_time_in` (`id`, `doctor_id`, `date`, `time`) VALUES
-(1, 1, '2021-10-05', '16:34:58');
+INSERT INTO `sections` (`id`, `section_name`, `grade_level`, `students`) VALUES
+(3, 'test', 8, '[]');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `env_sanitation_rescident_record`
+-- Table structure for table `students`
 --
 
-CREATE TABLE `env_sanitation_rescident_record` (
-  `id` int(65) NOT NULL,
-  `firstname` varchar(65) NOT NULL,
-  `middlename` varchar(65) NOT NULL,
-  `lastname` varchar(65) NOT NULL,
-  `age` int(65) NOT NULL,
-  `purok` varchar(65) NOT NULL,
-  `has_compospit` tinyint(1) NOT NULL,
-  `has_garden` tinyint(1) NOT NULL,
-  `has_cr` tinyint(1) NOT NULL,
-  `date` date NOT NULL,
-  `time` time NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `medicine`
---
-
-CREATE TABLE `medicine` (
-  `id` int(65) NOT NULL,
-  `patient_id` int(65) NOT NULL,
-  `given_medicine` varchar(65) NOT NULL,
-  `date` datetime NOT NULL,
-  `time` time NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `patient_checkup_dates`
---
-
-CREATE TABLE `patient_checkup_dates` (
-  `id` int(65) NOT NULL,
-  `patient_id` int(65) NOT NULL,
-  `date` date NOT NULL,
-  `time` time NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `patient_record`
---
-
-CREATE TABLE `patient_record` (
+CREATE TABLE `students` (
   `id` int(65) NOT NULL,
   `firstname` varchar(65) NOT NULL,
   `middlename` varchar(65) NOT NULL,
   `lastname` varchar(65) NOT NULL,
-  `age` int(65) NOT NULL,
-  `gender` int(65) NOT NULL,
-  `height` varchar(65) NOT NULL,
-  `weight` varchar(65) NOT NULL,
-  `civil_status` varchar(65) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `patient_record`
---
-
-INSERT INTO `patient_record` (`id`, `firstname`, `middlename`, `lastname`, `age`, `gender`, `height`, `weight`, `civil_status`) VALUES
-(1, 'Joel', 'John', 'Centeno', 22, 0, '5', '70', '70'),
-(2, 'Joel', 'John', 'Centeno', 22, 0, '5', '70', 'single'),
-(3, 'Joel', 'John', 'Centeno', 22, 0, '5', '70', 'single'),
-(4, 'Joel', 'John', 'Centeno', 22, 0, '5', '70', 'single'),
-(5, 'Joel', 'John', 'Centeno', 22, 0, '5', '70', 'single'),
-(6, 'Joel', 'John', 'Centeno', 22, 0, '5', '70', 'single'),
-(7, 'Joel', 'John', 'Centeno', 22, 0, '5', '70', 'single'),
-(8, 'Joel', 'John', 'Centeno', 22, 0, '5', '70', 'single'),
-(9, 'Joel', 'John', 'Centeno', 22, 0, '5', '70', 'single');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `prescription_management`
---
-
-CREATE TABLE `prescription_management` (
-  `id` int(65) NOT NULL,
-  `patient_id` int(65) NOT NULL,
-  `date` date NOT NULL,
-  `time` time NOT NULL
+  `contact_number` varchar(65) NOT NULL,
+  `parent_id` int(65) NOT NULL,
+  `grade_level` int(65) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `schedule_highblood_maintenance`
+-- Table structure for table `student_grades`
 --
 
-CREATE TABLE `schedule_highblood_maintenance` (
+CREATE TABLE `student_grades` (
   `id` int(65) NOT NULL,
-  `patient_id` int(65) NOT NULL,
-  `date` date NOT NULL,
-  `time` time NOT NULL,
-  `is_given_medicine` tinyint(1) NOT NULL
+  `student_id` int(65) NOT NULL,
+  `quarter` int(65) NOT NULL,
+  `subject_id` int(65) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `schedule_pregnant_immunization`
+-- Table structure for table `subjects`
 --
 
-CREATE TABLE `schedule_pregnant_immunization` (
+CREATE TABLE `subjects` (
   `id` int(65) NOT NULL,
-  `patient_id` int(65) NOT NULL,
-  `date` date NOT NULL,
-  `time` time NOT NULL,
-  `is_given_medicine` tinyint(1) NOT NULL
+  `subject_name` varchar(65) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `schedule_tuberculosis_maintenance`
+-- Table structure for table `teachers`
 --
 
-CREATE TABLE `schedule_tuberculosis_maintenance` (
+CREATE TABLE `teachers` (
   `id` int(65) NOT NULL,
-  `patient_id` int(65) NOT NULL,
-  `date` date NOT NULL,
-  `time` time NOT NULL,
-  `is_given_medicine` tinyint(1) NOT NULL
+  `firstname` varchar(65) NOT NULL,
+  `middlename` varchar(65) NOT NULL,
+  `lastname` varchar(65) NOT NULL,
+  `contact_number` varchar(65) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `teachers`
+--
+
+INSERT INTO `teachers` (`id`, `firstname`, `middlename`, `lastname`, `contact_number`) VALUES
+(5, 'teacher 1', 'teacher 1', 'teacher 1', '09123929929'),
+(6, 'teacher 2', 'teacher 2', 'teacher 2', '09123929929'),
+(7, 'teacher 3', 'teacher 3', 'teacher 3', '09123929929');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `schedule_underweight_children`
+-- Table structure for table `teacher_loads`
 --
 
-CREATE TABLE `schedule_underweight_children` (
+CREATE TABLE `teacher_loads` (
   `id` int(65) NOT NULL,
-  `patient_id` int(65) NOT NULL,
-  `date` date NOT NULL,
-  `time` time NOT NULL,
-  `is_given_medicine` tinyint(1) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `symptoms_complains`
---
-
-CREATE TABLE `symptoms_complains` (
-  `id` int(65) NOT NULL,
-  `patient_id` int(65) NOT NULL,
-  `date` date NOT NULL,
-  `time` time NOT NULL,
-  `complain` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `users`
---
-
-CREATE TABLE `users` (
-  `id` int(65) NOT NULL,
-  `fullname` varchar(65) NOT NULL,
-  `email` varchar(65) NOT NULL,
-  `mobile_number` int(65) NOT NULL,
-  `address` int(65) NOT NULL,
-  `credentials_id` int(65) NOT NULL
+  `subject_id` int(65) NOT NULL,
+  `teacher_id` int(65) NOT NULL,
+  `section_id` int(65) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `users`
+-- Dumping data for table `teacher_loads`
 --
 
-INSERT INTO `users` (`id`, `fullname`, `email`, `mobile_number`, `address`, `credentials_id`) VALUES
-(1, 'joel', 'joel@gmail.com', 123, 0, 5),
-(2, 'Testing', 'testing@gmail.com', 2147483647, 0, 6);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `vital_signs_measure`
---
-
-CREATE TABLE `vital_signs_measure` (
-  `id` int(65) NOT NULL,
-  `patient_id` int(65) NOT NULL,
-  `date` date NOT NULL,
-  `time` time NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+INSERT INTO `teacher_loads` (`id`, `subject_id`, `teacher_id`, `section_id`) VALUES
+(2, 3, 33, 333);
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `advisers`
+--
+ALTER TABLE `advisers`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `attendance`
+--
+ALTER TABLE `attendance`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `credentials`
@@ -307,98 +222,62 @@ ALTER TABLE `credentials`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `diagnose_to_seek`
+-- Indexes for table `parents`
 --
-ALTER TABLE `diagnose_to_seek`
+ALTER TABLE `parents`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `doctor_record`
+-- Indexes for table `sections`
 --
-ALTER TABLE `doctor_record`
+ALTER TABLE `sections`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `doctor_time_in`
+-- Indexes for table `students`
 --
-ALTER TABLE `doctor_time_in`
+ALTER TABLE `students`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `env_sanitation_rescident_record`
+-- Indexes for table `student_grades`
 --
-ALTER TABLE `env_sanitation_rescident_record`
+ALTER TABLE `student_grades`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `medicine`
+-- Indexes for table `subjects`
 --
-ALTER TABLE `medicine`
+ALTER TABLE `subjects`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `patient_checkup_dates`
+-- Indexes for table `teachers`
 --
-ALTER TABLE `patient_checkup_dates`
+ALTER TABLE `teachers`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `patient_record`
+-- Indexes for table `teacher_loads`
 --
-ALTER TABLE `patient_record`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `prescription_management`
---
-ALTER TABLE `prescription_management`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `schedule_highblood_maintenance`
---
-ALTER TABLE `schedule_highblood_maintenance`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `schedule_pregnant_immunization`
---
-ALTER TABLE `schedule_pregnant_immunization`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `schedule_tuberculosis_maintenance`
---
-ALTER TABLE `schedule_tuberculosis_maintenance`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `schedule_underweight_children`
---
-ALTER TABLE `schedule_underweight_children`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `symptoms_complains`
---
-ALTER TABLE `symptoms_complains`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `users`
---
-ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `vital_signs_measure`
---
-ALTER TABLE `vital_signs_measure`
+ALTER TABLE `teacher_loads`
   ADD PRIMARY KEY (`id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
 --
+
+--
+-- AUTO_INCREMENT for table `advisers`
+--
+ALTER TABLE `advisers`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `attendance`
+--
+ALTER TABLE `attendance`
+  MODIFY `id` int(65) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `credentials`
@@ -407,94 +286,46 @@ ALTER TABLE `credentials`
   MODIFY `id` int(65) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
--- AUTO_INCREMENT for table `diagnose_to_seek`
+-- AUTO_INCREMENT for table `parents`
 --
-ALTER TABLE `diagnose_to_seek`
+ALTER TABLE `parents`
+  MODIFY `id` int(65) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `sections`
+--
+ALTER TABLE `sections`
   MODIFY `id` int(65) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT for table `doctor_record`
+-- AUTO_INCREMENT for table `students`
 --
-ALTER TABLE `doctor_record`
+ALTER TABLE `students`
   MODIFY `id` int(65) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT for table `doctor_time_in`
+-- AUTO_INCREMENT for table `student_grades`
 --
-ALTER TABLE `doctor_time_in`
-  MODIFY `id` int(65) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- AUTO_INCREMENT for table `env_sanitation_rescident_record`
---
-ALTER TABLE `env_sanitation_rescident_record`
+ALTER TABLE `student_grades`
   MODIFY `id` int(65) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `medicine`
+-- AUTO_INCREMENT for table `subjects`
 --
-ALTER TABLE `medicine`
-  MODIFY `id` int(65) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `patient_checkup_dates`
---
-ALTER TABLE `patient_checkup_dates`
-  MODIFY `id` int(65) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `patient_record`
---
-ALTER TABLE `patient_record`
-  MODIFY `id` int(65) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
-
---
--- AUTO_INCREMENT for table `prescription_management`
---
-ALTER TABLE `prescription_management`
-  MODIFY `id` int(65) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `schedule_highblood_maintenance`
---
-ALTER TABLE `schedule_highblood_maintenance`
-  MODIFY `id` int(65) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `schedule_pregnant_immunization`
---
-ALTER TABLE `schedule_pregnant_immunization`
-  MODIFY `id` int(65) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `schedule_tuberculosis_maintenance`
---
-ALTER TABLE `schedule_tuberculosis_maintenance`
-  MODIFY `id` int(65) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `schedule_underweight_children`
---
-ALTER TABLE `schedule_underweight_children`
-  MODIFY `id` int(65) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `symptoms_complains`
---
-ALTER TABLE `symptoms_complains`
-  MODIFY `id` int(65) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `users`
---
-ALTER TABLE `users`
+ALTER TABLE `subjects`
   MODIFY `id` int(65) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT for table `vital_signs_measure`
+-- AUTO_INCREMENT for table `teachers`
 --
-ALTER TABLE `vital_signs_measure`
-  MODIFY `id` int(65) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `teachers`
+  MODIFY `id` int(65) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT for table `teacher_loads`
+--
+ALTER TABLE `teacher_loads`
+  MODIFY `id` int(65) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

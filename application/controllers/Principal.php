@@ -23,7 +23,6 @@ class Principal extends CI_Controller
     {
         $this->load->view("components/includes/header");
         $this->load->view("components/roles_management/manage_teachers");
-        // $this->load->view("components/includes/footer");
     }
 
     public function createTeacher()
@@ -62,6 +61,36 @@ class Principal extends CI_Controller
         echo json_encode($this->Main_model->get("teachers", "id")->result_array());
     }
 
+    public function getAllTeachersForTable()
+    {
+        $result = $this->Main_model->get("teachers", "id")->result();
+        $counter = 0;
+        foreach ($result as $row) {
+            $counter ++;
+            echo '
+                <tr>
+                    <td>
+                        '. $counter .'
+                    </td>
+                    <td>
+                    '. $row->firstname .'
+                    </td>
+                    <td>
+                    '. $row->middlename .'
+                    <td>
+                    '. $row->lastname .'
+                    <td>
+                    '. $row->contact_number .'
+                    </td>
+                    <td>
+                        <button type="button" class="btn yellow edit" value="'. $row->id .'"><i class="fa fa-edit"></i></button>
+                        <button type="button" class="btn red delete" value="'. $row->id .'"><i class="fa fa-times"></i></button>
+                    </td>
+                </tr>
+            ';
+        }
+    }
+
     public function getTeacherById()
     {
         $id = $this->input->post("id");
@@ -73,7 +102,8 @@ class Principal extends CI_Controller
     // START: Section management
     public function manageSections()
     {
-        $this->load->view("");
+        $this->load->view("components/includes/header");
+        $this->load->view("components/roles_management/manage_sections");
     }
 
     public function createSection()
@@ -111,6 +141,32 @@ class Principal extends CI_Controller
         echo json_encode($this->Main_model->get("sections", "id")->result_array());
     }
 
+    public function getAllSectionsForTable()
+    {
+        $result = $this->Main_model->get("sections", "id")->result();
+        $counter = 0;
+        foreach ($result as $row) {
+            $counter ++;
+            echo '
+                <tr>
+                    <td>
+                        '. $counter .'
+                    </td>
+                    <td>
+                    '. $row->section_name .'
+                    </td>
+                    <td>
+                    '. $row->grade_level .'
+                    </td>
+                    <td>
+                        <button type="button" class="btn yellow edit" value="'. $row->id .'"><i class="fa fa-edit"></i></button>
+                        <button type="button" class="btn red delete" value="'. $row->id .'"><i class="fa fa-times"></i></button>
+                    </td>
+                </tr>
+            ';
+        }
+    }
+
     public function getSectionById()
     {
         $id = $this->input->post("id");
@@ -121,7 +177,11 @@ class Principal extends CI_Controller
     //START: Adviser management
     public function manageAdvisers()
     {
-        $this->load->view("");
+        $data['allTeachers'] = $this->Main_model->get("teachers", "id");
+        $data['allSections'] = $this->Main_model->get("sections", "id");
+        
+        $this->load->view("components/includes/header");
+        $this->load->view("components/roles_management/manage_advisers", $data);
     }
 
     public function createAdviser()
@@ -154,6 +214,45 @@ class Principal extends CI_Controller
         echo json_encode($this->Main_model->get("advisers", "id")->result_array());
     }
 
+    public function getAllAdvisersForTable()
+    {
+        $result = $this->Main_model->get("Advisers", "id")->result();
+        $counter = 0;
+        foreach ($result as $row) {
+            $teacherName = $this->Main_model->getFullName('teachers', "id", $row->teacher_id);
+            
+            $section = $this->Main_model->get_where("sections", "id", $row->section_id)->result();
+            
+            $sectionName = $section[0]->section_name;
+
+            $counter ++;
+            echo '
+                <tr>
+                    <td>
+                        '. $counter .'
+                    </td>
+                    <td>
+                    '. $teacherName .'
+                    </td>
+                    <td>
+                    '. $sectionName .'
+                    </td>
+                    <td>
+                        <button type="button" class="btn yellow edit" value="'. $row->id .'"><i class="fa fa-edit"></i></button>
+                        <button type="button" class="btn red delete" value="'. $row->id .'"><i class="fa fa-times"></i></button>
+                    </td>
+                </tr>
+            ';
+        }
+    }
+
+    public function getAdviserById()
+    {
+        $id = $this->input->post("id");
+
+        echo json_encode($this->Main_model->get_where("advisers", "id", $id)->result_array());
+    }
+
     public function getAdviserByTeacherId()
     {
         $teacherId = $this->input->post("teacher_id");
@@ -166,7 +265,8 @@ class Principal extends CI_Controller
     // START: Manage subjects
     public function manageSubjects()
     {
-        $this->load->view("");
+        $this->load->view("components/includes/header");
+        $this->load->view("components/roles_management/manage_subjects");
     }
 
     public function createSubject()
@@ -186,7 +286,6 @@ class Principal extends CI_Controller
 
     public function deleteSubject()
     {
-        $_POST['id'] = 1;
         $id = $this->input->post("id");
 
         $this->Main_model->_delete("subjects", "id", $id);
@@ -195,6 +294,29 @@ class Principal extends CI_Controller
     public function getAllSubjects()
     {
         echo json_encode($this->Main_model->get("subjects", "id")->result_array());
+    }
+
+    public function getAllSubjectsForTable()
+    {
+        $result = $this->Main_model->get("subjects", "id")->result();
+        $counter = 0;
+        foreach ($result as $row) {
+            $counter ++;
+            echo '
+                <tr>
+                    <td>
+                        '. $counter .'
+                    </td>
+                    <td>
+                    '. $row->subject_name .'
+                    </td>
+                    <td>
+                        <button type="button" class="btn yellow edit" value="'. $row->id .'"><i class="fa fa-edit"></i></button>
+                        <button type="button" class="btn red delete" value="'. $row->id .'"><i class="fa fa-times"></i></button>
+                    </td>
+                </tr>
+            ';
+        }
     }
 
     public function getSubjectById()

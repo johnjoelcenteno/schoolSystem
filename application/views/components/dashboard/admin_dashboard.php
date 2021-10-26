@@ -18,8 +18,8 @@
                   <div class="dashboard-stat2">
                       <div class="display">
                           <div class="number">
-                              <h3 class="font-green-sharp">122<small class="font-green-sharp"></small></h3>
-                              <small>TOTAL BOOK AVAILABLE</small>
+                              <h3 class="font-green-sharp"><?= $subjectCount ?><small class="font-green-sharp"></small></h3>
+                              <small>TOTAL SUBJECTS AVAILABLE</small>
                           </div>
                           <div class="icon">
                               <i class="icon-book-open"></i>
@@ -38,7 +38,7 @@
                   <div class="dashboard-stat2">
                       <div class="display">
                           <div class="number">
-                              <h3 class="font-red-haze">32</h3>
+                              <h3 class="font-red-haze"><?= $teacherCount ?></h3>
                               <small>TEACHERS COUNT</small>
                           </div>
                           <div class="icon">
@@ -58,7 +58,7 @@
                   <div class="dashboard-stat2">
                       <div class="display">
                           <div class="number">
-                              <h3 class="font-blue-sharp">12</h3>
+                              <h3 class="font-blue-sharp"><?= $sectionCount ?></h3>
                               <small>SECTIONS</small>
                           </div>
                           <div class="icon">
@@ -78,7 +78,7 @@
                   <div class="dashboard-stat2">
                       <div class="display">
                           <div class="number">
-                              <h3 class="font-purple-soft">276</h3>
+                              <h3 class="font-purple-soft"><?= $studentCount ?></h3>
                               <small>STUDENT COUNT</small>
                           </div>
                           <div class="icon">

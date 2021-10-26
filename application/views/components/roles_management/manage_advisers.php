@@ -5,7 +5,7 @@
           <div class="page-head">
               <!-- BEGIN PAGE TITLE -->
               <div class="page-title">
-                  <h1> Teacher Management</h1>
+                  <h1> Adviser management</h1>
               </div>
               <!-- END PAGE TITLE -->
               <!-- BEGIN PAGE TOOLBAR -->
@@ -20,12 +20,12 @@
               <div class="col-md-12">
                   <!-- BEGIN EXAMPLE TABLE PORTLET-->
                   <div class="" style="margin-bottom:5px">
-                      <button type="button" class="btn btn-circle green-meadow" data-toggle="modal" data-target="#createModal"><i class="fa fa-plus"> Add Teacher</i></button>
+                      <button type="button" class="btn btn-circle green-meadow" data-toggle="modal" data-target="#createModal"><i class="fa fa-plus"> Add adviser</i></button>
                   </div>
                   <div class="portlet box blue-hoki">
                       <div class="portlet-title">
                           <div class="caption">
-                              <i class="fa fa-globe"></i>Manage teachers
+                              <i class="fa fa-globe"></i>Manage advisers
                           </div>
                           <div class="tools">
 
@@ -39,15 +39,10 @@
                                           #
                                       </th>
                                       <th>
-                                          Firstname
+                                          Teacher name
                                       </th>
                                       <th>
-                                          Middlename </th>
-                                      <th>
-                                          Lastname
-                                      </th>
-                                      <th>
-                                          Contact Number
+                                          Section
                                       </th>
                                       <th>
                                           Actions
@@ -120,28 +115,35 @@
       <div class="modal-dialog" role="document">
           <div class="modal-content">
               <div class="modal-header">
-                  <h2 align="center" class="modal-title" id="createModalLabel">Create Teacher</h2>
+                  <h2 align="center" class="modal-title" id="createModalLabel">Assign section adviser</h2>
               </div>
               <div class="modal-body">
                   <form id="createForm">
                       <div class="form-group">
-                          <label>First name</label>
-                          <input type="text" id="firstname" class="form-control" placeholder="Enter first name here">
+                          <label>Select teacher</label>
+                          <select name="" id="selectTeacher" class="form-control">
+                              <option value="">select teacher</option>
+                              <?php foreach ($allTeachers->result() as $row) {
+                                    $firstname = $row->firstname;
+                                    $middlename = $row->middlename;
+                                    $lastname = $row->lastname;
+                                    $fullname = "$firstaname $middlename $lastname";
+                                ?>
+
+                                  <option value="<?= $row->id ?>"><?= $fullname ?></option>
+                              <?php } ?>
+                          </select>
                       </div>
 
                       <div class="form-group">
-                          <label>Middle name</label>
-                          <input type="text" id="middlename" class="form-control" placeholder="Enter middle name here">
-                      </div>
+                          <label>Select section</label>
+                          <select name="" id="selectSection" class="form-control">
+                              <option value="">select section</option>
+                              <?php foreach ($allSections->result() as $row) { ?>
 
-                      <div class="form-group">
-                          <label>Last name</label>
-                          <input type="text" id="lastname" class="form-control" placeholder="Enter last name here">
-                      </div>
-
-                      <div class="form-group">
-                          <label>Contact number</label>
-                          <input type="text" id="contactNumber" class="form-control" placeholder="Enter contact number here">
+                                  <option value="<?= $row->id ?>"><?= $row->section_name ?></option>
+                              <?php } ?>
+                          </select>
                       </div>
               </div>
               <div class="modal-footer">
@@ -159,28 +161,35 @@
       <div class="modal-dialog" role="document">
           <div class="modal-content">
               <div class="modal-header">
-                  <h2 align="center" class="modal-title" id="createModalLabel">Update Teacher</h2>
+                  <h2 align="center" class="modal-title" id="createModalLabel">Update Adviser</h2>
               </div>
               <div class="modal-body">
                   <form id="updateForm">
                       <div class="form-group">
-                          <label>First name</label>
-                          <input type="text" id="updateFirstname" class="form-control" placeholder="Enter first name here">
+                          <label>Select teacher</label>
+                          <select name="" id="selectTeacherUpdate" class="form-control">
+                              <option value="">select teacher</option>
+                              <?php foreach ($allTeachers->result() as $row) {
+                                    $firstname = $row->firstname;
+                                    $middlename = $row->middlename;
+                                    $lastname = $row->lastname;
+                                    $fullname = "$firstaname $middlename $lastname";
+                                ?>
+
+                                  <option value="<?= $row->id ?>"><?= $fullname ?></option>
+                              <?php } ?>
+                          </select>
                       </div>
 
                       <div class="form-group">
-                          <label>Middle name</label>
-                          <input type="text" id="updateMiddlename" class="form-control" placeholder="Enter middle name here">
-                      </div>
+                          <label>Select section</label>
+                          <select name="" id="selectSectionUpdate" class="form-control">
+                              <option value="">select section</option>
+                              <?php foreach ($allSections->result() as $row) { ?>
 
-                      <div class="form-group">
-                          <label>Last name</label>
-                          <input type="text" id="updateLastname" class="form-control" placeholder="Enter last name here">
-                      </div>
-
-                      <div class="form-group">
-                          <label>Contact number</label>
-                          <input type="text" id="updateContactNumber" class="form-control" placeholder="Enter contact number here">
+                                  <option value="<?= $row->id ?>"><?= $row->section_name ?></option>
+                              <?php } ?>
+                          </select>
                       </div>
               </div>
               <div class="modal-footer">
@@ -196,24 +205,22 @@
   <script>
       $(document).ready(function() {
           function refresh() {
-              $('tbody').load("<?= base_url() ?>Principal/getAllTeachersForTable");
+              $('tbody').load("<?= base_url() ?>Principal/getAllAdvisersForTable");
           }
           refresh();
 
           // CREATE POST AJAX
           $('#createForm').submit(function(e) {
               e.preventDefault();
-              $.post("<?= base_url() ?>/Principal/createTeacher", {
-                  firstname: $('#firstname').val(),
-                  middlename: $('#middlename').val(),
-                  lastname: $('#lastname').val(),
-                  contact_number: $('#contactNumber').val(),
+              $.post("<?= base_url() ?>/Principal/createAdviser", {
+                  teacher_id: $('#selectTeacher').val(),
+                  section_id: $('#selectSection').val(),
               }, function(resp) {
                   console.clear();
                   Swal.fire({
                       position: 'center',
                       icon: 'success',
-                      title: 'Teacher create successfully',
+                      title: 'Teacher assigned successfully',
                       showConfirmButton: false,
                       timer: 1500
                   });
@@ -227,15 +234,13 @@
               let id = $(this).val();
               console.clear();
 
-              $.post("<?= base_url() ?>/Principal/getTeacherById", {
+              $.post("<?= base_url() ?>/Principal/getAdviserById", {
                   id: id
               }, function(resp) {
                   resp = JSON.parse(resp)[0];
 
-                  $("#updateFirstname").val(resp.firstname);
-                  $("#updateMiddlename").val(resp.middlename);
-                  $("#updateLastname").val(resp.lastname);
-                  $("#updateContactNumber").val(resp.contact_number);
+                  $("#selectTeacherUpdate").val(resp.teacher_id);
+                  $("#selectSectionUpdate").val(resp.section_id);
 
                   $('#updateSubmitButton').val(resp.id);
 
@@ -246,18 +251,18 @@
           // UPDATE POST AJAX
           $('#updateForm').submit(function(e) {
               e.preventDefault();
-              $.post("<?= base_url() ?>/Principal/updateTeacher", {
-                  firstname: $('#updateFirstname').val(),
-                  middlename: $('#updateMiddlename').val(),
-                  lastname: $('#updateLastname').val(),
-                  contact_number: $('#updateContactNumber').val(),
+              $.post("<?= base_url() ?>/Principal/updateAdviser", {
+                  teacher_id: $('#selectTeacherUpdate').val(),
+                  section_id: $('#selectSectionUpdate').val(),
+                  
+
                   id: $('#updateSubmitButton').val(),
               }, function(resp) {
                   console.clear();
                   Swal.fire({
                       position: 'center',
                       icon: 'success',
-                      title: 'Teacher updated successfully',
+                      title: 'Section adviser updated successfully',
                       showConfirmButton: false,
                       timer: 1500
                   });
@@ -283,7 +288,7 @@
                       $.post("<?= base_url() ?>/Principal/deleteTeacher", {
                           id: id
                       }, function() {
-                        refresh();
+                          refresh();
 
                           Swal.fire(
                               'Deleted!',
