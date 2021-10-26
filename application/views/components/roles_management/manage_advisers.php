@@ -234,7 +234,7 @@
               let id = $(this).val();
               console.clear();
 
-              $.post("<?= base_url() ?>/Principal/getAdviserById", {
+              $.post("<?= base_url() ?>/Principal/updateTeacherLoad", {
                   id: id
               }, function(resp) {
                   resp = JSON.parse(resp)[0];
@@ -254,7 +254,7 @@
               $.post("<?= base_url() ?>/Principal/updateAdviser", {
                   teacher_id: $('#selectTeacherUpdate').val(),
                   section_id: $('#selectSectionUpdate').val(),
-                  
+
 
                   id: $('#updateSubmitButton').val(),
               }, function(resp) {

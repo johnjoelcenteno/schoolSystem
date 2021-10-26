@@ -28,9 +28,16 @@ class Principal extends CI_Controller
     public function createTeacher()
     {
         $insert['firstname'] = $this->input->post('firstname');
+
+        $cred['username'] = $insert['firstname'];
+        $cred['password'] = $this->Main_model->passwordEncryptor('1234');
+        $cred['user_type'] = '2';
+        $credId = $this->Main_model->_insert('credentials', $cred);
+
         $insert['middlename'] = $this->input->post('middlename');
         $insert['lastname'] = $this->input->post('lastname');
         $insert['contact_number'] = $this->input->post('contact_number');
+        $insert['credentials_id'] = $credId;
 
         $insert['id'] = $this->Main_model->_insert("teachers", $insert);
 
@@ -337,8 +344,9 @@ class Principal extends CI_Controller
     {
         $teacherId = $this->input->get('teacherId');
         $data['fullname'] = $this->Main_model->getFullName("teachers", "id", $teacherId);
+        $data['allSubject'] = $this->Main_model->get("subjects", "subject_name");
+        $data['allSection'] = $this->Main_model->get('sections', 'section_name');
         $data['teacherId'] = $teacherId;
-
 
         $this->load->view("components/includes/header");
         $this->load->view("components/roles_management/manage_teachers_load", $data);
@@ -376,10 +384,12 @@ class Principal extends CI_Controller
 
     public function createTeacherLoad()
     {
-        $insert['teacher_id'] = $this->input->post('teacher_id');
+
+
+        $insert['teacher_id'] = $this->input->get('teacherId');
         $insert['subject_id'] = $this->input->post('subject_id');
         $insert['section_id'] = $this->input->post('section_id');
-
+        $insert['schedule'] = $this->input->post('schedule');
         $this->Main_model->_insert("teacher_loads", $insert);
     }
 
@@ -387,9 +397,9 @@ class Principal extends CI_Controller
     {
         $id = $this->input->post("id");
 
-        $update['teacher_id'] = $this->input->post('teacher_id');
         $update['subject_id'] = $this->input->post('subject_id');
         $update['section_id'] = $this->input->post('section_id');
+        $update['schedule'] = $this->input->post('schedule');
 
         $this->Main_model->_update("teacher_loads", "id", $id, $update);
     }
@@ -397,7 +407,6 @@ class Principal extends CI_Controller
     public function deleteTeacherLoad()
     {
         $id = $this->input->post("id");
-
         $this->Main_model->_delete("teacher_loads", "id", $id);
     }
 

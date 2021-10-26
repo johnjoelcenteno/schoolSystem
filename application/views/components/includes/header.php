@@ -31,6 +31,15 @@
     <link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/global/plugins/datatables/extensions/Scroller/css/dataTables.scroller.min.css" />
     <link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/global/plugins/datatables/extensions/ColReorder/css/dataTables.colReorder.min.css" />
     <link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/global/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.css" />
+    <!-- BEGIN PAGE LEVEL STYLES -->
+    <link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/global/plugins/clockface/css/clockface.css" />
+    <link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" />
+    <link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/global/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css" />
+    <link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/global/plugins/bootstrap-colorpicker/css/colorpicker.css" />
+    <link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/global/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css" />
+    <link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/global/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" />
+    <!-- END PAGE LEVEL STYLES -->
+
     <!-- END PAGE STYLES -->
     <!-- BEGIN THEME STYLES -->
     <!-- DOC: To use 'rounded corners' style just load 'components-rounded.css' stylesheet instead of 'components.css' in the below style tag -->
@@ -139,6 +148,12 @@
                             <span class="title">Dashboard</span>
                         </a>
                     </li>
+                    <li class=" ">
+                        <a href=<?= base_url() . "Teacher_dashboard" ?>>
+                            <i class="icon-home"></i>
+                            <span class="title">Your Dashboard</span>
+                        </a>
+                    </li>
                     <li>
                         <a href="javascript:;">
                             <i class="icon-users"></i>
@@ -189,6 +204,21 @@
                             </li>
 
                         </ul>
+                    <li>
+                        <a href="javascript:;">
+                            <i class="icon-plus"></i>
+                            <span class="title">Manage Class</span>
+                            <span class="arrow "></span>
+                        </a>
+
+                        <ul class="sub-menu">
+                            <li>
+                                <a href="<?= base_url() . 'Teacher/ClassManagement' ?>">
+                                    <i class="fa fa-edit"></i> Class Management</a>
+                            </li>
+
+                        </ul>
+                    </li>
 
                     </li>
                 </ul>

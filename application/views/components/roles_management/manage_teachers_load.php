@@ -108,6 +108,15 @@
   <script type="text/javascript" src="<?= base_url() ?>assets/global/plugins/datatables/extensions/Scroller/js/dataTables.scroller.min.js"></script>
   <script type="text/javascript" src="<?= base_url() ?>assets/global/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.js"></script>
   <!-- END PAGE LEVEL PLUGINS -->
+  <!-- BEGIN PAGE LEVEL PLUGINS -->
+  <script type="text/javascript" src="<?= base_url() ?>assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+  <script type="text/javascript" src="<?= base_url() ?>assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js"></script>
+  <script type="text/javascript" src="<?= base_url() ?>assets/global/plugins/clockface/js/clockface.js"></script>
+  <script type="text/javascript" src="<?= base_url() ?>assets/global/plugins/bootstrap-daterangepicker/moment.min.js"></script>
+  <script type="text/javascript" src="<?= base_url() ?>assets/global/plugins/bootstrap-daterangepicker/daterangepicker.js"></script>
+  <script type="text/javascript" src="<?= base_url() ?>assets/global/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.js"></script>
+  <script type="text/javascript" src="<?= base_url() ?>assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+  <!-- END PAGE LEVEL PLUGINS -->
   <!-- BEGIN PAGE LEVEL SCRIPTS -->
   <script src="<?= base_url() ?>assets/global/scripts/metronic.js" type="text/javascript"></script>
   <script src="<?= base_url() ?>assets/admin/layout4/scripts/layout.js" type="text/javascript"></script>
@@ -123,29 +132,38 @@
               </div>
               <div class="modal-body">
                   <form id="createForm">
-                      <div class="form-group">
-                          <label>First name</label>
-                          <input type="text" id="firstname" class="form-control" placeholder="Enter first name here">
-                      </div>
 
                       <div class="form-group">
-                          <label>Middle name</label>
-                          <input type="text" id="middlename" class="form-control" placeholder="Enter middle name here">
-                      </div>
+                          <label>Select Subject</label>
+                          <select name="" id="selectSubject" class="form-control">
+                              <option value="">Select Subject</option>
+                              <?php foreach ($allSubject->result() as $row) {
+                                    $subjectName = $row->subject_name;
 
-                      <div class="form-group">
-                          <label>Last name</label>
-                          <input type="text" id="lastname" class="form-control" placeholder="Enter last name here">
-                      </div>
+                                ?>
 
+                                  <option value="<?= $row->id ?>"><?= $subjectName ?></option>
+                              <?php } ?>
+                          </select>
+                      </div>
                       <div class="form-group">
-                          <label>Contact number</label>
-                          <input type="text" id="contactNumber" class="form-control" placeholder="Enter contact number here">
+                          <label>Select section</label>
+                          <select name="" id="selectSection" class="form-control">
+                              <option value="">select section</option>
+                              <?php foreach ($allSection->result() as $row) { ?>
+
+                                  <option value="<?= $row->id ?>"><?= $row->section_name ?></option>
+                              <?php } ?>
+                          </select>
+                      </div>
+                      <div class="form-group">
+                          <label>Schedule</label>
+                          <input type="text" id="schedulePick" class="form-control" placeholder="Enter Schedule Here">
                       </div>
               </div>
               <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                  <button type="submit" class="btn btn-primary">Create</button>
+                  <button type="submit" class="btn btn-primary">Assign</button>
               </div>
               </form>
           </div>
@@ -158,28 +176,36 @@
       <div class="modal-dialog" role="document">
           <div class="modal-content">
               <div class="modal-header">
-                  <h2 align="center" class="modal-title" id="createModalLabel">Update Teacher</h2>
+                  <h2 align="center" class="modal-title" id="createModalLabel">Update Teacher Load</h2>
               </div>
               <div class="modal-body">
                   <form id="updateForm">
                       <div class="form-group">
-                          <label>First name</label>
-                          <input type="text" id="updateFirstname" class="form-control" placeholder="Enter first name here">
-                      </div>
+                          <label>Select Subject</label>
+                          <select name="" id="selectSubjectUpdate" class="form-control">
+                              <option value="">Select Subject</option>
+                              <?php foreach ($allSubject->result() as $row) {
+                                    $subjectName = $row->subject_name;
 
-                      <div class="form-group">
-                          <label>Middle name</label>
-                          <input type="text" id="updateMiddlename" class="form-control" placeholder="Enter middle name here">
-                      </div>
+                                ?>
 
-                      <div class="form-group">
-                          <label>Last name</label>
-                          <input type="text" id="updateLastname" class="form-control" placeholder="Enter last name here">
+                                  <option value="<?= $row->id ?>"><?= $subjectName ?></option>
+                              <?php } ?>
+                          </select>
                       </div>
-
                       <div class="form-group">
-                          <label>Contact number</label>
-                          <input type="text" id="updateContactNumber" class="form-control" placeholder="Enter contact number here">
+                          <label>Select section</label>
+                          <select name="" id="selectSectionUpdate" class="form-control">
+                              <option value="">select section</option>
+                              <?php foreach ($allSection->result() as $row) { ?>
+
+                                  <option value="<?= $row->id ?>"><?= $row->section_name ?></option>
+                              <?php } ?>
+                          </select>
+                      </div>
+                      <div class="form-group">
+                          <label>Schedule</label>
+                          <input type="text" id="schedulePickUpdate" class="form-control" placeholder="Enter Schedule Here">
                       </div>
               </div>
               <div class="modal-footer">
@@ -198,15 +224,13 @@
               $('tbody').load("<?= base_url() ?>Principal/getAllLoadByTeacherIdForTable?teacherId=<?= $teacherId ?>");
           }
           refresh();
-
           // CREATE POST AJAX
           $('#createForm').submit(function(e) {
               e.preventDefault();
-              $.post("<?= base_url() ?>/Principal/createTeacher", {
-                  firstname: $('#firstname').val(),
-                  middlename: $('#middlename').val(),
-                  lastname: $('#lastname').val(),
-                  contact_number: $('#contactNumber').val(),
+              $.post("<?= base_url() ?>/Principal/createTeacherLoad?teacherId=<?= $teacherId ?>", {
+                  subject_id: $('#selectSubject').val(),
+                  section_id: $('#selectSection').val(),
+                  schedule: $('#schedulePick').val()
               }, function(resp) {
                   console.clear();
                   Swal.fire({
@@ -225,19 +249,17 @@
           $(document).on("click", ".edit", function() {
               let id = $(this).val();
               console.clear();
-
-              $.post("<?= base_url() ?>/Principal/getTeacherById", {
+              $.post("<?= base_url() ?>/Principal/getTeacherLoadById?teacherId=<?= $teacherId ?>", {
                   id: id
               }, function(resp) {
                   resp = JSON.parse(resp)[0];
 
-                  $("#updateFirstname").val(resp.firstname);
-                  $("#updateMiddlename").val(resp.middlename);
-                  $("#updateLastname").val(resp.lastname);
-                  $("#updateContactNumber").val(resp.contact_number);
+                  $("#selectSubjectUpdate").val(resp.subject_id);
+                  $("#selectSectionUpdate").val(resp.section_id);
+                  $("#schedulePickUpdate").val(resp.schedule);
+
 
                   $('#updateSubmitButton').val(resp.id);
-
                   $("#updateModal").modal("show");
               });
           });
@@ -245,18 +267,17 @@
           // UPDATE POST AJAX
           $('#updateForm').submit(function(e) {
               e.preventDefault();
-              $.post("<?= base_url() ?>/Principal/updateTeacher", {
-                  firstname: $('#updateFirstname').val(),
-                  middlename: $('#updateMiddlename').val(),
-                  lastname: $('#updateLastname').val(),
-                  contact_number: $('#updateContactNumber').val(),
+              $.post("<?= base_url() ?>/Principal/updateTeacherLoad", {
+                  subject_id: $('#selectSubjectUpdate').val(),
+                  section_id: $('#selectSectionUpdate').val(),
+                  schedule: $('#schedulePickUpdate').val(),
                   id: $('#updateSubmitButton').val(),
               }, function(resp) {
                   console.clear();
                   Swal.fire({
                       position: 'center',
                       icon: 'success',
-                      title: 'Teacher updated successfully',
+                      title: 'Teacher load updated successfully',
                       showConfirmButton: false,
                       timer: 1500
                   });
@@ -268,7 +289,6 @@
           // DELETE 
           $(document).on("click", ".delete", function() {
               let id = $(this).val();
-
               Swal.fire({
                   title: 'Are you sure?',
                   text: "You won't be able to revert this!",
@@ -279,44 +299,14 @@
                   confirmButtonText: 'Yes, delete it!'
               }).then((result) => {
                   if (result.isConfirmed) {
-                      $.post("<?= base_url() ?>/Principal/deleteTeacher", {
+                      $.post("<?= base_url() ?>/Principal/deleteTeacherLoad", {
                           id: id
                       }, function() {
                           refresh();
 
                           Swal.fire(
                               'Deleted!',
-                              'Teacher has been deleted.',
-                              'success'
-                          );
-                      });
-                  }
-              });
-          });
-
-          //   Manage Teacher Load
-          // DELETE 
-          $(document).on("click", ".delete", function() {
-              let id = $(this).val();
-
-              Swal.fire({
-                  title: 'Are you sure?',
-                  text: "You won't be able to revert this!",
-                  icon: 'warning',
-                  showCancelButton: true,
-                  confirmButtonColor: '#3085d6',
-                  cancelButtonColor: '#d33',
-                  confirmButtonText: 'Yes, delete it!'
-              }).then((result) => {
-                  if (result.isConfirmed) {
-                      $.post("<?= base_url() ?>/Principal/deleteTeacher", {
-                          id: id
-                      }, function() {
-                          refresh();
-
-                          Swal.fire(
-                              'Deleted!',
-                              'Teacher has been deleted.',
+                              'Teacher load has been deleted.',
                               'success'
                           );
                       });
@@ -332,6 +322,8 @@
           Layout.init(); // init current layout
           Demo.init(); // init demo features
           TableAdvanced.init();
+          ComponentsPickers.init();
+
       });
   </script>
   </body>

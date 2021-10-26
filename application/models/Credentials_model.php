@@ -7,7 +7,7 @@ class Credentials_model extends CI_Model
     {
         $credentialsId = $_SESSION['credentialsId'];
 
-        $userTable = $this->Main_model->get_where('users', 'credentials_id', $credentialsId)->row();
+        $userTable = $this->Main_model->get_where('teachers', 'credentials_id', $credentialsId)->row();
 
         return $userTable->id;
     }
@@ -39,7 +39,7 @@ class Credentials_model extends CI_Model
             case 3:
                 return "Teacher";
                 break;
-            
+
             default:
                 return null;
                 break;

@@ -5,7 +5,7 @@
           <div class="page-head">
               <!-- BEGIN PAGE TITLE -->
               <div class="page-title">
-                  <h1> Subject management</h1>
+                  <h1> Class Management </h1>
               </div>
               <!-- END PAGE TITLE -->
               <!-- BEGIN PAGE TOOLBAR -->
@@ -19,13 +19,11 @@
           <div class="row">
               <div class="col-md-12">
                   <!-- BEGIN EXAMPLE TABLE PORTLET-->
-                  <div class="" style="margin-bottom:5px">
-                      <button type="button" class="btn btn-circle green-meadow" data-toggle="modal" data-target="#createModal"><i class="fa fa-plus"> Add adviser</i></button>
-                  </div>
+
                   <div class="portlet box blue-hoki">
                       <div class="portlet-title">
                           <div class="caption">
-                              <i class="fa fa-globe"></i>Manage subjects
+                              <i class="fa fa-globe"></i>
                           </div>
                           <div class="tools">
 
@@ -39,10 +37,19 @@
                                           #
                                       </th>
                                       <th>
-                                          Subject name
+                                          Class Code
                                       </th>
                                       <th>
-                                          Actions
+                                          Subject Name
+                                      </th>
+                                      <th>
+                                          Section
+                                      </th>
+                                      <th>
+                                          Schedule
+                                      </th>
+                                      <th>
+                                          Action
                                       </th>
                                   </tr>
                               </thead>
@@ -107,58 +114,10 @@
   <script src="<?= base_url() ?>assets/admin/layout4/scripts/demo.js" type="text/javascript"></script>
   <script src="<?= base_url() ?>assets/admin/pages/scripts/table-advanced.js"></script>
 
-  <!-- CREATE MODAL -->
-  <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="createModalLabel" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-          <div class="modal-content">
-              <div class="modal-header">
-                  <h2 align="center" class="modal-title" id="createModalLabel">Create subject</h2>
-              </div>
-              <div class="modal-body">
-                  <form id="createForm">
-                      <div class="form-group">
-                          <label>Subject name</label>
-                          <input type="text" id="subjectName" class="form-control" placeholder="Enter subject name here">
-                      </div>
-              </div>
-              <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                  <button type="submit" class="btn btn-primary">Create</button>
-              </div>
-              </form>
-          </div>
-      </div>
-  </div>
-  <!-- CREATE MODAL -->
-
-  <!-- CREATE MODAL -->
-  <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="createModalLabel" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-          <div class="modal-content">
-              <div class="modal-header">
-                  <h2 align="center" class="modal-title" id="createModalLabel">Update Teacher</h2>
-              </div>
-              <div class="modal-body">
-                  <form id="updateForm">
-                      <div class="form-group">
-                          <label>Subject name</label>
-                          <input type="text" id="subjectNameUpdate" class="form-control" placeholder="Enter subject name here">
-                      </div>
-              </div>
-              <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                  <button type="submit" class="btn btn-primary" id="updateSubmitButton">Update</button>
-              </div>
-              </form>
-          </div>
-      </div>
-  </div>
-  <!-- CREATE MODAL -->
-
   <script>
       $(document).ready(function() {
           function refresh() {
-              $('tbody').load("<?= base_url() ?>Teacher/getAllSubjectsForTable");
+              $('tbody').load("<?= base_url() ?>Teacher/GetAllLoadMyTeacherIdForTable");
           }
           refresh();
 
