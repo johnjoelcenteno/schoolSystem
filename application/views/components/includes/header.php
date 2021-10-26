@@ -177,7 +177,7 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="#"><i class="fa fa-book"></i>Subject Management
+                                        <a href="<?= base_url() . 'Principal/manageSubjects' ?>"><i class="fa fa-book"></i>Subject Management
 
                                         </a>
                                     </li>
