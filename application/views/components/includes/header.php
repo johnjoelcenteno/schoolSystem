@@ -157,12 +157,35 @@
                                     Manage Student</a>
                             </li>
                             <li>
-                                <a href="<?= base_url() . 'Principal/manageTeachers' ?>">
+                                <a href="javascript:;">
                                     <i class="icon-plus"></i>
-                                    Manage Teacher</a>
+                                    <span class="title">Manage Teacher</span>
+                                    <span class="arrow "></span>
+                                </a>
+
+                                <ul class="sub-menu">
+                                    <li>
+                                        <a href="<?= base_url() . 'Principal/manageTeachers' ?>">
+                                            <i class="fa fa-edit"></i> Teacher Management</a>
+                                    </li>
+                                    <li>
+                                        <a href="<?= base_url() . 'Principal/manageAdvisers' ?>"><i class="fa fa-users"></i> Adviser Management
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="<?= base_url() . 'Principal/manageSections' ?>"><i class="fa fa-puzzle-piece"></i>Section Management
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#"><i class="fa fa-book"></i>Subject Management
+
+                                        </a>
+                                    </li>
+                                </ul>
                             </li>
 
                         </ul>
+
                     </li>
                 </ul>
                 <!-- END SIDEBAR MENU -->
