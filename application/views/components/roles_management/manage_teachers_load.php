@@ -5,7 +5,7 @@
           <div class="page-head">
               <!-- BEGIN PAGE TITLE -->
               <div class="page-title">
-                  <h1> Teacher Management</h1>
+                  <h1> Teachers Load Management</h1>
               </div>
               <!-- END PAGE TITLE -->
               <!-- BEGIN PAGE TOOLBAR -->
@@ -20,12 +20,12 @@
               <div class="col-md-12">
                   <!-- BEGIN EXAMPLE TABLE PORTLET-->
                   <div class="" style="margin-bottom:5px">
-                      <button type="button" class="btn btn-circle green-meadow" data-toggle="modal" data-target="#createModal"><i class="fa fa-plus"> Add Teacher</i></button>
+                      <button type="button" class="btn btn-circle green-meadow" data-toggle="modal" data-target="#createModal"><i class="fa fa-plus"> Assign Teacher Load</i></button>
                   </div>
                   <div class="portlet box blue-hoki">
-                      <div class="portlet-title">
+                      <div class="portlet-title" id="TeachersName">
                           <div class="caption">
-                              <i class="fa fa-globe"></i>Manage teachers
+                              <i class="fa fa-globe"></i><?= $fullname ?>
                           </div>
                           <div class="tools">
 
@@ -38,16 +38,15 @@
                                       <th>
                                           #
                                       </th>
+
                                       <th>
-                                          Firstname
+                                          Subject Id
                                       </th>
                                       <th>
-                                          Middlename </th>
-                                      <th>
-                                          Lastname
+                                          Section
                                       </th>
                                       <th>
-                                          Contact Number
+                                          Schedule
                                       </th>
                                       <th>
                                           Actions
@@ -120,7 +119,7 @@
       <div class="modal-dialog" role="document">
           <div class="modal-content">
               <div class="modal-header">
-                  <h2 align="center" class="modal-title" id="createModalLabel">Create Teacher</h2>
+                  <h2 align="center" class="modal-title" id="createModalLabel">Assign Load</h2>
               </div>
               <div class="modal-body">
                   <form id="createForm">
@@ -196,7 +195,7 @@
   <script>
       $(document).ready(function() {
           function refresh() {
-              $('tbody').load("<?= base_url() ?>Principal/getAllTeachersForTable");
+              $('tbody').load("<?= base_url() ?>Principal/getAllLoadByTeacherIdForTable?teacherId=<?= $teacherId ?>");
           }
           refresh();
 
@@ -266,6 +265,36 @@
               });
           });
 
+          // DELETE 
+          $(document).on("click", ".delete", function() {
+              let id = $(this).val();
+
+              Swal.fire({
+                  title: 'Are you sure?',
+                  text: "You won't be able to revert this!",
+                  icon: 'warning',
+                  showCancelButton: true,
+                  confirmButtonColor: '#3085d6',
+                  cancelButtonColor: '#d33',
+                  confirmButtonText: 'Yes, delete it!'
+              }).then((result) => {
+                  if (result.isConfirmed) {
+                      $.post("<?= base_url() ?>/Principal/deleteTeacher", {
+                          id: id
+                      }, function() {
+                          refresh();
+
+                          Swal.fire(
+                              'Deleted!',
+                              'Teacher has been deleted.',
+                              'success'
+                          );
+                      });
+                  }
+              });
+          });
+
+          //   Manage Teacher Load
           // DELETE 
           $(document).on("click", ".delete", function() {
               let id = $(this).val();
