@@ -14,7 +14,12 @@ class Teacher extends CI_Controller
     public function index()
     {
     }
-
+    // Teachers Load View to Class Management
+    public function ClassManagement()
+    {
+        $this->load->view('components/includes/header');
+        $this->load->view('components/teacher_management/class_management');
+    }
     /*
     This method will load view your class advisory 
     this sums up that adviser teacher will add their own
@@ -24,22 +29,34 @@ class Teacher extends CI_Controller
     {
         $data['userId'] = $this->Credentials_model->getUserId();
         $data['AdvisoryIdentifier'] = count($this->Main_model->get_where('advisers', 'teacher_id', $data['userId'])->result_array());
-        $sectionId = $this->Main_model->get_where('advisers', 'teacher_id', $data['userId'])->row()->section_id;
-        $data['SectionName'] = $this->Main_model->get_where('sections', 'id', $sectionId)->row()->section_name;
+        $data['GetAllParent'] = $this->Main_model->get('parents', 'id');
+        $data['GetAllSection'] = $this->Main_model->get('sections', 'id');
+
+        $isAdviser = $data['AdvisoryIdentifier'] == 0;
+        if ($isAdviser) {
+            $data['sectionId'] = 'No Available';
+            $data['SectionName'] = 'No Available';
+        } else {
+            $data['sectionId'] = $this->Main_model->get_where('advisers', 'teacher_id', $data['userId'])->row()->section_id;
+            $data['SectionName'] = $this->Main_model->get_where('sections', 'id', $data['sectionId'])->row()->section_name;
+        }
 
         $this->load->view('components/includes/header');
         $this->load->view('components/teacher_management/advisory_management', $data);
     }
 
-    public function GetAllStudentForTable()
+    public function GetAllStudentForTableAdvisory()
     {
-        $result = $this->Main_model->get("students", "id")->result();
+        $UserId = $this->Credentials_model->getUserId();
+        $SectionId = $this->Main_model->get_where('advisers', 'teacher_id', $UserId)->row()->section_id;
+        $result = $this->Main_model->get_where("students", "section_id",  $SectionId)->result();
 
         $counter = 0;
         foreach ($result as $row) {
             $counter++;
             $ParentName = $this->Main_model->getFullName('parents', 'id', $row->parent_id);
             $StudentFullName = $this->Main_model->getFullName('students', 'id', $row->id);
+            $GradeLevel = $this->Main_model->get_where('sections', 'id', $row->section_id)->row()->grade_level;
             echo '
                 <tr>
                     <td>
@@ -58,7 +75,7 @@ class Teacher extends CI_Controller
                     ' . $ParentName . '
                     </td>                    
                     <td>
-                    ' . $row->grade_level . '
+                    ' . $GradeLevel . '
                     </td>
                     <td>
                     <button type="button" class="btn yellow edit" value="' . $row->id . '"><i class="fa fa-edit"></i></button>
@@ -68,14 +85,70 @@ class Teacher extends CI_Controller
         }
     }
 
-
-
-    // Teachers Load View to Class Management
-    public function ClassManagement()
+    public function createStudent()
     {
-        $this->load->view('components/includes/header');
-        $this->load->view('components/teacher_management/class_management');
+        $insert['firstname'] = $this->input->post("firstname");
+        $insert['middlename'] = $this->input->post("middlename");
+        $insert['lastname'] = $this->input->post("lastname");
+        $insert['contact_number'] = $this->input->post("contact_number");
+        $insert['parent_id'] = $this->input->post("parent_id");
+        $insert['section_id'] = $this->input->post("section_id");
+
+        $this->Main_model->_insert("students", $insert);
     }
+
+    public function updateStudent()
+    {
+        $id = $this->input->post("id");
+        $update['firstname'] = $this->input->post("firstname");
+        $update['middlename'] = $this->input->post("middlename");
+        $update['lastname'] = $this->input->post("lastname");
+        $update['contact_number'] = $this->input->post("contact_number");
+        $update['parent_id'] = $this->input->post("parent_id");
+        $update['section_id'] = $this->input->post("section_id");
+
+        $this->Main_model->_update("students", "id", $id, $update);
+    }
+
+    public function deleteStudent()
+    {
+        $id = $this->input->post("id");
+
+        $this->Main_model->_delete("students", $id);
+    }
+    public function getAllStudents()
+    {
+        echo json_encode($this->Main_model->get("students", "id")->result_array());
+    }
+
+    public function getStudentById()
+    {
+        $id = $this->input->post("id");
+
+        echo json_encode($this->Main_model->get_where("students", "id", $id)->result_array());
+    }
+
+    public function getStudentBySection()
+    {
+        $id = $this->input->post("id");
+
+        echo json_encode($this->Main_model->get_where("students", "section_id", $id)->result_array());
+    }
+
+    public function getStudentBySubject()
+    {
+        $id = $this->input->post("id");
+
+        echo json_encode($this->Main_model->get_where("students", "section_id", $id)->result_array());
+    }
+
+    public function getStudentByGradeLevel()
+    {
+        $grade_level = $this->input->post("grade_level");
+
+        echo json_encode($this->Main_model->get_where("students", "grade_level", $grade_level)->result_array());
+    }
+
 
     /*
     This will serve as endpoint for teacher to load
@@ -91,7 +164,7 @@ class Teacher extends CI_Controller
             $counter++;
             $subjectName = $this->Main_model->get_where('subjects', 'id', $row->subject_id)->row()->subject_name;
             $sectionName = $this->Main_model->get_where('sections', 'id', $row->section_id)->row()->section_name;
-            $url_variable = base_url() . 'Teacher/ManageClassByClassLoad?ClassLoad=' . $row->id;
+            $url_variable = base_url() . 'Teacher/ManageClassByClassLoad?ClassSectionId=' . $row->section_id;
 
             echo '
                 <tr>
@@ -111,8 +184,10 @@ class Teacher extends CI_Controller
                     ' . $row->schedule . '
                    
                     <td>
-                    <a href="' . $url_variable . '" >
                     <button type="button" class="btn yellow edit" value="' . $row->id . '"><i class="fa fa-edit"></i></button>
+                    <a href="' . $url_variable . '" >
+                    <button type="button" class="btn grey view" value="' . $row->id . '"><i class="fa fa-eye"></i></button>
+
                     </a>
                     </td>
                 </tr
@@ -123,8 +198,16 @@ class Teacher extends CI_Controller
     //This load view refers to manage who will be your students in specific subject and section
     public function ManageClassByClassLoad()
     {
+        $userId = $this->Credentials_model->getUserId(); //Logged Teacher UserId
+        $data['subjectId'] = $this->Main_model->get_where("teacher_loads", "teacher_id", $userId)->row()->subject_id;
+        $data['sectionId'] = $this->input->get('ClassSectionId');
+        $data['subjectName'] = $this->Main_model->get_where('subjects', 'id', $data['subjectId'])->row()->subject_name;
+        $data['sectionName'] = $this->Main_model->get_where('sections', 'id', $data['sectionId'])->row()->section_name;
+        $data['gradeLevel'] = $this->Main_model->get_where('sections', 'id', $data['sectionId'])->row()->grade_level;
+
+
         $this->load->view('components/includes/header');
-        $this->load->view('components/teacher_management/class_load_management');
+        $this->load->view('components/teacher_management/class_load_management', $data);
     }
 
     /*

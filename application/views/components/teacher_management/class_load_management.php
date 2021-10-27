@@ -6,9 +6,22 @@
               <!-- BEGIN PAGE TITLE -->
               <div class="page-title">
                   <h1> Class Management </h1>
+                  <ul class="page-breadcrumb breadcrumb" style="color:black">
+                      <li>
+                          <span>Section: <b><?= $sectionName ?></b></span>
+                          <i class="fa fa-circle"></i>
+                      </li>
+                      <li>
+                          <span>Subject: <b><?= $subjectName ?></b></span>
+                          <i class="fa fa-circle"></i>
+                      </li>
+                      <li>
+                          <span> Year Level: <b><?= $gradeLevel ?></b> </span>
+                      </li>
+                  </ul>
               </div>
+
               <!-- END PAGE TITLE -->
-              <!-- BEGIN PAGE TOOLBAR -->
           </div>
           <!-- END PAGE HEAD -->
 
@@ -24,13 +37,14 @@
                       <div class="portlet-title">
                           <div class="caption">
                               <i class="fa fa-globe"></i>
+                              Student Class List
                           </div>
                           <div class="tools">
 
                           </div>
                       </div>
                       <div class="portlet-body">
-                          <table class="table table-striped table-bordered table-hover" id="sample_1" style="text-align: center;">
+                          <table class="table table-striped table-bordered table-hover" style="text-align: center;">
                               <thead>
                                   <tr>
                                       <th>

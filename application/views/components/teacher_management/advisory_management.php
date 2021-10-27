@@ -5,7 +5,7 @@
           <div class="page-head">
               <!-- BEGIN PAGE TITLE -->
               <div class="page-title">
-                  <h1> Class Management of section <b><?= $SectionName ?></b> </h1>
+                  <h1> Class Management of section: <b><?= $SectionName ?></b> </h1>
               </div>
               <!-- END PAGE TITLE -->
               <!-- BEGIN PAGE TOOLBAR -->
@@ -19,9 +19,11 @@
           <div class="row">
               <div class="col-md-12">
                   <!-- BEGIN EXAMPLE TABLE PORTLET-->
-                  <div class="" style="margin-bottom:5px">
-                      <button type="button" class="btn btn-circle green-meadow" data-toggle="modal" data-target="#createModal"><i class="fa fa-plus"> Add student</i></button>
-                  </div>
+                  <?php if ($AdvisoryIdentifier > 0) { ?>
+                      <div class="" style="margin-bottom:5px">
+                          <button type="button" class="btn btn-circle green-meadow" data-toggle="modal" data-target="#createModal"><i class="fa fa-plus"> Add student</i></button>
+                      </div>
+                  <?php } ?>
                   <div class="portlet box blue-hoki">
                       <div class="portlet-title">
                           <div class="caption">
@@ -37,7 +39,7 @@
                                   <h1> You do not have any advisory class</h1>
                               </center>
                           <?php } else { ?>
-                              <table class="table table-striped table-bordered table-hover" id="sample_1" style="text-align: center;">
+                              <table class="table table-striped table-bordered table-hover" style="text-align: center;">
                                   <thead>
                                       <tr>
                                           <th>
@@ -136,6 +138,59 @@
 
                       <div class="form-group">
                           <label>First name</label>
+                          <input type="text" id="createFirstname" class="form-control" placeholder="Enter first name here">
+                      </div>
+
+                      <div class="form-group">
+                          <label>Middle name</label>
+                          <input type="text" id="createMiddlename" class="form-control" placeholder="Enter middle name here">
+                      </div>
+
+                      <div class="form-group">
+                          <label>Last name</label>
+                          <input type="text" id="createLastname" class="form-control" placeholder="Enter last name here">
+                      </div>
+
+                      <div class="form-group">
+                          <label>Contact number</label>
+                          <input type="text" id="createContactNumber" class="form-control" placeholder="Enter contact number here">
+                      </div>
+                      <div class="form-group">
+                          <label>Select Parent of Student</label>
+                          <select name="" id="selectParent" class="form-control">
+                              <option value="">select parent</option>
+                              <?php foreach ($GetAllParent->result() as $row) {
+                                    $firstname = $row->firstname;
+                                    $middlename = $row->middlename;
+                                    $lastname = $row->lastname;
+                                    $fullname = "$firstaname $middlename $lastname";
+                                ?>
+
+                                  <option value="<?= $row->id ?>"><?= $fullname ?></option>
+                              <?php } ?>
+                          </select>
+                      </div>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="submit" class="btn btn-primary">Create</button>
+              </div>
+              </form>
+          </div>
+      </div>
+  </div>
+  <!-- CREATE MODAL -->
+  <!-- Update MODAL -->
+  <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="createModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h2 align="center" class="modal-title" id="createModalLabel">Update Teacher</h2>
+              </div>
+              <div class="modal-body">
+                  <form id="updateForm">
+                      <div class="form-group">
+                          <label>First name</label>
                           <input type="text" id="updateFirstname" class="form-control" placeholder="Enter first name here">
                       </div>
 
@@ -154,40 +209,65 @@
                           <input type="text" id="updateContactNumber" class="form-control" placeholder="Enter contact number here">
                       </div>
                       <div class="form-group">
-                          <label>Select Parent of Student</label>
-                          <select name="" id="selectTeacher" class="form-control">
+                          <label> Parent of Student</label>
+                          <select name="" id="UpdateSelectParent" class="form-control">
                               <option value="">select parent</option>
+                              <?php foreach ($GetAllParent->result() as $row) {
+                                    $firstname = $row->firstname;
+                                    $middlename = $row->middlename;
+                                    $lastname = $row->lastname;
+                                    $fullname = "$firstaname $middlename $lastname";
+                                ?>
 
+                                  <option value="<?= $row->id ?>"><?= $fullname ?></option>
+                              <?php } ?>
+                          </select>
+                      </div>
+                      <div class="form-group">
+                          <label>Update Students Section</label>
+                          <select name="" id="UpdateSection" class="form-control">
+                              <option value="">Select Section</option>
+                              <?php foreach ($GetAllSection->result() as $row) {
+                                    $sectionName = $row->section_name;
+                                ?>
+
+                                  <option value="<?= $row->id ?>"><?= $sectionName ?></option>
+                              <?php } ?>
                           </select>
                       </div>
               </div>
               <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                  <button type="submit" class="btn btn-primary">Create</button>
+                  <button type="submit" class="btn btn-primary" id="updateSubmitButton">Update</button>
               </div>
               </form>
           </div>
       </div>
   </div>
-  <!-- CREATE MODAL -->
+  <!-- update MODAL -->
   <script>
       $(document).ready(function() {
           function refresh() {
-              $('tbody').load("<?= base_url() ?>Teacher/GetAllStudentForTable");
+              $('tbody').load("<?= base_url() ?>Teacher/GetAllStudentForTableAdvisory");
           }
           refresh();
 
           // CREATE POST AJAX
           $('#createForm').submit(function(e) {
               e.preventDefault();
-              $.post("<?= base_url() ?>Principal/createSubject", {
-                  subject_name: $('#subjectName').val(),
+              $.post("<?= base_url() ?>Teacher/createStudent", {
+                  firstname: $('#createFirstname').val(),
+                  middlename: $('#createMiddlename').val(),
+                  lastname: $('#createLastname').val(),
+                  contact_number: $('#createContactNumber').val(),
+                  parent_id: $('#selectParent').val(),
+                  section_id: <?= $sectionId ?>,
               }, function(resp) {
                   console.clear();
                   Swal.fire({
                       position: 'center',
                       icon: 'success',
-                      title: 'Subject created successfully',
+                      title: 'Student Information created successfully',
                       showConfirmButton: false,
                       timer: 1500
                   });
@@ -201,12 +281,16 @@
               let id = $(this).val();
               console.clear();
 
-              $.post("<?= base_url() ?>/Principal/getSubjectById", {
+              $.post("<?= base_url() ?>Teacher/getStudentById", {
                   id: id
               }, function(resp) {
                   resp = JSON.parse(resp)[0];
-
-                  $("#subjectNameUpdate").val(resp.subject_name);
+                  $("#updateFirstname").val(resp.firstname);
+                  $("#updateMiddlename").val(resp.middlename);
+                  $("#updateLastname").val(resp.lastname);
+                  $("#updateContactNumber").val(resp.contact_number);
+                  $("#UpdateSelectParent").val(resp.parent_id);
+                  $("#UpdateSection").val(resp.section_id);
 
                   $('#updateSubmitButton').val(resp.id);
 
@@ -214,11 +298,19 @@
               });
           });
 
+
+
+
           // UPDATE POST AJAX
           $('#updateForm').submit(function(e) {
               e.preventDefault();
-              $.post("<?= base_url() ?>/Principal/updateSubject", {
-                  subject_name: $('#subjectNameUpdate').val(),
+              $.post("<?= base_url() ?>Teacher/updateStudent", {
+                  firstname: $('#updateFirstname').val(),
+                  middlename: $('#updateMiddlename').val(),
+                  lastname: $('#updateLastname').val(),
+                  contact_number: $('#updateContactNumber').val(),
+                  parent_id: $('#UpdateSelectParent').val(),
+                  section_id: $('#UpdateSection').val(),
 
                   id: $('#updateSubmitButton').val(),
               }, function(resp) {

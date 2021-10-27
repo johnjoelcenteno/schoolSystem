@@ -183,10 +183,7 @@
                                         <a href="<?= base_url() . 'Principal/manageTeachers' ?>">
                                             <i class="fa fa-edit"></i> Teacher Management</a>
                                     </li>
-                                    <li>
-                                        <a href="<?= base_url() . 'Principal/manageTeacherLoad' ?>"><i class="fa fa-user"></i> Load Management
-                                        </a>
-                                    </li>
+
                                     <li>
                                         <a href="<?= base_url() . 'Principal/manageAdvisers' ?>"><i class="fa fa-users"></i> Adviser Management
                                         </a>
