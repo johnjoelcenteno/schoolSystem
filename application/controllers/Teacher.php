@@ -31,7 +31,6 @@ class Teacher extends CI_Controller
         $data['AdvisoryIdentifier'] = count($this->Main_model->get_where('advisers', 'teacher_id', $data['userId'])->result_array());
         $data['GetAllParent'] = $this->Main_model->get('parents', 'id');
         $data['GetAllSection'] = $this->Main_model->get('sections', 'id');
-
         $isAdviser = $data['AdvisoryIdentifier'] == 0;
         if ($isAdviser) {
             $data['sectionId'] = 'No Available';
@@ -80,6 +79,34 @@ class Teacher extends CI_Controller
                     <td>
                     <button type="button" class="btn yellow edit" value="' . $row->id . '"><i class="fa fa-edit"></i></button>
                     </td>
+                </tr
+            ';
+        }
+    }
+    public function GetAllStudentsBySectionForTable()
+    {
+        $userId = $this->Credentials_model->getUserId();
+        $sectionIdByTeacherLoad = $this->input->get('ClassSectionId');
+
+        $result = $this->Main_model->get_where("students", "section_id", $sectionIdByTeacherLoad)->result();
+        $counter = 0;
+        foreach ($result as $row) {
+            $counter++;
+
+            // $url_variable = base_url() . 'Teacher/ManageClassByClassLoad?ClassSectionId=' . $row->section_id;
+
+            echo '
+                <tr>
+                    <td>
+                        ' . $counter . '
+                    </td>
+                    <td>
+                        ' . $row->firstname . " " . $row->middlename . " " . $row->lastname . ' 
+                    </td>
+                    <td>
+                    ' . $row->contact_number . '
+                    </td>
+                    
                 </tr
             ';
         }
@@ -184,7 +211,6 @@ class Teacher extends CI_Controller
                     ' . $row->schedule . '
                    
                     <td>
-                    <button type="button" class="btn yellow edit" value="' . $row->id . '"><i class="fa fa-edit"></i></button>
                     <a href="' . $url_variable . '" >
                     <button type="button" class="btn grey view" value="' . $row->id . '"><i class="fa fa-eye"></i></button>
 
@@ -195,6 +221,7 @@ class Teacher extends CI_Controller
         }
     }
 
+
     //This load view refers to manage who will be your students in specific subject and section
     public function ManageClassByClassLoad()
     {
@@ -204,6 +231,7 @@ class Teacher extends CI_Controller
         $data['subjectName'] = $this->Main_model->get_where('subjects', 'id', $data['subjectId'])->row()->subject_name;
         $data['sectionName'] = $this->Main_model->get_where('sections', 'id', $data['sectionId'])->row()->section_name;
         $data['gradeLevel'] = $this->Main_model->get_where('sections', 'id', $data['sectionId'])->row()->grade_level;
+        $data['ClassSectionId'] = $this->input->get('ClassSectionId');
 
 
         $this->load->view('components/includes/header');

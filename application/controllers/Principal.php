@@ -95,7 +95,7 @@ class Principal extends CI_Controller
                         <button type="button" class="btn yellow edit" value="' . $row->id . '"><i class="fa fa-edit"></i></button>
                         <button type="button" class="btn red delete" value="' . $row->id . '"><i class="fa fa-times"></i></button>
                         <a href="' . $url_variable . '">                       
-                        <button type="button" class="btn grey-cascade view-load" value="' . $row->id . '"><i style="color:black" class="fa fa-eye"></i></button>
+                        <button type="button" class="btn grey-cascade view-load" value="' . $row->id . '"><i style="color:black" class="fa fa-book"></i></button>
                         </a>
                     </td>
                 </tr>

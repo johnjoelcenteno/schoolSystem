@@ -19,6 +19,24 @@
                           <span> Year Level: <b><?= $gradeLevel ?></b> </span>
                       </li>
                   </ul>
+                  <div class="btn-group">
+                      <button type="button" class="btn red-haze btn-sm dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" aria-expanded="true"><span class="md-click-circle md-click-animate" style="height: 101px; width: 101px; top: -37.5px; left: 35.5px;"></span>
+                          <span class="hidden-sm hidden-xs">Actions&nbsp;</span><i class="fa fa-angle-down"></i>
+                      </button>
+                      <ul class="dropdown-menu" role="menu">
+                          <li>
+                              <a href="javascript:;">
+                                  <i class="icon-check"></i> Attendance </a>
+                          </li>
+
+                          <li class="divider">
+                          </li>
+                          <li>
+                              <a href="javascript:;">
+                                  <i class="fa fa-book"></i> Grade </a>
+                          </li>
+                      </ul>
+                  </div>
               </div>
 
               <!-- END PAGE TITLE -->
@@ -30,7 +48,9 @@
 
 
           <div class="row">
+
               <div class="col-md-12">
+
                   <!-- BEGIN EXAMPLE TABLE PORTLET-->
 
                   <div class="portlet box blue-hoki">
@@ -43,6 +63,7 @@
 
                           </div>
                       </div>
+
                       <div class="portlet-body">
                           <table class="table table-striped table-bordered table-hover" style="text-align: center;">
                               <thead>
@@ -56,15 +77,7 @@
                                       <th>
                                           Contact Number
                                       </th>
-                                      <th>
-                                          Section
-                                      </th>
-                                      <th>
-                                          Year Level
-                                      </th>
-                                      <th>
-                                          Action
-                                      </th>
+
                                   </tr>
                               </thead>
                               <tbody>
@@ -131,7 +144,7 @@
   <script>
       $(document).ready(function() {
           function refresh() {
-              $('tbody').load("<?= base_url() ?>Teacher/GetAllLoadMyTeacherIdForTable");
+              $('tbody').load("<?= base_url() ?>Teacher/GetAllStudentsBySectionForTable?ClassSectionId=<?= $ClassSectionId ?>");
           }
           refresh();
 
