@@ -158,7 +158,7 @@
   <script>
       $(document).ready(function() {
           function refresh() {
-              $('tbody').load("<?= base_url() ?>Principal/getAllSubjectsForTable");
+              $('tbody').load("<?= base_url() ?>Teacher/getAllSubjectsForTable");
           }
           refresh();
 

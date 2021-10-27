@@ -28,9 +28,16 @@ class Principal extends CI_Controller
     public function createTeacher()
     {
         $insert['firstname'] = $this->input->post('firstname');
+
+        $cred['username'] = $insert['firstname'];
+        $cred['password'] = $this->Main_model->passwordEncryptor('1234');
+        $cred['user_type'] = '2';
+        $credId = $this->Main_model->_insert('credentials', $cred);
+
         $insert['middlename'] = $this->input->post('middlename');
         $insert['lastname'] = $this->input->post('lastname');
         $insert['contact_number'] = $this->input->post('contact_number');
+        $insert['credentials_id'] = $credId;
 
         $insert['id'] = $this->Main_model->_insert("teachers", $insert);
 
@@ -65,26 +72,31 @@ class Principal extends CI_Controller
     {
         $result = $this->Main_model->get("teachers", "id")->result();
         $counter = 0;
+
         foreach ($result as $row) {
-            $counter ++;
+            $counter++;
+            $url_variable = base_url() . 'Principal/manageTeacherLoad?teacherId=' . $row->id;
             echo '
                 <tr>
                     <td>
-                        '. $counter .'
+                        ' . $counter . '
                     </td>
                     <td>
-                    '. $row->firstname .'
+                    ' . $row->firstname . '
                     </td>
                     <td>
-                    '. $row->middlename .'
+                    ' . $row->middlename . '
                     <td>
-                    '. $row->lastname .'
+                    ' . $row->lastname . '
                     <td>
-                    '. $row->contact_number .'
+                    ' . $row->contact_number . '
                     </td>
                     <td>
-                        <button type="button" class="btn yellow edit" value="'. $row->id .'"><i class="fa fa-edit"></i></button>
-                        <button type="button" class="btn red delete" value="'. $row->id .'"><i class="fa fa-times"></i></button>
+                        <button type="button" class="btn yellow edit" value="' . $row->id . '"><i class="fa fa-edit"></i></button>
+                        <button type="button" class="btn red delete" value="' . $row->id . '"><i class="fa fa-times"></i></button>
+                        <a href="' . $url_variable . '">                       
+                        <button type="button" class="btn grey-cascade view-load" value="' . $row->id . '"><i style="color:black" class="fa fa-eye"></i></button>
+                        </a>
                     </td>
                 </tr>
             ';
@@ -102,6 +114,7 @@ class Principal extends CI_Controller
     // START: Section management
     public function manageSections()
     {
+
         $this->load->view("components/includes/header");
         $this->load->view("components/roles_management/manage_sections");
     }
@@ -146,21 +159,21 @@ class Principal extends CI_Controller
         $result = $this->Main_model->get("sections", "id")->result();
         $counter = 0;
         foreach ($result as $row) {
-            $counter ++;
+            $counter++;
             echo '
                 <tr>
                     <td>
-                        '. $counter .'
+                        ' . $counter . '
                     </td>
                     <td>
-                    '. $row->section_name .'
+                    ' . $row->section_name . '
                     </td>
                     <td>
-                    '. $row->grade_level .'
+                    ' . $row->grade_level . '
                     </td>
                     <td>
-                        <button type="button" class="btn yellow edit" value="'. $row->id .'"><i class="fa fa-edit"></i></button>
-                        <button type="button" class="btn red delete" value="'. $row->id .'"><i class="fa fa-times"></i></button>
+                        <button type="button" class="btn yellow edit" value="' . $row->id . '"><i class="fa fa-edit"></i></button>
+                        <button type="button" class="btn red delete" value="' . $row->id . '"><i class="fa fa-times"></i></button>
                     </td>
                 </tr>
             ';
@@ -179,7 +192,7 @@ class Principal extends CI_Controller
     {
         $data['allTeachers'] = $this->Main_model->get("teachers", "id");
         $data['allSections'] = $this->Main_model->get("sections", "id");
-        
+
         $this->load->view("components/includes/header");
         $this->load->view("components/roles_management/manage_advisers", $data);
     }
@@ -220,26 +233,26 @@ class Principal extends CI_Controller
         $counter = 0;
         foreach ($result as $row) {
             $teacherName = $this->Main_model->getFullName('teachers', "id", $row->teacher_id);
-            
+
             $section = $this->Main_model->get_where("sections", "id", $row->section_id)->result();
-            
+
             $sectionName = $section[0]->section_name;
 
-            $counter ++;
+            $counter++;
             echo '
                 <tr>
                     <td>
-                        '. $counter .'
+                        ' . $counter . '
                     </td>
                     <td>
-                    '. $teacherName .'
+                    ' . $teacherName . '
                     </td>
                     <td>
-                    '. $sectionName .'
+                    ' . $sectionName . '
                     </td>
                     <td>
-                        <button type="button" class="btn yellow edit" value="'. $row->id .'"><i class="fa fa-edit"></i></button>
-                        <button type="button" class="btn red delete" value="'. $row->id .'"><i class="fa fa-times"></i></button>
+                        <button type="button" class="btn yellow edit" value="' . $row->id . '"><i class="fa fa-edit"></i></button>
+                        <button type="button" class="btn red delete" value="' . $row->id . '"><i class="fa fa-times"></i></button>
                     </td>
                 </tr>
             ';
@@ -301,18 +314,18 @@ class Principal extends CI_Controller
         $result = $this->Main_model->get("subjects", "id")->result();
         $counter = 0;
         foreach ($result as $row) {
-            $counter ++;
+            $counter++;
             echo '
                 <tr>
                     <td>
-                        '. $counter .'
+                        ' . $counter . '
                     </td>
                     <td>
-                    '. $row->subject_name .'
+                    ' . $row->subject_name . '
                     </td>
                     <td>
-                        <button type="button" class="btn yellow edit" value="'. $row->id .'"><i class="fa fa-edit"></i></button>
-                        <button type="button" class="btn red delete" value="'. $row->id .'"><i class="fa fa-times"></i></button>
+                        <button type="button" class="btn yellow edit" value="' . $row->id . '"><i class="fa fa-edit"></i></button>
+                        <button type="button" class="btn red delete" value="' . $row->id . '"><i class="fa fa-times"></i></button>
                     </td>
                 </tr>
             ';
@@ -329,15 +342,54 @@ class Principal extends CI_Controller
     // START: Teacher load management
     public function manageTeacherLoad()
     {
-        $this->load->view("");
+        $teacherId = $this->input->get('teacherId');
+        $data['fullname'] = $this->Main_model->getFullName("teachers", "id", $teacherId);
+        $data['allSubject'] = $this->Main_model->get("subjects", "subject_name");
+        $data['allSection'] = $this->Main_model->get('sections', 'section_name');
+        $data['teacherId'] = $teacherId;
+
+        $this->load->view("components/includes/header");
+        $this->load->view("components/roles_management/manage_teachers_load", $data);
+    }
+    public function getAllLoadByTeacherIdForTable()
+    {
+        $teacherId = $this->input->get('teacherId');
+        $result = $this->Main_model->get_where("teacher_loads", "teacher_id", $teacherId)->result();
+        $counter = 0;
+        foreach ($result as $row) {
+            $counter++;
+            echo '
+                <tr>
+                    <td>
+                        ' . $counter . '
+                    </td>
+                    
+                    <td>
+                    ' . $row->subject_id . '
+                    </td>
+                    <td>
+                    ' . $row->section_id . '
+                    </td>
+                    <td>
+                    ' . $row->schedule . '
+                    </td>
+                    <td>
+                        <button type="button" class="btn yellow edit" value="' . $row->id . '"><i class="fa fa-edit"></i></button>
+                        <button type="button" class="btn red delete" value="' . $row->id . '"><i class="fa fa-times"></i></button>
+                    </td>
+                </tr>
+            ';
+        }
     }
 
     public function createTeacherLoad()
     {
-        $insert['teacher_id'] = $this->input->post('teacher_id');
+
+
+        $insert['teacher_id'] = $this->input->get('teacherId');
         $insert['subject_id'] = $this->input->post('subject_id');
         $insert['section_id'] = $this->input->post('section_id');
-
+        $insert['schedule'] = $this->input->post('schedule');
         $this->Main_model->_insert("teacher_loads", $insert);
     }
 
@@ -345,9 +397,9 @@ class Principal extends CI_Controller
     {
         $id = $this->input->post("id");
 
-        $update['teacher_id'] = $this->input->post('teacher_id');
         $update['subject_id'] = $this->input->post('subject_id');
         $update['section_id'] = $this->input->post('section_id');
+        $update['schedule'] = $this->input->post('schedule');
 
         $this->Main_model->_update("teacher_loads", "id", $id, $update);
     }
@@ -355,7 +407,6 @@ class Principal extends CI_Controller
     public function deleteTeacherLoad()
     {
         $id = $this->input->post("id");
-
         $this->Main_model->_delete("teacher_loads", "id", $id);
     }
 
@@ -380,8 +431,7 @@ class Principal extends CI_Controller
 
     public function getTeacherLoadByTeacherId()
     {
-        $id = $this->input->post("id");
-
+        $id = $this->input->get("teacherId");
         echo json_encode($this->Main_model->get_where("teacher_loads", "teacher_id", $id)->result_array());
     }
 
@@ -392,7 +442,6 @@ class Principal extends CI_Controller
         echo json_encode($this->Main_model->get_where("teacher_loads", "section_id", $id)->result_array());
     }
     // END: Teacher load management
-
 
     public function loadManageStudent()
     {

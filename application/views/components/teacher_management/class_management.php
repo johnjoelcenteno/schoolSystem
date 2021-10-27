@@ -5,7 +5,7 @@
           <div class="page-head">
               <!-- BEGIN PAGE TITLE -->
               <div class="page-title">
-                  <h1> Teacher Management</h1>
+                  <h1> Class Management </h1>
               </div>
               <!-- END PAGE TITLE -->
               <!-- BEGIN PAGE TOOLBAR -->
@@ -19,13 +19,11 @@
           <div class="row">
               <div class="col-md-12">
                   <!-- BEGIN EXAMPLE TABLE PORTLET-->
-                  <div class="" style="margin-bottom:5px">
-                      <button type="button" class="btn btn-circle green-meadow" data-toggle="modal" data-target="#createModal"><i class="fa fa-plus"> Add Teacher</i></button>
-                  </div>
+
                   <div class="portlet box blue-hoki">
                       <div class="portlet-title">
                           <div class="caption">
-                              <i class="fa fa-globe"></i>Manage teachers
+                              <i class="fa fa-globe"></i>
                           </div>
                           <div class="tools">
 
@@ -39,18 +37,19 @@
                                           #
                                       </th>
                                       <th>
-                                          Firstname
+                                          Class Load
                                       </th>
                                       <th>
-                                          Middlename </th>
-                                      <th>
-                                          Lastname
+                                          Subject Name
                                       </th>
                                       <th>
-                                          Contact Number
+                                          Section
                                       </th>
                                       <th>
-                                          Actions
+                                          Schedule
+                                      </th>
+                                      <th>
+                                          Action
                                       </th>
                                   </tr>
                               </thead>
@@ -115,105 +114,24 @@
   <script src="<?= base_url() ?>assets/admin/layout4/scripts/demo.js" type="text/javascript"></script>
   <script src="<?= base_url() ?>assets/admin/pages/scripts/table-advanced.js"></script>
 
-  <!-- CREATE MODAL -->
-  <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="createModalLabel" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-          <div class="modal-content">
-              <div class="modal-header">
-                  <h2 align="center" class="modal-title" id="createModalLabel">Create Teacher</h2>
-              </div>
-              <div class="modal-body">
-                  <form id="createForm">
-                      <div class="form-group">
-                          <label>First name</label>
-                          <input type="text" id="firstname" class="form-control" placeholder="Enter first name here">
-                      </div>
-
-                      <div class="form-group">
-                          <label>Middle name</label>
-                          <input type="text" id="middlename" class="form-control" placeholder="Enter middle name here">
-                      </div>
-
-                      <div class="form-group">
-                          <label>Last name</label>
-                          <input type="text" id="lastname" class="form-control" placeholder="Enter last name here">
-                      </div>
-
-                      <div class="form-group">
-                          <label>Contact number</label>
-                          <input type="text" id="contactNumber" class="form-control" placeholder="Enter contact number here">
-                      </div>
-              </div>
-              <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                  <button type="submit" class="btn btn-primary">Create</button>
-              </div>
-              </form>
-          </div>
-      </div>
-  </div>
-  <!-- CREATE MODAL -->
-
-  <!-- CREATE MODAL -->
-  <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="createModalLabel" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-          <div class="modal-content">
-              <div class="modal-header">
-                  <h2 align="center" class="modal-title" id="createModalLabel">Update Teacher</h2>
-              </div>
-              <div class="modal-body">
-                  <form id="updateForm">
-                      <div class="form-group">
-                          <label>First name</label>
-                          <input type="text" id="updateFirstname" class="form-control" placeholder="Enter first name here">
-                      </div>
-
-                      <div class="form-group">
-                          <label>Middle name</label>
-                          <input type="text" id="updateMiddlename" class="form-control" placeholder="Enter middle name here">
-                      </div>
-
-                      <div class="form-group">
-                          <label>Last name</label>
-                          <input type="text" id="updateLastname" class="form-control" placeholder="Enter last name here">
-                      </div>
-
-                      <div class="form-group">
-                          <label>Contact number</label>
-                          <input type="text" id="updateContactNumber" class="form-control" placeholder="Enter contact number here">
-                      </div>
-              </div>
-              <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                  <button type="submit" class="btn btn-primary" id="updateSubmitButton">Update</button>
-              </div>
-              </form>
-          </div>
-      </div>
-  </div>
-  <!-- CREATE MODAL -->
-
   <script>
       $(document).ready(function() {
           function refresh() {
-              $('tbody').load("<?= base_url() ?>Principal/getAllTeachersForTable");
+              $('tbody').load("<?= base_url() ?>Teacher/GetAllLoadMyTeacherIdForTable");
           }
           refresh();
 
           // CREATE POST AJAX
           $('#createForm').submit(function(e) {
               e.preventDefault();
-              $.post("<?= base_url() ?>/Principal/createTeacher", {
-                  firstname: $('#firstname').val(),
-                  middlename: $('#middlename').val(),
-                  lastname: $('#lastname').val(),
-                  contact_number: $('#contactNumber').val(),
+              $.post("<?= base_url() ?>Principal/createSubject", {
+                  subject_name: $('#subjectName').val(),
               }, function(resp) {
                   console.clear();
                   Swal.fire({
                       position: 'center',
                       icon: 'success',
-                      title: 'Teacher create successfully',
+                      title: 'Subject created successfully',
                       showConfirmButton: false,
                       timer: 1500
                   });
@@ -227,15 +145,12 @@
               let id = $(this).val();
               console.clear();
 
-              $.post("<?= base_url() ?>/Principal/getTeacherById", {
+              $.post("<?= base_url() ?>/Principal/getSubjectById", {
                   id: id
               }, function(resp) {
                   resp = JSON.parse(resp)[0];
 
-                  $("#updateFirstname").val(resp.firstname);
-                  $("#updateMiddlename").val(resp.middlename);
-                  $("#updateLastname").val(resp.lastname);
-                  $("#updateContactNumber").val(resp.contact_number);
+                  $("#subjectNameUpdate").val(resp.subject_name);
 
                   $('#updateSubmitButton').val(resp.id);
 
@@ -246,18 +161,16 @@
           // UPDATE POST AJAX
           $('#updateForm').submit(function(e) {
               e.preventDefault();
-              $.post("<?= base_url() ?>/Principal/updateTeacher", {
-                  firstname: $('#updateFirstname').val(),
-                  middlename: $('#updateMiddlename').val(),
-                  lastname: $('#updateLastname').val(),
-                  contact_number: $('#updateContactNumber').val(),
+              $.post("<?= base_url() ?>/Principal/updateSubject", {
+                  subject_name: $('#subjectNameUpdate').val(),
+
                   id: $('#updateSubmitButton').val(),
               }, function(resp) {
                   console.clear();
                   Swal.fire({
                       position: 'center',
                       icon: 'success',
-                      title: 'Teacher updated successfully',
+                      title: 'Subject updated successfully',
                       showConfirmButton: false,
                       timer: 1500
                   });
@@ -280,14 +193,14 @@
                   confirmButtonText: 'Yes, delete it!'
               }).then((result) => {
                   if (result.isConfirmed) {
-                      $.post("<?= base_url() ?>/Principal/deleteTeacher", {
+                      $.post("<?= base_url() ?>/Principal/deleteSubject", {
                           id: id
                       }, function() {
                           refresh();
 
                           Swal.fire(
                               'Deleted!',
-                              'Teacher has been deleted.',
+                              'Subject has been deleted.',
                               'success'
                           );
                       });

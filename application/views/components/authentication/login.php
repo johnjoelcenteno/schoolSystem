@@ -38,6 +38,5 @@
         </div>
     </form>
     <!-- END LOGIN FORM -->
-
-
+    <!-- Made by Joel Centeno and Jhay Ramirez -->
 </div>

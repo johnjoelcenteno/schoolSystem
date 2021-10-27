@@ -8,6 +8,7 @@ class Login extends CI_Controller
 	{
 		parent::__construct();
 		$this->load->model('Main_model');
+		$this->load->model('Credentials_model');
 	}
 
 	public function index()
@@ -91,8 +92,9 @@ class Login extends CI_Controller
 
 	public function splashScreen()
 	{
+		$data['userType'] = $this->Credentials_model->getUserType();
 		$this->load->view('components/authentication/auth_header');
-		$this->load->view('components/splash_screen');
+		$this->load->view('components/splash_screen', $data);
 	}
 
 	function logout()

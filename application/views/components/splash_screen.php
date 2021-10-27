@@ -59,9 +59,25 @@
         var typed = new Typed('#typed', {
             stringsElement: '#typed-strings'
         });
-        setTimeout(function() {
-            window.location.replace("<?= base_url() . 'Dashboard' ?>");
 
+        let userType = "<?= $userType ?>";
+        let urlRedirect = "";
+        switch (userType) {
+            case '3':
+                // Redirect to Principals Controller
+                urlRedirect = "Dashboard";
+                break;
+            case '2':
+                // Redirect to Teachers Controller
+                urlRedirect = "Teacher_dashboard";
+                break;
+            default:
+                break;
+        }
+
+
+        setTimeout(function() {
+            window.location.replace("<?= base_url() ?>" + urlRedirect);
         }, 2000);
     });
 </script>
