@@ -31,6 +31,43 @@ class Teacher extends CI_Controller
         $this->load->view('components/teacher_management/advisory_management', $data);
     }
 
+    public function GetAllStudentForTable()
+    {
+        $result = $this->Main_model->get("students", "id")->result();
+
+        $counter = 0;
+        foreach ($result as $row) {
+            $counter++;
+            $ParentName = $this->Main_model->getFullName('parents', 'id', $row->parent_id);
+            $StudentFullName = $this->Main_model->getFullName('students', 'id', $row->id);
+            echo '
+                <tr>
+                    <td>
+                    ' . $counter . '
+                    </td>
+                    <td>
+                    ' . $row->id . ' 
+                    </td>
+                    <td>
+                    ' .  $StudentFullName . '
+                    </td>
+                    <td>
+                    ' . $row->contact_number . '
+                    </td>
+                    <td>
+                    ' . $ParentName . '
+                    </td>                    
+                    <td>
+                    ' . $row->grade_level . '
+                    </td>
+                    <td>
+                    <button type="button" class="btn yellow edit" value="' . $row->id . '"><i class="fa fa-edit"></i></button>
+                    </td>
+                </tr
+            ';
+        }
+    }
+
 
 
     // Teachers Load View to Class Management
@@ -170,7 +207,6 @@ class Teacher extends CI_Controller
 
     public function getParentById()
     {
-        // $_POST['id'] = 1;
         $id = $this->input->post("id");
 
         echo json_encode($this->Main_model->get_where("parents", "id", $id)->result_array());

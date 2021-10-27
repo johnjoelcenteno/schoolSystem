@@ -44,13 +44,16 @@
                                               #
                                           </th>
                                           <th>
+                                              ID
+                                          </th>
+                                          <th>
                                               Fullname
                                           </th>
                                           <th>
                                               Contact Number
                                           </th>
                                           <th>
-                                              Section
+                                              Parent Name
                                           </th>
                                           <th>
                                               Year Level
@@ -131,8 +134,32 @@
               <div class="modal-body">
                   <form id="createForm">
 
+                      <div class="form-group">
+                          <label>First name</label>
+                          <input type="text" id="updateFirstname" class="form-control" placeholder="Enter first name here">
+                      </div>
 
+                      <div class="form-group">
+                          <label>Middle name</label>
+                          <input type="text" id="updateMiddlename" class="form-control" placeholder="Enter middle name here">
+                      </div>
 
+                      <div class="form-group">
+                          <label>Last name</label>
+                          <input type="text" id="updateLastname" class="form-control" placeholder="Enter last name here">
+                      </div>
+
+                      <div class="form-group">
+                          <label>Contact number</label>
+                          <input type="text" id="updateContactNumber" class="form-control" placeholder="Enter contact number here">
+                      </div>
+                      <div class="form-group">
+                          <label>Select Parent of Student</label>
+                          <select name="" id="selectTeacher" class="form-control">
+                              <option value="">select parent</option>
+
+                          </select>
+                      </div>
               </div>
               <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -146,7 +173,7 @@
   <script>
       $(document).ready(function() {
           function refresh() {
-              $('tbody').load("<?= base_url() ?>Teacher/GetAllLoadMyTeacherIdForTable");
+              $('tbody').load("<?= base_url() ?>Teacher/GetAllStudentForTable");
           }
           refresh();
 
