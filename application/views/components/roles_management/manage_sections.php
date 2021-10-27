@@ -115,7 +115,7 @@
       <div class="modal-dialog" role="document">
           <div class="modal-content">
               <div class="modal-header">
-                  <h2 align="center" class="modal-title" id="createModalLabel">Create subject</h2>
+                  <h2 align="center" class="modal-title" id="createModalLabel">Create section</h2>
               </div>
               <div class="modal-body">
                   <form id="createForm">
@@ -144,7 +144,7 @@
       <div class="modal-dialog" role="document">
           <div class="modal-content">
               <div class="modal-header">
-                  <h2 align="center" class="modal-title" id="createModalLabel">Update Teacher</h2>
+                  <h2 align="center" class="modal-title" id="createModalLabel">Update section</h2>
               </div>
               <div class="modal-body">
                   <form id="updateForm">
