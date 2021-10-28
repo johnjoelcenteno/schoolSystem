@@ -25,7 +25,7 @@
                       </button>
                       <ul class="dropdown-menu" role="menu">
                           <li>
-                              <a href="javascript:;">
+                              <a href="<?= base_url() . 'Attendance/recordAttendance' ?>">
                                   <i class="icon-check"></i> Attendance </a>
                           </li>
 

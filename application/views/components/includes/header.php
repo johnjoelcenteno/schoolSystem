@@ -161,11 +161,7 @@
                             <span class="arrow "></span>
                         </a>
                         <ul class="sub-menu">
-                            <li>
-                                <a href="<?= base_url() . 'Principal/manageTeachers' ?>">
-                                    <i class="icon-user"></i>
-                                    Manage Parent</a>
-                            </li>
+
                             <li>
                                 <a href="<?= base_url() . 'Principal/loadManageStudent' ?>">
                                     <i class="icon-users"></i>
