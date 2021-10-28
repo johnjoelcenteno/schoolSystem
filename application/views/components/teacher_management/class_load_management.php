@@ -26,10 +26,14 @@
                       <ul class="dropdown-menu" role="menu">
                           <li>
                               <a href="<?= base_url() ?>Attendance/recordAttendance?ClassSectionId=<?= $ClassSectionId ?>&ClassSubjectId=<?= $subjectId ?>&gradeLevel=<?= $gradeLevel ?>">
-                                  <i class="icon-check"></i> Attendance
+                                  <i class="icon-check"></i>&nbsp; Record attendance
                               </a>
                           </li>
-
+                          <li>
+                              <a href="<?= base_url() ?>Attendance/viewRecord?ClassSectionId=<?= $ClassSectionId ?>&ClassSubjectId=<?= $subjectId ?>&gradeLevel=<?= $gradeLevel ?>">
+                                  <i class="icon-eye"></i>&nbsp; View attendance
+                              </a>
+                          </li>
                           <li class="divider">
                           </li>
                           <li>

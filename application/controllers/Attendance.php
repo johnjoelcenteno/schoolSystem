@@ -25,12 +25,12 @@ class Attendance extends CI_Controller
 
     public function viewRecord()
     {
-        $section_id = $this->input->get("section_id");
-        $grade_level = $this->input->get("grade_level");
-        $subject_id = $this->input->get("subject_id");
+        $data['sectionId'] = $this->input->get("ClassSectionId");
+        $data['gradeLevel'] = $this->input->get("gradeLevel");
+        $data['subjectId'] = $this->input->get("ClassSubjectId");
 
         $this->load->view("components/includes/header");
-        $this->load->view('components/teacher_management/view_attendance');
+        $this->load->view('components/teacher_management/view_attendance', $data);
     }
 
     // COMMANDS START
@@ -39,13 +39,13 @@ class Attendance extends CI_Controller
         $allStudents = json_decode($this->input->post("allStudents"));
 
         foreach ($allStudents as $row) {
-            $insert['teacher_load_id'] = $this->input->post("teacher_load_id");
             $insert['student_id'] = $row->studentId;
-            $insert['date'] = $this->input->post("date");
-            $insert['time'] = $this->input->post("time");
-            $insert['year'] = $this->input->post("year");
-            $insert['section_id'] = $this->input->post("section_id");
-            $insert['grade_level'] = $this->input->post("grade_level");
+            $insert['date'] = date("Y-m-d");
+            $insert['time'] = date("h:i:s a");
+            $insert['year'] = date("Y");
+            $insert['section_id'] = $this->input->post("sectionId");
+            $insert['grade_level'] = $this->input->post("gradeLevel");
+            $insert['subject_id'] = $this->input->post("subjectId");
             $insert['status'] = $row->status;
 
             $this->Main_model->_insert($this->table, $insert);
@@ -85,7 +85,7 @@ class Attendance extends CI_Controller
         $where['section_id'] = $this->input->post('sectionId');
         $where['grade_level'] = $this->input->post('gradeLevel');
         $where['subject_id'] = $this->input->post('subjectId');
-        $where['date'] = date("Y-m-d");
+        $where['date'] = date('Y-m-d', strtotime('-1 day'));
 
         $query = $this->Main_model->multiple_where("attendance", $where);
 
@@ -150,11 +150,39 @@ class Attendance extends CI_Controller
                 <tr>
                     <td>' . $counter . '</td>
                     <td>' . $studentFullName . '</td>
-                    <td>'  . 'wala pa di pa naaayos' . '</td>
-                    <td>' . 'wala pa di pa naaayos' . '</td>
+                    <td>'  . date("Y-m-d") . '</td>
+                    <td>' . date("h:i:s a") . '</td>
                     <td>
-                        <input type="checkbox" style="height:1rem; width:1rem;" class="checkBox" value="1">
+                        <input type="checkbox" style="height:1rem; width:1rem;" class="checkBox" value="' . $row->id . '">
                     </td>
+                </tr>
+            ';
+        }
+    }
+
+    public function GetPreviousDayForViewing()
+    {
+        $where['section_id'] = $this->input->get('sectionId');
+        $where['grade_level'] = $this->input->get('gradeLevel');
+        $where['subject_id'] = $this->input->get('subjectId');
+        $where['date'] = date('Y-m-d', strtotime('-1 day'));
+        // $this->Main_model->showNormalArray($where);
+        $query = $this->Main_model->multiple_where("attendance", $where);
+        // $this->Main_model->showNormalArray($query->result());
+        // die;
+        $counter = 0;
+        foreach ($query->result() as $row) {
+            $counter++;
+
+            $studentFullName = $this->Main_model->getFullName('students', "id", $row->student_id);
+
+            echo '
+                <tr>
+                    <td>' . $counter . '</td>
+                    <td>' . $studentFullName . '</td>
+                    <td>'  . $row->date . '</td>
+                    <td>' . $row->time . '</td>
+                    <td>' . $row->status . '</td>
                 </tr>
             ';
         }

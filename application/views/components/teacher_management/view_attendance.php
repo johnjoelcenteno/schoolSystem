@@ -142,13 +142,8 @@
   <script>
       $(document).ready(function() {
           function refresh() {
-              $.post("<?= base_url() ?>/Attendance/getForTable", {
-                  sectionId: "<?= $sectionId ?>",
-                  gradeLevel: "<?= $gradeLevel ?>",
-                  subjectId: "<?= $subjectId ?>",
-              }, function(resp) {
-                  $("tbody").html(resp);
-              });
+              $('tbody').load("<?= base_url() ?>Attendance/GetPreviousDayForViewing?sectionId=<?= $sectionId ?>&gradeLevel=<?= $gradeLevel ?>&subjectId=<?= $subjectId ?>");
+              console.log("<?= base_url() ?>Attendance/GetPreviousDayForViewing?sectionId=<?= $sectionId ?>&gradeLevel=<?= $gradeLevel ?>&subjectId=<?= $subjectId ?>");
           }
 
           refresh();

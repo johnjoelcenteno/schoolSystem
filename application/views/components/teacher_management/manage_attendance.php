@@ -165,7 +165,10 @@
               });
 
               $.post("<?= base_url() ?>Attendance/recordAllStudentsInSection", {
-                  allStudents: JSON.stringify(allStudents)
+                  allStudents: JSON.stringify(allStudents),
+                  sectionId: "<?= $ClassSectionId ?>",
+                  gradeLevel: "<?= $gradeLevel ?>",
+                  subjectId: "<?= $ClassSubjectId ?>"
               }, function(resp) {
                   Swal.fire({
                       position: 'center',
