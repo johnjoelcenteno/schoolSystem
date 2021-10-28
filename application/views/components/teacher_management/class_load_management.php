@@ -25,8 +25,9 @@
                       </button>
                       <ul class="dropdown-menu" role="menu">
                           <li>
-                              <a href="<?= base_url() . 'Attendance/recordAttendance' ?>">
-                                  <i class="icon-check"></i> Attendance </a>
+                              <a href="<?= base_url() ?>Attendance/recordAttendance?ClassSectionId=<?= $ClassSectionId ?>&ClassSubjectId=<?= $subjectId ?>">
+                                  <i class="icon-check"></i> Attendance
+                              </a>
                           </li>
 
                           <li class="divider">
