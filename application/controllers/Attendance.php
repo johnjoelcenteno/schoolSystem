@@ -22,12 +22,12 @@ class Attendance extends CI_Controller
 
     public function viewRecord()
     {
-        $section_id = $this->input->get("section_id");
-        $grade_level = $this->input->get("grade_level");
-        $subject_id = $this->input->get("subject_id");
+        $data['sectionId'] = $this->input->get("sectionId");
+        $data['gradeLevel'] = $this->input->get("gradeLevel");
+        $data['subjectId'] = $this->input->get("subjectId");
 
         $this->load->view("components/includes/header");
-        $this->load->view('components/teacher_management/view_attendance');
+        $this->load->view('components/teacher_management/view_attendance', $data);
     }
 
     // COMMANDS START
@@ -35,14 +35,19 @@ class Attendance extends CI_Controller
     {
         $allStudents = json_decode($this->input->post("allStudents"));
 
+        $_POST['year'] = 1;
+        $_POST['section_id'] = 1;
+        $_POST['grade_level'] = 1;
+        $_POST['subject_id'] = 1;
+
         foreach ($allStudents as $row) {
-            $insert['teacher_load_id'] = $this->input->post("teacher_load_id");
             $insert['student_id'] = $row->studentId;
-            $insert['date'] = $this->input->post("date");
-            $insert['time'] = $this->input->post("time");
-            $insert['year'] = $this->input->post("year");
+            $insert['date'] = date("Y-m-d");
+            $insert['time'] = date("h:i:s a");
+            $insert['year'] = date("Y");
             $insert['section_id'] = $this->input->post("section_id");
             $insert['grade_level'] = $this->input->post("grade_level");
+            $insert['subject_id'] = $this->input->post("grade_level");
             $insert['status'] = $row->status;
 
             $this->Main_model->_insert($this->table, $insert);
@@ -76,6 +81,58 @@ class Attendance extends CI_Controller
         $where['date'] = $this->input->post('date');
 
         echo json_encode($this->Main_model->multiple_where($this->table, $where)->result_array());
+    }
+
+    public function getForTable()
+    {
+        $where['section_id'] = $this->input->post('sectionId');
+        $where['grade_level'] = $this->input->post('gradeLevel');
+        $where['subject_id'] = $this->input->post('subjectId');
+        $where['date'] = date("Y-m-d");
+
+        $query = $this->Main_model->multiple_where("attendance", $where);
+
+        $counter = 0;
+        foreach ($query->result() as $row) {
+            $counter++;
+
+            $studentFullName = $this->Main_model->getFullName('students', "id", $row->student_id);
+            echo '
+                <tr>
+                    <td>' . $counter . '</td>
+                    <td>' . $studentFullName . '</td>
+                    <td>' . $row->date . '</td>
+                    <td>' . $row->time . '</td>
+                    <td>' . $row->status . '</td>
+                </tr>
+            ';
+        }
+    }
+
+    public function getForTableFilter()
+    {
+        $where['section_id'] = $this->input->get('sectionId');
+        $where['grade_level'] = $this->input->get('gradeLevel');
+        $where['subject_id'] = $this->input->get('subjectId');
+        $where['date'] = $this->input->get('date');
+
+        $query = $this->Main_model->multiple_where("attendance", $where);
+
+        $counter = 0;
+        foreach ($query->result() as $row) {
+            $counter++;
+
+            $studentFullName = $this->Main_model->getFullName('students', "id", $row->student_id);
+            echo '
+                <tr>
+                    <td>' . $counter . '</td>
+                    <td>' . $studentFullName . '</td>
+                    <td>' . $row->date . '</td>
+                    <td>' . $row->time . '</td>
+                    <td>' . $row->status . '</td>
+                </tr>
+            ';
+        }
     }
 
     // QUERIES END

@@ -363,7 +363,6 @@ class Principal extends CI_Controller
                     <td>
                         ' . $counter . '
                     </td>
-                    
                     <td>
                     ' . $row->subject_id . '
                     </td>

@@ -51,23 +51,11 @@
                                       <th>
                                           Status
                                       </th>
-                                      <th>
-                                          Action
-                                      </th>
                                   </tr>
                               </thead>
                               <tbody>
                                   <!-- Ajax -->
-                                  <tr>
-                                      <td>1</td>
-                                      <td>Joel John Centeno</td>
-                                      <td>2015-10-03</td>
-                                      <td>2:30 am</td>
-                                      <td>Absent</td>
-                                      <td>
-                                          <button class="btn btn-primary btn-sm">Excuse</button>
-                                      </td>
-                                  </tr>
+
                               </tbody>
                           </table>
                       </div>
@@ -126,7 +114,8 @@
   <script src="<?= base_url() ?>assets/admin/layout4/scripts/layout.js" type="text/javascript"></script>
   <script src="<?= base_url() ?>assets/admin/layout4/scripts/demo.js" type="text/javascript"></script>
   <script src="<?= base_url() ?>assets/admin/pages/scripts/table-advanced.js"></script>
-  <!-- CREATE MODAL -->
+
+  <!-- FILTER MODAL -->
   <div class="modal fade" id="filterModal" tabindex="-1" role="dialog" aria-labelledby="filterModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
           <div class="modal-content">
@@ -134,7 +123,7 @@
                   <h2 align="center" class="modal-title" id="filterModalLabel">Filter by date</h2>
               </div>
               <div class="modal-body">
-                  <form id="createForm">
+                  <form id="filterForm">
                       <div class="form-group">
                           <label>Select Date</label>
                           <input type="date" class="form-control" id="selectedDate">
@@ -148,79 +137,40 @@
           </div>
       </div>
   </div>
-  <!-- CREATE MODAL -->
-
-  <!-- Update Modal -->
-  <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="createModalLabel" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-          <div class="modal-content">
-              <div class="modal-header">
-                  <h2 align="center" class="modal-title" id="createModalLabel">Update Teacher</h2>
-              </div>
-              <div class="modal-body">
-                  <form id="updateForm">
-                      <div class="form-group">
-                          <label>First name</label>
-                          <input type="text" id="updateFirstname" class="form-control" placeholder="Enter first name here">
-                      </div>
-
-                      <div class="form-group">
-                          <label>Middle name</label>
-                          <input type="text" id="updateMiddlename" class="form-control" placeholder="Enter middle name here">
-                      </div>
-
-                      <div class="form-group">
-                          <label>Last name</label>
-                          <input type="text" id="updateLastname" class="form-control" placeholder="Enter last name here">
-                      </div>
-
-                      <div class="form-group">
-                          <label>Contact number</label>
-                          <input type="text" id="updateContactNumber" class="form-control" placeholder="Enter contact number here">
-                      </div>
-              </div>
-              <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                  <button type="submit" class="btn btn-primary" id="updateSubmitButton">Update</button>
-              </div>
-              </form>
-          </div>
-      </div>
-  </div>
+  <!-- FILTER MODAL -->
 
   <script>
       $(document).ready(function() {
+          function refresh() {
+              $.post("<?= base_url() ?>/Attendance/getForTable", {
+                  sectionId: "<?= $sectionId ?>",
+                  gradeLevel: "<?= $gradeLevel ?>",
+                  subjectId: "<?= $subjectId ?>",
+              }, function(resp) {
+                  $("tbody").html(resp);
+              });
+          }
 
-          let studentsInSectionWithStatus = [{
-                  studentId: 1,
-                  status: "absent"
-              },
-              {
-                  studentId: 2,
-                  status: "present"
-              },
-              {
-                  studentId: 3,
-                  status: "absent"
-              },
-              {
-                  studentId: 4,
-                  status: "present"
-              },
-              {
-                  studentId: 5,
-                  status: "absent"
-              },
-              {
-                  studentId: 6,
-                  status: "present"
-              },
-          ];
+          refresh();
 
-          $.post("<?= base_url() ?>Attendance/recordAllStudentsInSection", {
-              allStudents: JSON.stringify(studentsInSectionWithStatus)
-          }, function(resp) {
-              console.log(resp);
+          // FILTER FORM 
+          $(document).submit("#filterForm", function(e) {
+              e.preventDefault();
+
+              let selectedDate = $("#selectedDate").val().split("-");
+              let formatedDate = `${selectedDate[0]}-${selectedDate[1]}-${selectedDate[2]}`;
+
+              $('tbody').load("<?= base_url() ?>Attendance/getForTableFilter?sectionId=<?= $sectionId ?>&gradeLevel=<?= $gradeLevel ?>&subjectId=<?= $subjectId ?>&date=" + formatedDate);
+
+              $("#filterModal").modal("hide");
+
+              Swal.fire({
+                  position: 'center',
+                  icon: 'success',
+                  title: 'Filtered the table',
+                  showConfirmButton: false,
+                  timer: 3000
+              });
           });
       });
   </script>

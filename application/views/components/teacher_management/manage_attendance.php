@@ -5,7 +5,7 @@
           <div class="page-head">
               <!-- BEGIN PAGE TITLE -->
               <div class="page-title">
-                  <h1> Record Attendance</b> </h1>
+                  <h1> Record Attendance</b> <small><?= date("Y-m-d") ?></small> </h1>
               </div>
               <!-- END PAGE TITLE -->
               <!-- BEGIN PAGE TOOLBAR -->
@@ -168,48 +168,53 @@
   <script>
       $(document).ready(function() {
 
-          let studentsInSectionWithStatus = [{
-                  studentId: 1,
-                  status: "absent"
-              },
-              {
-                  studentId: 2,
-                  status: "present"
-              },
-              {
-                  studentId: 3,
-                  status: "absent"
-              },
-              {
-                  studentId: 4,
-                  status: "present"
-              },
-              {
-                  studentId: 5,
-                  status: "absent"
-              },
-              {
-                  studentId: 6,
-                  status: "present"
-              },
-          ];
-
           $("#recordBtn").click(function() {
-              let absentStudents = [];
+              let allStudents = [];
 
-              // get all status checkboxes
+              // get all checked checkboxes
               $.each($("input[type='checkbox']:checked"), function(K, V) {
-                  absentStudents.push(V.value);
+                  allStudents.push({
+                      studentId: V.value,
+                      status: "Absent"
+                  });
               });
 
-              console.log(absentStudents);
-          });
+              $.each($("input[type='checkbox']:not(:checked)"), function(K, V) {
+                  allStudents.push({
+                      studentId: V.value,
+                      status: "Present"
+                  });
+              });
 
-          //   $.post("<?= base_url() ?>Attendance/recordAllStudentsInSection", {
-          //       allStudents: JSON.stringify(studentsInSectionWithStatus)
-          //   }, function(resp) {
-          //       console.log(resp);
-          //   });
+              $.post("<?= base_url() ?>Attendance/recordAllStudentsInSection", {
+                  allStudents: JSON.stringify(allStudents)
+              }, function(resp) {
+                  Swal.fire({
+                      position: 'center',
+                      icon: 'success',
+                      title: 'Attendance record has been saved',
+                      showConfirmButton: false,
+                      timer: 1500
+                  });
+
+                  $("#recordBtn").prop("disabled", true);
+                  $("#recordBtn").text("Already recorded");
+              });
+
+              setTimeout(function() {
+                  if (allStudents.some(x => x.status == "Absent")) {
+                      Swal.fire({
+                          position: 'center',
+                          icon: 'warning',
+                          title: 'Absent students already been reported',
+                          showConfirmButton: false,
+                          timer: 3000
+                      });
+                  }
+              }, 1500);
+
+
+          });
       });
   </script>
 
