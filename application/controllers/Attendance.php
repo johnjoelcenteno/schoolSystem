@@ -15,6 +15,9 @@ class Attendance extends CI_Controller
 
     public function recordAttendance()
     {
+        $data['ClassSectionId'] = $this->input->get('ClassSectionId');
+        $data['ClassSubjectId'] = $this->input->get('ClassSubjectId');
+        $data['gradeLevel'] = $this->input->get('gradeLevel');
         $this->load->view("components/includes/header");
         $this->load->view('components/teacher_management/manage_attendance');
         // $this->load->view("components/includes/footer");
@@ -22,12 +25,12 @@ class Attendance extends CI_Controller
 
     public function viewRecord()
     {
-        $data['sectionId'] = $this->input->get("sectionId");
-        $data['gradeLevel'] = $this->input->get("gradeLevel");
-        $data['subjectId'] = $this->input->get("subjectId");
+        $section_id = $this->input->get("section_id");
+        $grade_level = $this->input->get("grade_level");
+        $subject_id = $this->input->get("subject_id");
 
         $this->load->view("components/includes/header");
-        $this->load->view('components/teacher_management/view_attendance', $data);
+        $this->load->view('components/teacher_management/view_attendance');
     }
 
     // COMMANDS START
@@ -35,19 +38,14 @@ class Attendance extends CI_Controller
     {
         $allStudents = json_decode($this->input->post("allStudents"));
 
-        $_POST['year'] = 1;
-        $_POST['section_id'] = 1;
-        $_POST['grade_level'] = 1;
-        $_POST['subject_id'] = 1;
-
         foreach ($allStudents as $row) {
+            $insert['teacher_load_id'] = $this->input->post("teacher_load_id");
             $insert['student_id'] = $row->studentId;
-            $insert['date'] = date("Y-m-d");
-            $insert['time'] = date("h:i:s a");
-            $insert['year'] = date("Y");
+            $insert['date'] = $this->input->post("date");
+            $insert['time'] = $this->input->post("time");
+            $insert['year'] = $this->input->post("year");
             $insert['section_id'] = $this->input->post("section_id");
             $insert['grade_level'] = $this->input->post("grade_level");
-            $insert['subject_id'] = $this->input->post("grade_level");
             $insert['status'] = $row->status;
 
             $this->Main_model->_insert($this->table, $insert);
@@ -82,7 +80,6 @@ class Attendance extends CI_Controller
 
         echo json_encode($this->Main_model->multiple_where($this->table, $where)->result_array());
     }
-
     public function getForTable()
     {
         $where['section_id'] = $this->input->post('sectionId');
@@ -134,6 +131,32 @@ class Attendance extends CI_Controller
             ';
         }
     }
+    public function GetAllStudentsBySectionIdAndSubjectId()
+    {
+        $where['section_id'] = $this->input->get('sectionId');
+        $where['grade_level'] = $this->input->get('gradeLevel');
+        $where['subject_id'] = $this->input->get('subjectId');
+        // $where['date'] = date("Y-m-d");
 
+        $query = $this->Main_model->multiple_where("attendance", $where);
+
+        $counter = 0;
+        foreach ($query->result() as $row) {
+            $counter++;
+
+            $studentFullName = $this->Main_model->getFullName('students', "id", $row->student_id);
+            echo '
+                <tr>
+                    <td>' . $counter . '</td>
+                    <td>' . $studentFullName . '</td>
+                    <td>' . $row->date . '</td>
+                    <td>' . $row->time . '</td>
+                    <td>
+                        <input type="checkbox" style="height:1rem; width:1rem;" class="checkBox" value="1">
+                    </td>
+                </tr>
+            ';
+        }
+    }
     // QUERIES END
 }

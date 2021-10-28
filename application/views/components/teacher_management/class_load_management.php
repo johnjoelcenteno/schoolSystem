@@ -25,7 +25,7 @@
                       </button>
                       <ul class="dropdown-menu" role="menu">
                           <li>
-                              <a href="<?= base_url() ?>Attendance/recordAttendance?ClassSectionId=<?= $ClassSectionId ?>&ClassSubjectId=<?= $subjectId ?>">
+                              <a href="<?= base_url() ?>Attendance/recordAttendance?ClassSectionId=<?= $ClassSectionId ?>&ClassSubjectId=<?= $subjectId ?>&gradeLevel=<?= $gradeLevel ?>">
                                   <i class="icon-check"></i> Attendance
                               </a>
                           </li>

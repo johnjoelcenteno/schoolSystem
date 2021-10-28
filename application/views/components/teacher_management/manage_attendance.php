@@ -52,33 +52,6 @@
                               </thead>
                               <tbody>
                                   <!-- Ajax -->
-                                  <tr>
-                                      <td>1</td>
-                                      <td>Joel John Centeno</td>
-                                      <td>2015-10-03</td>
-                                      <td>2:30 am</td>
-                                      <td>
-                                          <input type="checkbox" style="height:1rem; width:1rem;" class="checkBox" value="1">
-                                      </td>
-                                  </tr>
-                                  <tr>
-                                      <td>2</td>
-                                      <td>Jhay Ramirez</td>
-                                      <td>2015-10-03</td>
-                                      <td>2:30 am</td>
-                                      <td>
-                                          <input type="checkbox" style="height:1rem; width:1rem;" class="checkBox" value="2">
-                                      </td>
-                                  </tr>
-                                  <tr>
-                                      <td>3</td>
-                                      <td>Joshua Corpuz</td>
-                                      <td>2015-10-03</td>
-                                      <td>2:30 am</td>
-                                      <td>
-                                          <input type="checkbox" style="height:1rem; width:1rem;" class="checkBox" value="3">
-                                      </td>
-                                  </tr>
                               </tbody>
                           </table>
 
@@ -167,6 +140,11 @@
 
   <script>
       $(document).ready(function() {
+          function refresh() {
+              $('tbody').load("<?= base_url() ?>Teacher/GetAllStudentsBySectionIdAndSubjectId?ClassSectionId=<?= $ClassSectionId ?>&ClassSubjectId=<?= $ClassSubjectId ?>&gradeLevel=<?= $gradeLevel ?>");
+          }
+          refresh();
+
 
           $("#recordBtn").click(function() {
               let allStudents = [];
