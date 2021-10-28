@@ -32,7 +32,7 @@
                           </div>
                       </div>
                       <div class="portlet-body">
-                          <table class="table table-striped table-bordered table-hover" id="sample_1" style="text-align: center;">
+                          <table class="table table-striped table-bordered table-hover" style="text-align: center;">
                               <thead>
                                   <tr>
                                       <th>
@@ -154,7 +154,7 @@
   </div>
   <!-- CREATE MODAL -->
 
-  <!-- CREATE MODAL -->
+  <!-- Update MODAL -->
   <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="createModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
           <div class="modal-content">
