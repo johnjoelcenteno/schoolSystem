@@ -20,7 +20,7 @@
               <div class="col-md-12">
                   <!-- BEGIN EXAMPLE TABLE PORTLET-->
                   <div class="" style="margin-bottom:5px">
-                      <button type="button" class="btn btn-circle green-meadow" data-toggle="modal" data-target="#createModal"><i class="fa fa-plus"> Add adviser</i></button>
+                      <button type="button" class="btn btn-circle green-meadow" data-toggle="modal" data-target="#createModal"><i class="fa fa-plus"></i>&nbsp; Add subject</button>
                   </div>
                   <div class="portlet box blue-hoki">
                       <div class="portlet-title">
@@ -158,7 +158,7 @@
   <script>
       $(document).ready(function() {
           function refresh() {
-              $('tbody').load("<?= base_url() ?>Teacher/getAllSubjectsForTable");
+              $('tbody').load("<?= base_url() ?>Principal/getAllSubjectsForTable");
           }
           refresh();
 

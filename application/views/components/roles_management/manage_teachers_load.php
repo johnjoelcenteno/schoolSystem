@@ -38,7 +38,9 @@
                                       <th>
                                           #
                                       </th>
-
+                                      <th>
+                                          Teacher
+                                      </th>
                                       <th>
                                           Subject Id
                                       </th>
