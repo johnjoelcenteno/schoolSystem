@@ -19,7 +19,7 @@ class Attendance extends CI_Controller
         $data['ClassSubjectId'] = $this->input->get('ClassSubjectId');
         $data['gradeLevel'] = $this->input->get('gradeLevel');
         $this->load->view("components/includes/header");
-        $this->load->view('components/teacher_management/manage_attendance');
+        $this->load->view('components/teacher_management/manage_attendance', $data);
         // $this->load->view("components/includes/footer");
     }
 
@@ -133,24 +133,25 @@ class Attendance extends CI_Controller
     }
     public function GetAllStudentsBySectionIdAndSubjectId()
     {
-        $where['section_id'] = $this->input->get('sectionId');
-        $where['grade_level'] = $this->input->get('gradeLevel');
-        $where['subject_id'] = $this->input->get('subjectId');
+        $where['section_id'] = $this->input->get('ClassSectionId');
+        // $where['grade_level'] = $this->input->get('gradeLevel');
+        // $where['subject_id'] = $this->input->get('subjectId');
         // $where['date'] = date("Y-m-d");
 
-        $query = $this->Main_model->multiple_where("attendance", $where);
+        $query = $this->Main_model->multiple_where("students", $where);
 
         $counter = 0;
         foreach ($query->result() as $row) {
             $counter++;
 
-            $studentFullName = $this->Main_model->getFullName('students', "id", $row->student_id);
+            $studentFullName = $this->Main_model->getFullName('students', "id", $row->id);
+
             echo '
                 <tr>
                     <td>' . $counter . '</td>
                     <td>' . $studentFullName . '</td>
-                    <td>' . $row->date . '</td>
-                    <td>' . $row->time . '</td>
+                    <td>'  . 'wala pa di pa naaayos' . '</td>
+                    <td>' . 'wala pa di pa naaayos' . '</td>
                     <td>
                         <input type="checkbox" style="height:1rem; width:1rem;" class="checkBox" value="1">
                     </td>

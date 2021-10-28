@@ -141,7 +141,7 @@
   <script>
       $(document).ready(function() {
           function refresh() {
-              $('tbody').load("<?= base_url() ?>Teacher/GetAllStudentsBySectionIdAndSubjectId?ClassSectionId=<?= $ClassSectionId ?>&ClassSubjectId=<?= $ClassSubjectId ?>&gradeLevel=<?= $gradeLevel ?>");
+              $('tbody').load("<?= base_url() ?>Attendance/GetAllStudentsBySectionIdAndSubjectId?ClassSectionId=<?= $ClassSectionId ?>&ClassSubjectId=<?= $ClassSubjectId ?>&gradeLevel=<?= $gradeLevel ?>");
           }
           refresh();
 
