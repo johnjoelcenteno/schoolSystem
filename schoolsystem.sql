@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 26, 2021 at 04:35 AM
+-- Generation Time: Oct 31, 2021 at 09:38 AM
 -- Server version: 10.4.20-MariaDB
 -- PHP Version: 7.3.29
 
@@ -33,13 +33,6 @@ CREATE TABLE `advisers` (
   `section_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data for table `advisers`
---
-
-INSERT INTO `advisers` (`id`, `teacher_id`, `section_id`) VALUES
-(2, 7, 3);
-
 -- --------------------------------------------------------
 
 --
@@ -50,7 +43,12 @@ CREATE TABLE `attendance` (
   `id` int(65) NOT NULL,
   `student_id` int(65) NOT NULL,
   `date` date NOT NULL,
-  `time` time NOT NULL
+  `time` time NOT NULL,
+  `year` varchar(65) NOT NULL,
+  `subject_id` int(65) NOT NULL,
+  `section_id` int(65) NOT NULL,
+  `grade_level` int(65) NOT NULL,
+  `status` varchar(65) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -71,9 +69,27 @@ CREATE TABLE `credentials` (
 --
 
 INSERT INTO `credentials` (`id`, `username`, `password`, `user_type`) VALUES
-(1, 'admin', '81dc9bdb52d04dc20036dbd8313ed055', 3),
-(5, 'joel', '81dc9bdb52d04dc20036dbd8313ed055', 1),
-(6, 'test', '81dc9bdb52d04dc20036dbd8313ed055', 1);
+(1, 'admin', '81dc9bdb52d04dc20036dbd8313ed055', 3);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `grades`
+--
+
+CREATE TABLE `grades` (
+  `id` int(11) NOT NULL,
+  `student_id` int(11) NOT NULL,
+  `first_quarter` int(11) DEFAULT NULL,
+  `second_quarter` int(11) DEFAULT NULL,
+  `third_quarter` int(11) DEFAULT NULL,
+  `fourth_quarter` int(11) DEFAULT NULL,
+  `subject_id` int(11) NOT NULL,
+  `section_id` int(11) NOT NULL,
+  `grade_level` int(11) NOT NULL,
+  `year` varchar(255) DEFAULT NULL,
+  `isSeniorHigh` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -89,13 +105,6 @@ CREATE TABLE `parents` (
   `contact_number` varchar(65) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data for table `parents`
---
-
-INSERT INTO `parents` (`id`, `firstname`, `middlename`, `lastname`, `contact_number`) VALUES
-(1, 'update', 'update', 'update', 'update');
-
 -- --------------------------------------------------------
 
 --
@@ -108,13 +117,6 @@ CREATE TABLE `sections` (
   `grade_level` int(65) NOT NULL,
   `students` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL CHECK (json_valid(`students`))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `sections`
---
-
-INSERT INTO `sections` (`id`, `section_name`, `grade_level`, `students`) VALUES
-(3, 'test', 8, '[]');
 
 -- --------------------------------------------------------
 
@@ -129,20 +131,7 @@ CREATE TABLE `students` (
   `lastname` varchar(65) NOT NULL,
   `contact_number` varchar(65) NOT NULL,
   `parent_id` int(65) NOT NULL,
-  `grade_level` int(65) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `student_grades`
---
-
-CREATE TABLE `student_grades` (
-  `id` int(65) NOT NULL,
-  `student_id` int(65) NOT NULL,
-  `quarter` int(65) NOT NULL,
-  `subject_id` int(65) NOT NULL
+  `section_id` varchar(55) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -167,17 +156,9 @@ CREATE TABLE `teachers` (
   `firstname` varchar(65) NOT NULL,
   `middlename` varchar(65) NOT NULL,
   `lastname` varchar(65) NOT NULL,
-  `contact_number` varchar(65) NOT NULL
+  `contact_number` varchar(65) NOT NULL,
+  `credentials_id` int(65) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `teachers`
---
-
-INSERT INTO `teachers` (`id`, `firstname`, `middlename`, `lastname`, `contact_number`) VALUES
-(5, 'teacher 1', 'teacher 1', 'teacher 1', '09123929929'),
-(6, 'teacher 2', 'teacher 2', 'teacher 2', '09123929929'),
-(7, 'teacher 3', 'teacher 3', 'teacher 3', '09123929929');
 
 -- --------------------------------------------------------
 
@@ -189,15 +170,9 @@ CREATE TABLE `teacher_loads` (
   `id` int(65) NOT NULL,
   `subject_id` int(65) NOT NULL,
   `teacher_id` int(65) NOT NULL,
-  `section_id` int(65) NOT NULL
+  `section_id` int(65) NOT NULL,
+  `schedule` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `teacher_loads`
---
-
-INSERT INTO `teacher_loads` (`id`, `subject_id`, `teacher_id`, `section_id`) VALUES
-(2, 3, 33, 333);
 
 --
 -- Indexes for dumped tables
@@ -222,6 +197,12 @@ ALTER TABLE `credentials`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `grades`
+--
+ALTER TABLE `grades`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `parents`
 --
 ALTER TABLE `parents`
@@ -237,12 +218,6 @@ ALTER TABLE `sections`
 -- Indexes for table `students`
 --
 ALTER TABLE `students`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `student_grades`
---
-ALTER TABLE `student_grades`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -271,7 +246,7 @@ ALTER TABLE `teacher_loads`
 -- AUTO_INCREMENT for table `advisers`
 --
 ALTER TABLE `advisers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `attendance`
@@ -283,49 +258,49 @@ ALTER TABLE `attendance`
 -- AUTO_INCREMENT for table `credentials`
 --
 ALTER TABLE `credentials`
-  MODIFY `id` int(65) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(65) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `grades`
+--
+ALTER TABLE `grades`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `parents`
 --
 ALTER TABLE `parents`
-  MODIFY `id` int(65) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(65) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `sections`
 --
 ALTER TABLE `sections`
-  MODIFY `id` int(65) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(65) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `students`
 --
 ALTER TABLE `students`
-  MODIFY `id` int(65) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- AUTO_INCREMENT for table `student_grades`
---
-ALTER TABLE `student_grades`
   MODIFY `id` int(65) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `subjects`
 --
 ALTER TABLE `subjects`
-  MODIFY `id` int(65) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(65) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `teachers`
 --
 ALTER TABLE `teachers`
-  MODIFY `id` int(65) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(65) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `teacher_loads`
 --
 ALTER TABLE `teacher_loads`
-  MODIFY `id` int(65) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(65) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
