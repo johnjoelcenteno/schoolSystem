@@ -142,18 +142,25 @@
                 <!-- DOC: Set data-keep-expand="true" to keep the submenues expanded -->
                 <!-- DOC: Set data-auto-speed="200" to adjust the sub menu slide up/down speed -->
                 <ul class="page-sidebar-menu " data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
+                    <!-- admin dashboard -->
                     <li class="start active ">
                         <a href=<?= base_url() . "Dashboard" ?>>
                             <i class="icon-home"></i>
                             <span class="title">Dashboard</span>
                         </a>
                     </li>
+                    <!-- End admin dashboard -->
+
+                    <!-- Teacher Dashboard -->
                     <li class=" ">
                         <a href=<?= base_url() . "Teacher_dashboard" ?>>
                             <i class="icon-home"></i>
                             <span class="title">Your Dashboard</span>
                         </a>
                     </li>
+                    <!-- End teacher Dashboard -->
+
+                    <!-- Principal only -->
                     <li>
                         <a href="javascript:;">
                             <i class="icon-users"></i>
@@ -197,6 +204,12 @@
                             </li>
 
                         </ul>
+                    </li>
+                    <!-- Principal only end -->
+
+
+                    <!-- Teacher Only -->
+
                     <li>
                         <a href="javascript:;">
                             <i class="icon-plus"></i>
@@ -222,6 +235,7 @@
                             <span class="title">Parent Management</span>
                         </a>
                     </li>
+                    <!-- Teacher Only End -->
 
                     </li>
                 </ul>
