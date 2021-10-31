@@ -36,10 +36,10 @@ class Grades extends CI_Controller
     // START COMMANDS
     public function createOrUpdate()
     {
-        $studentId = $this->Main_model->post("student_id");
-        $subjectId = $this->Main_model->post("subject_id");
-        $sectionId = $this->Main_model->post("section_id");
-        $gradeLevel = $this->Main_model->post("grade_level");
+        $studentId = $this->input->post("student_id");
+        $subjectId = $this->input->post("subject_id");
+        $sectionId = $this->input->post("section_id");
+        $gradeLevel = $this->input->post("grade_level");
 
         // determine if record is already present
         if ($this->determineGradeRecordIfPresent($studentId, $subjectId, $sectionId, $gradeLevel)) { // update
@@ -72,7 +72,7 @@ class Grades extends CI_Controller
             $insert['section_id'] = $sectionId;
             $insert['grade_level'] = $gradeLevel;
             $insert['year'] = date("Y");
-            $insert['isSeniorHigh'] = $this->input->post("isSeniorHigh"); // either 1 or 0 
+            $insert['isSeniorHigh'] = $gradeLevel >= 11 ? true : false; // either 1 or 0 
 
             $this->Main_model->_insert("grades", $insert);
         }
@@ -110,11 +110,11 @@ class Grades extends CI_Controller
             $where['subject_id'] = $subjectId;
             $gradeTable = $this->Main_model->multiple_where("grades", $where)->result_array();
 
-            $firstQuarter = count($gradeTable) == 0 ? "No Grade" : $gradeTable['first_quarter'];
-            $secondQuarter = count($gradeTable) == 0 ? "No Grade" : $gradeTable['second_quarter'];
-            $thirdQuarter = count($gradeTable) == 0 ? "No Grade" : $gradeTable['third_quarter'];
-            $fourthQuarter = count($gradeTable) == 0 ? "No Grade" : $gradeTable['fourth_quarter'];
-            $year = count($gradeTable) == 0 ? "N/A" : $gradeTable['year'];
+            $firstQuarter = count($gradeTable) == 0 ? "No Grade" : $gradeTable[0]['first_quarter'];
+            $secondQuarter = count($gradeTable) == 0 ? "No Grade" : $gradeTable[0]['second_quarter'];
+            $thirdQuarter = count($gradeTable) == 0 ? "No Grade" : $gradeTable[0]['third_quarter'];
+            $fourthQuarter = count($gradeTable) == 0 ? "No Grade" : $gradeTable[0]['fourth_quarter'];
+            $year = count($gradeTable) == 0 ? "N/A" : $gradeTable[0]['year'];
 
             echo '
             <tr>
@@ -127,11 +127,22 @@ class Grades extends CI_Controller
                 <td>' . $year . '</td>
                 
                 <td>
-                    <button class="btn btn-primary btn-sm edit" data-toggle="modal" data-target="#modal" value="' . $row->id . '"><i class="fa fa-edit"></i></button>
+                    <button class="btn btn-primary btn-sm edit" value="' . $row->id . '"><i class="fa fa-edit"></i></button>
                 </td>
             </tr>
         ';
         }
+    }
+
+    function getByStudentId()
+    {
+        $where['subject_id'] = $this->input->get("subjectId");
+        $where['grade_level'] = $this->input->get("gradeLevel");
+        $where['year'] = date("Y");
+        $where['section_id'] = $this->input->get("sectionId");
+        $where['student_id'] = $this->input->get("studentId");
+
+        echo json_encode($this->Main_model->multiple_where("grades", $where)->result_array());
     }
     // QUERIES END
 
