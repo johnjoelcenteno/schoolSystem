@@ -1,3 +1,6 @@
+  <?php
+    $ClassSectionId = $sectionId;
+    ?>
   <!-- BEGIN CONTENT -->
   <div class="page-content-wrapper">
       <div class="page-content">
@@ -5,7 +8,7 @@
           <div class="page-head">
               <!-- BEGIN PAGE TITLE -->
               <div class="page-title">
-                  <h1> Class Management </h1>
+                  <h1> Grades Management</h1>
                   <ul class="page-breadcrumb breadcrumb" style="color:black">
                       <li>
                           <span>Section: <b><?= $sectionName ?></b></span>
@@ -73,16 +76,14 @@
                           <table class="table table-striped table-bordered table-hover" style="text-align: center;">
                               <thead>
                                   <tr>
-                                      <th>
-                                          #
-                                      </th>
-                                      <th>
-                                          Fullname
-                                      </th>
-                                      <th>
-                                          Contact Number
-                                      </th>
-
+                                      <th>#</th>
+                                      <th>Full Name</th>
+                                      <th>First Quarter</th>
+                                      <th>Second Quarter</th>
+                                      <th>Third Quarter</th>
+                                      <th>Fourth Quarter</th>
+                                      <th>Year</th>
+                                      <th>Actions</th>
                                   </tr>
                               </thead>
                               <tbody>
@@ -113,13 +114,13 @@
           <i class="icon-arrow-up"></i>
       </div>
   </div>
-  <!-- END FOOTER -->
-  <!-- BEGIN JAVASCRIPTS(Load javascripts at bottom, this will reduce page load time) -->
+  <!-- END FOOTER
+    <!-- BEGIN JAVASCRIPTS(Load javascripts at bottom, this will reduce page load time) -->
   <!-- BEGIN CORE PLUGINS -->
   <!--[if lt IE 9]>
-<script src="<?= base_url() ?>assets/global/plugins/respond.min.js"></script>
-<script src="<?= base_url() ?>assets/global/plugins/excanvas.min.js"></script> 
-<![endif]-->
+    <script src="<?= base_url() ?>assets/global/plugins/respond.min.js"></script>
+    <script src="<?= base_url() ?>assets/global/plugins/excanvas.min.js"></script> 
+    <![endif]-->
   <script src="<?= base_url() ?>assets/global/plugins/jquery.min.js" type="text/javascript"></script>
   <script src="<?= base_url() ?>assets/global/plugins/jquery-migrate.min.js" type="text/javascript"></script>
   <!-- IMPORTANT! Load jquery-ui.min.js before bootstrap.min.js to fix bootstrap tooltip conflict with jquery ui tooltip -->
@@ -144,19 +145,56 @@
   <script src="<?= base_url() ?>assets/global/scripts/metronic.js" type="text/javascript"></script>
   <script src="<?= base_url() ?>assets/admin/layout4/scripts/layout.js" type="text/javascript"></script>
   <script src="<?= base_url() ?>assets/admin/layout4/scripts/demo.js" type="text/javascript"></script>
-  <script src="<?= base_url() ?>assets/admin/pages/scripts/table-advanced.js"></script>
+  <script src="<?= base_url() ?>assets/admin/pages/scripts/table-advanced.js"></script> -->
+
+  <!-- Modal -->
+  <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content">
+              <div class="modal-header" align="center">
+                  <h3 class="modal-title" id="exampleModalLabel">Manage student grade</h3>
+                  <h5 class="modal-title" style="font-weight: bold"><?= $subjectName ?></h5>
+                  <h6 class="modal-title" style="font-weight: bold"><?= date("Y") ?></h6>
+              </div>
+              <div class="modal-body">
+                  <div class="form-group row">
+                      <div class="col-md-3">
+                          <label>First quarter</label>
+                          <input type="number" class="form-control" id="firstQuarter" placeholder="first quarter grade">
+                      </div>
+                      <div class="col-md-3">
+                          <label>Second quarter</label>
+                          <input type="number" class="form-control" id="firstQuarter" placeholder="second quarter grade">
+                      </div>
+                      <div class="col-md-3">
+                          <label>Third quarter</label>
+                          <input type="number" class="form-control" id="firstQuarter" placeholder="third quarter grade">
+                      </div>
+                      <div class="col-md-3">
+                          <label>Fourth quarter</label>
+                          <input type="number" class="form-control" id="firstQuarter" placeholder="fourth quarter grade">
+                      </div>
+                  </div>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-primary">Save changes</button>
+              </div>
+          </div>
+      </div>
+  </div>
 
   <script>
       $(document).ready(function() {
           function refresh() {
-              $('tbody').load("<?= base_url() ?>Teacher/GetAllStudentsBySectionForTable?ClassSectionId=<?= $ClassSectionId ?>");
+              $('tbody').load("<?= base_url() ?>Grades/getForTable?sectionId=<?= $sectionId ?>&subjectId=<?= $subjectId ?>&gradeLevel=<?= $gradeLevel ?>&year=<?= date("Y") ?>");
           }
           refresh();
 
           // CREATE POST AJAX
           $('#createForm').submit(function(e) {
               e.preventDefault();
-              $.post("<?= base_url() ?>Principal/createSubject", {
+              $.post("<?= base_url() ?>Grades/createOrUpdate", {
                   subject_name: $('#subjectName').val(),
               }, function(resp) {
                   console.clear();

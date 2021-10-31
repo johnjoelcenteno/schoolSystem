@@ -85,7 +85,6 @@ class Teacher extends CI_Controller
     }
     public function GetAllStudentsBySectionForTable()
     {
-        $userId = $this->Credentials_model->getUserId();
         $sectionIdByTeacherLoad = $this->input->get('ClassSectionId');
 
         $result = $this->Main_model->get_where("students", "section_id", $sectionIdByTeacherLoad)->result();
@@ -121,7 +120,8 @@ class Teacher extends CI_Controller
         $insert['parent_id'] = $this->input->post("parent_id");
         $insert['section_id'] = $this->input->post("section_id");
 
-        $this->Main_model->_insert("students", $insert);
+
+        $studentId = $this->Main_model->_insert("students", $insert);
     }
 
     public function updateStudent()
