@@ -103,7 +103,7 @@
                         <li class="dropdown dropdown-user dropdown-dark">
                             <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
                                 <span class="username username-hide-on-mobile">
-                                    Admin </span>
+                                    <?= $this->Credentials_model->getUserType() == 3 ? "Admin" : "Teacher" ?> </span>
                                 <!-- DOC: Do not remove below empty space(&nbsp;) as its purposely used -->
                                 <img alt="" class="img-circle" src="<?= base_url() ?>assets/admin/layout4/img/avatar1.jpg" />
                             </a>
@@ -142,100 +142,106 @@
                 <!-- DOC: Set data-keep-expand="true" to keep the submenues expanded -->
                 <!-- DOC: Set data-auto-speed="200" to adjust the sub menu slide up/down speed -->
                 <ul class="page-sidebar-menu " data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
-                    <!-- admin dashboard -->
-                    <li class="start active ">
-                        <a href=<?= base_url() . "Dashboard" ?>>
-                            <i class="icon-home"></i>
-                            <span class="title">Dashboard</span>
-                        </a>
-                    </li>
-                    <!-- End admin dashboard -->
+                    <?php
+                    $userType = $this->Credentials_model->getUserType();
+                    ?>
 
-                    <!-- Teacher Dashboard -->
-                    <li class=" ">
-                        <a href=<?= base_url() . "Teacher_dashboard" ?>>
-                            <i class="icon-home"></i>
-                            <span class="title">Your Dashboard</span>
-                        </a>
-                    </li>
-                    <!-- End teacher Dashboard -->
+                    <?php if ($userType == 3) { ?>
 
-                    <!-- Principal only -->
-                    <li>
-                        <a href="javascript:;">
-                            <i class="icon-users"></i>
-                            <span class="title">Manage Accounts</span>
-                            <span class="arrow "></span>
-                        </a>
-                        <ul class="sub-menu">
-
-                            <li>
-                                <a href="<?= base_url() . 'Principal/loadManageStudent' ?>">
-                                    <i class="icon-users"></i>
-                                    Manage Student</a>
-                            </li>
-                            <li>
-                                <a href="javascript:;">
-                                    <i class="icon-plus"></i>
-                                    <span class="title">Manage Teacher</span>
-                                    <span class="arrow "></span>
-                                </a>
-
-                                <ul class="sub-menu">
-                                    <li>
-                                        <a href="<?= base_url() . 'Principal/manageTeachers' ?>">
-                                            <i class="fa fa-edit"></i> Teacher Management</a>
-                                    </li>
-
-                                    <li>
-                                        <a href="<?= base_url() . 'Principal/manageAdvisers' ?>"><i class="fa fa-users"></i> Adviser Management
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="<?= base_url() . 'Principal/manageSections' ?>"><i class="fa fa-puzzle-piece"></i>Section Management
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="<?= base_url() . 'Principal/manageSubjects' ?>"><i class="fa fa-book"></i>Subject Management
-
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-
-                        </ul>
-                    </li>
-                    <!-- Principal only end -->
+                        <!-- admin dashboard -->
+                        <li class="start active">
+                            <a href=<?= base_url() . "Dashboard" ?>>
+                                <i class="icon-home"></i>
+                                <span class="title">Dashboard</span>
+                            </a>
+                        </li>
+                        <!-- End admin dashboard -->
 
 
-                    <!-- Teacher Only -->
+                        <!-- Principal only -->
+                        <li>
+                            <a href="javascript:;">
+                                <i class="icon-users"></i>
+                                <span class="title">Manage Accounts</span>
+                                <span class="arrow "></span>
+                            </a>
+                            <ul class="sub-menu">
 
-                    <li>
-                        <a href="javascript:;">
-                            <i class="icon-plus"></i>
-                            <span class="title">Manage Class</span>
-                            <span class="arrow "></span>
-                        </a>
+                                <li>
+                                    <a href="javascript:;">
+                                        <i class="icon-plus"></i>
+                                        <span class="title">Manage Teacher</span>
+                                        <span class="arrow "></span>
+                                    </a>
 
-                        <ul class="sub-menu">
-                            <li>
-                                <a href="<?= base_url() . 'Teacher/ClassManagement' ?>">
-                                    <i class="fa fa-edit"></i> Class Management</a>
-                            </li>
-                            <li>
-                                <a href="<?= base_url() . 'Teacher/AdvisoryClassManagement' ?>">
-                                    <i class="fa fa-edit"></i> Advisory Management</a>
-                            </li>
+                                    <ul class="sub-menu">
+                                        <li>
+                                            <a href="<?= base_url() . 'Principal/manageTeachers' ?>">
+                                                <i class="fa fa-edit"></i> Teacher Management</a>
+                                        </li>
 
-                        </ul>
-                    </li>
-                    <li class=" ">
-                        <a href=<?= base_url() . "Teacher/ParentManagement" ?>>
-                            <i class="fa fa-users"></i>
-                            <span class="title">Parent Management</span>
-                        </a>
-                    </li>
-                    <!-- Teacher Only End -->
+                                        <li>
+                                            <a href="<?= base_url() . 'Principal/manageAdvisers' ?>"><i class="fa fa-users"></i> Adviser Management
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="<?= base_url() . 'Principal/manageSections' ?>"><i class="fa fa-puzzle-piece"></i>Section Management
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="<?= base_url() . 'Principal/manageSubjects' ?>"><i class="fa fa-book"></i>Subject Management
+
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+
+                            </ul>
+                        </li>
+                        <!-- Principal only end -->
+                    <?php } ?>
+
+
+                    <?php if ($userType == 2) { ?>
+
+                        <!-- Teacher Dashboard -->
+                        <li class=" ">
+                            <a href=<?= base_url() . "Teacher_dashboard" ?>>
+                                <i class="icon-home"></i>
+                                <span class="title">Your Dashboard</span>
+                            </a>
+                        </li>
+                        <!-- End teacher Dashboard -->
+
+                        <!-- Teacher Only -->
+
+                        <li>
+                            <a href="javascript:;">
+                                <i class="icon-plus"></i>
+                                <span class="title">Manage Class</span>
+                                <span class="arrow "></span>
+                            </a>
+
+                            <ul class="sub-menu">
+                                <li>
+                                    <a href="<?= base_url() . 'Teacher/ClassManagement' ?>">
+                                        <i class="fa fa-edit"></i> My Subjects</a>
+                                </li>
+                                <li>
+                                    <a href="<?= base_url() . 'Teacher/AdvisoryClassManagement' ?>">
+                                        <i class="fa fa-edit"></i> Advisory Management</a>
+                                </li>
+
+                            </ul>
+                        </li>
+                        <li class=" ">
+                            <a href=<?= base_url() . "Teacher/ParentManagement" ?>>
+                                <i class="fa fa-users"></i>
+                                <span class="title">Parent Management</span>
+                            </a>
+                        </li>
+                        <!-- Teacher Only End -->
+                    <?php } ?>
 
                     </li>
                 </ul>

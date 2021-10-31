@@ -127,7 +127,7 @@
                                     $firstname = $row->firstname;
                                     $middlename = $row->middlename;
                                     $lastname = $row->lastname;
-                                    $fullname = "$firstaname $middlename $lastname";
+                                    $fullname = "$firstname $middlename $lastname";
                                 ?>
 
                                   <option value="<?= $row->id ?>"><?= $fullname ?></option>
@@ -173,7 +173,7 @@
                                     $firstname = $row->firstname;
                                     $middlename = $row->middlename;
                                     $lastname = $row->lastname;
-                                    $fullname = "$firstaname $middlename $lastname";
+                                    $fullname = "$firstname $middlename $lastname";
                                 ?>
 
                                   <option value="<?= $row->id ?>"><?= $fullname ?></option>
@@ -234,11 +234,10 @@
               let id = $(this).val();
               console.clear();
 
-              $.post("<?= base_url() ?>/Principal/updateTeacherLoad", {
+              $.post("<?= base_url() ?>Principal/getAdviserById", {
                   id: id
               }, function(resp) {
                   resp = JSON.parse(resp)[0];
-
                   $("#selectTeacherUpdate").val(resp.teacher_id);
                   $("#selectSectionUpdate").val(resp.section_id);
 

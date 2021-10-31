@@ -357,6 +357,9 @@ class Principal extends CI_Controller
         $result = $this->Main_model->get_where("teacher_loads", "teacher_id", $teacherId)->result();
         $counter = 0;
         foreach ($result as $row) {
+            $subjectName = $this->Main_model->get_where("subjects", "id", $row->subject_id)->row()->subject_name;
+            $sectionName = $this->Main_model->get_where("sections", "id", $row->section_id)->row()->section_name;
+
             $counter++;
             echo '
                 <tr>
@@ -364,10 +367,10 @@ class Principal extends CI_Controller
                         ' . $counter . '
                     </td>
                     <td>
-                    ' . $row->subject_id . '
+                    ' . $subjectName . '
                     </td>
                     <td>
-                    ' . $row->section_id . '
+                    ' . $sectionName . '
                     </td>
                     <td>
                     ' . $row->schedule . '

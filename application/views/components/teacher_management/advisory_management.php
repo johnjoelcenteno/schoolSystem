@@ -5,7 +5,7 @@
           <div class="page-head">
               <!-- BEGIN PAGE TITLE -->
               <div class="page-title">
-                  <h1> Class Management of section: <b><?= $SectionName ?></b> </h1>
+                  <h1> Advisory class: <b><?= $SectionName ?></b> </h1>
               </div>
               <!-- END PAGE TITLE -->
               <!-- BEGIN PAGE TOOLBAR -->
