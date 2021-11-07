@@ -156,7 +156,7 @@ class Attendance extends CI_Controller
             $studentFullName = $this->Main_model->getFullName('students', "id", $row->student_id);
 
             $where['student_id'] = $row->student_id;
-            $isExcused = $this->Main_model->multiple_where("attendance", $where)->row()->isExcuse;
+            $isExcused = $this->Main_model->multiple_where("attendance", $where)->row()->isExcuse; // wrong algorithm query duplication 
 
             $actions = $isExcused ? "<span class='text-success'>Excused</span>" : '<button class="btn btn-info btn-sm excuse" value="' . $row->id . '">Excuse</button>';
 
