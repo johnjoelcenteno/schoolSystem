@@ -33,6 +33,18 @@ class Attendance extends CI_Controller
         $this->load->view('components/teacher_management/view_attendance', $data);
     }
 
+    public function getAndTextParentOfStudent($studentId)
+    {
+        $studentTable = $this->Main_model->get_where("students", "id", $studentId)->row();
+
+        $parentFullName = $studentTable->parent_fullname;
+        $parentContactNumber = $studentTable->parent_contact_number;
+
+        $message = "Your student is absent today " . date("Y-m-d");
+
+        $this->Main_model->SendTextWithNumberAndMessage($parentContactNumber, $message);
+    }
+
     // COMMANDS START
     public function recordAllStudentsInSection()
     {
@@ -48,6 +60,8 @@ class Attendance extends CI_Controller
             $insert['subject_id'] = $this->input->post("subjectId");
             $insert['status'] = $row->status;
 
+            if ($insert['status'] == "Absent") $this->getAndTextParentOfStudent($insert['student_id']);
+
             $this->Main_model->_insert($this->table, $insert);
         }
     }
@@ -57,8 +71,10 @@ class Attendance extends CI_Controller
         $id = $this->input->post("id");
 
         $update['status'] = $this->input->post("status");
+        $update['isExcuse'] = $this->input->post("isExcuse");
+        $update['excuse'] = $this->input->post("excuse");
 
-        $this->Main_model->_update($this->table, $update);
+        $this->Main_model->_update($this->table, "id", $id, $update);
     }
 
     public function delete()
@@ -66,6 +82,23 @@ class Attendance extends CI_Controller
         $id = $this->input->post("id");
 
         $this->Main_model->_delete($this->table, "id", $id);
+    }
+
+    public function updateIsExcuse()
+    {
+        $id = $this->input->post("attendanceId");
+        $update['isExcuse'] = 1;
+        $update['excuse'] = $this->input->post("excuse");
+
+        $studentId = $this->Main_model->get_where("attendance", "id", $id)->row()->student_id;
+        $studentTable = $this->Main_model->get_where("students", "id", $studentId)->row();
+        $parentNumber = $studentTable->parent_contact_number;
+        $parentFullName = $studentTable->parent_fullname;
+
+        $message = "Student Excused the excuse is: " . $update['excuse'];
+        $this->Main_model->SendTextWithNumberAndMessage($parentNumber, $message);
+
+        $this->Main_model->_update("attendance", "id", $id, $update);
     }
     // COMMANDS END
 
@@ -94,6 +127,7 @@ class Attendance extends CI_Controller
             $counter++;
 
             $studentFullName = $this->Main_model->getFullName('students', "id", $row->student_id);
+
             echo '
                 <tr>
                     <td>' . $counter . '</td>
@@ -120,6 +154,12 @@ class Attendance extends CI_Controller
             $counter++;
 
             $studentFullName = $this->Main_model->getFullName('students', "id", $row->student_id);
+
+            $where['student_id'] = $row->student_id;
+            $isExcused = $this->Main_model->multiple_where("attendance", $where)->row()->isExcuse;
+
+            $actions = $isExcused ? "<span class='text-success'>Excused</span>" : '<button class="btn btn-info btn-sm excuse" value="' . $row->id . '">Excuse</button>';
+
             echo '
                 <tr>
                     <td>' . $counter . '</td>
@@ -127,6 +167,9 @@ class Attendance extends CI_Controller
                     <td>' . $row->date . '</td>
                     <td>' . $row->time . '</td>
                     <td>' . $row->status . '</td>
+                    <td>
+                    ' . $actions . '
+                    </td>
                 </tr>
             ';
         }

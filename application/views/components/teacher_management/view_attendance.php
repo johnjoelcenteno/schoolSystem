@@ -51,6 +51,7 @@
                                       <th>
                                           Status
                                       </th>
+                                      <th>Actions</th>
                                   </tr>
                               </thead>
                               <tbody>
@@ -139,17 +140,43 @@
   </div>
   <!-- FILTER MODAL -->
 
+
+  <!-- Excuse modal -->
+  <div class="modal fade" id="excuseModal" tabindex="-1" role="dialog" aria-labelledby="filterModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h2 align="center" class="modal-title" id="filterModalLabel">Enter excuse of student</h2>
+              </div>
+              <div class="modal-body">
+                  <form id="excuseForm">
+                      <div class="form-group">
+                          <label>Student Excuse</label>
+                          <textarea name="" id="excuse" class="form-control" placeholder="Enter excuse here" cols="30" rows="10"></textarea>
+                      </div>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="submit" class="btn btn-primary">Submit</button>
+              </div>
+              </form>
+          </div>
+      </div>
+  </div>
+  <!-- Excuse modal -->
+
   <script>
       $(document).ready(function() {
+          let attendanceId = "";
+
           function refresh() {
               $('tbody').load("<?= base_url() ?>Attendance/GetPreviousDayForViewing?sectionId=<?= $sectionId ?>&gradeLevel=<?= $gradeLevel ?>&subjectId=<?= $subjectId ?>");
-              console.log("<?= base_url() ?>Attendance/GetPreviousDayForViewing?sectionId=<?= $sectionId ?>&gradeLevel=<?= $gradeLevel ?>&subjectId=<?= $subjectId ?>");
           }
 
           refresh();
 
           // FILTER FORM 
-          $(document).submit("#filterForm", function(e) {
+          $("#filterForm").submit(function(e) {
               e.preventDefault();
 
               let selectedDate = $("#selectedDate").val().split("-");
@@ -165,6 +192,34 @@
                   title: 'Filtered the table',
                   showConfirmButton: false,
                   timer: 3000
+              });
+          });
+
+          // Open Excuse modal
+          $(document).on("click", ".excuse", function() {
+              attendanceId = $(this).val();
+
+              $("#excuseModal").modal("show");
+          });
+
+          // submit excuse form 
+          $("#excuseForm").submit(function(e) {
+              e.preventDefault();
+
+              $.post("<?= base_url() ?>Attendance/updateIsExcuse", {
+                  attendanceId: attendanceId,
+                  excuse: $("#excuse").val()
+              }, function(resp) {
+                  console.log(resp);
+                  Swal.fire({
+                      position: 'center',
+                      icon: 'success',
+                      title: 'Excuse sent to the parent!',
+                      showConfirmButton: false,
+                      timer: 3000
+                  });
+
+                  $("#excuseModal").modal("hide");
               });
           });
       });

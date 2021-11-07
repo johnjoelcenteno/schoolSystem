@@ -29,7 +29,6 @@ class Teacher extends CI_Controller
     {
         $data['userId'] = $this->Credentials_model->getUserId();
         $data['AdvisoryIdentifier'] = count($this->Main_model->get_where('advisers', 'teacher_id', $data['userId'])->result_array());
-        $data['GetAllParent'] = $this->Main_model->get('parents', 'id');
         $data['GetAllSection'] = $this->Main_model->get('sections', 'id');
         $isAdviser = $data['AdvisoryIdentifier'] == 0;
         if ($isAdviser) {
@@ -53,7 +52,6 @@ class Teacher extends CI_Controller
         $counter = 0;
         foreach ($result as $row) {
             $counter++;
-            $ParentName = $this->Main_model->getFullName('parents', 'id', $row->parent_id);
             $StudentFullName = $this->Main_model->getFullName('students', 'id', $row->id);
             $GradeLevel = $this->Main_model->get_where('sections', 'id', $row->section_id)->row()->grade_level;
             echo '
@@ -71,7 +69,7 @@ class Teacher extends CI_Controller
                     ' . $row->contact_number . '
                     </td>
                     <td>
-                    ' . $ParentName . '
+                    ' . $row->parent_fullname . '
                     </td>                    
                     <td>
                     ' . $GradeLevel . '
@@ -117,7 +115,8 @@ class Teacher extends CI_Controller
         $insert['middlename'] = $this->input->post("middlename");
         $insert['lastname'] = $this->input->post("lastname");
         $insert['contact_number'] = $this->input->post("contact_number");
-        $insert['parent_id'] = $this->input->post("parent_id");
+        $insert['parent_fullname'] = $this->input->post("parent_fullname");
+        $insert['parent_contact_number'] = $this->input->post("parent_contact_number");
         $insert['section_id'] = $this->input->post("section_id");
 
 
@@ -131,7 +130,8 @@ class Teacher extends CI_Controller
         $update['middlename'] = $this->input->post("middlename");
         $update['lastname'] = $this->input->post("lastname");
         $update['contact_number'] = $this->input->post("contact_number");
-        $update['parent_id'] = $this->input->post("parent_id");
+        $update['parent_fullname'] = $this->input->post("parent_fullname");
+        $update['parent_contact_number'] = $this->input->post("parent_contact_number");
         $update['section_id'] = $this->input->post("section_id");
 
         $this->Main_model->_update("students", "id", $id, $update);

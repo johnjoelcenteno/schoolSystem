@@ -156,19 +156,12 @@
                           <input type="text" id="createContactNumber" class="form-control" placeholder="Enter contact number here">
                       </div>
                       <div class="form-group">
-                          <label>Select Parent of Student</label>
-                          <select name="" id="selectParent" class="form-control">
-                              <option value="">select parent</option>
-                              <?php foreach ($GetAllParent->result() as $row) {
-                                    $firstname = $row->firstname;
-                                    $middlename = $row->middlename;
-                                    $lastname = $row->lastname;
-                                    $fullname = "$firstaname $middlename $lastname";
-                                ?>
-
-                                  <option value="<?= $row->id ?>"><?= $fullname ?></option>
-                              <?php } ?>
-                          </select>
+                          <label>Parent full name</label>
+                          <input type="text" id="parentFullName" class="form-control" placeholder="Enter parent full name here">
+                      </div>
+                      <div class="form-group">
+                          <label>Parent contact number</label>
+                          <input type="text" id="parentContactNumber" class="form-control" placeholder="Enter parent contact number here">
                       </div>
               </div>
               <div class="modal-footer">
@@ -209,19 +202,12 @@
                           <input type="text" id="updateContactNumber" class="form-control" placeholder="Enter contact number here">
                       </div>
                       <div class="form-group">
-                          <label> Parent of Student</label>
-                          <select name="" id="UpdateSelectParent" class="form-control">
-                              <option value="">select parent</option>
-                              <?php foreach ($GetAllParent->result() as $row) {
-                                    $firstname = $row->firstname;
-                                    $middlename = $row->middlename;
-                                    $lastname = $row->lastname;
-                                    $fullname = "$firstaname $middlename $lastname";
-                                ?>
-
-                                  <option value="<?= $row->id ?>"><?= $fullname ?></option>
-                              <?php } ?>
-                          </select>
+                          <label>Parent full name</label>
+                          <input type="text" id="updateParentFullName" class="form-control" placeholder="Enter parent full name here">
+                      </div>
+                      <div class="form-group">
+                          <label>Parent contact number</label>
+                          <input type="text" id="updateParentContactNumber" class="form-control" placeholder="Enter parent contact number here">
                       </div>
                       <div class="form-group">
                           <label>Update Students Section</label>
@@ -255,12 +241,14 @@
           // CREATE POST AJAX
           $('#createForm').submit(function(e) {
               e.preventDefault();
+
               $.post("<?= base_url() ?>Teacher/createStudent", {
                   firstname: $('#createFirstname').val(),
                   middlename: $('#createMiddlename').val(),
                   lastname: $('#createLastname').val(),
                   contact_number: $('#createContactNumber').val(),
-                  parent_id: $('#selectParent').val(),
+                  parent_fullname: $('#parentFullName').val(),
+                  parent_contact_number: $('#parentContactNumber').val(),
                   section_id: <?= $sectionId ?>,
               }, function(resp) {
                   console.clear();
@@ -291,6 +279,8 @@
                   $("#updateContactNumber").val(resp.contact_number);
                   $("#UpdateSelectParent").val(resp.parent_id);
                   $("#UpdateSection").val(resp.section_id);
+                  $("#updateParentFullName").val(resp.parent_fullname);
+                  $("#updateParentContactNumber").val(resp.parent_contact_number);
 
                   $('#updateSubmitButton').val(resp.id);
 
@@ -304,17 +294,19 @@
           // UPDATE POST AJAX
           $('#updateForm').submit(function(e) {
               e.preventDefault();
+
               $.post("<?= base_url() ?>Teacher/updateStudent", {
                   firstname: $('#updateFirstname').val(),
                   middlename: $('#updateMiddlename').val(),
                   lastname: $('#updateLastname').val(),
                   contact_number: $('#updateContactNumber').val(),
-                  parent_id: $('#UpdateSelectParent').val(),
+                  parent_fullname: $('#updateParentFullName').val(),
+                  parent_contact_number: $('#updateParentContactNumber').val(),
                   section_id: $('#UpdateSection').val(),
 
                   id: $('#updateSubmitButton').val(),
               }, function(resp) {
-                  console.clear();
+                  console.log(resp);
                   Swal.fire({
                       position: 'center',
                       icon: 'success',
