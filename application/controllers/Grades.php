@@ -34,6 +34,23 @@ class Grades extends CI_Controller
     }
 
     // START COMMANDS
+    public function textGradeToParent($studentId, $firstQuarter, $secondQuarter, $thirdQuarter, $fourthQuarter, $subjectId)
+    {
+        $studentTable = $this->Main_model->get_where("students", "id", $studentId)->row();
+        $parentName = $studentTable->parent_fullname;
+        $parentNumber = $studentTable->parent_contact_number;
+
+        $firstQuarter = $firstQuarter == null ? "" : $firstQuarter;
+        $secondQuarter = $secondQuarter == null ? "" : $secondQuarter;
+        $thirdQuarter = $thirdQuarter == null ? "" : $thirdQuarter;
+        $fourthQuarter = $fourthQuarter == null ? "" : $fourthQuarter;
+
+        $subjectName = $this->Main_model->get_where("subjects", "id", $subjectId)->row()->subject_name;
+
+        $message = "Subject name: $subjectName 1stQ: $firstQuarter, 2ndQ: $secondQuarter, 3rdQ: $thirdQuarter, 4thQ: $fourthQuarter";
+        $this->Main_model->SendTextWithNumberAndMessage($parentNumber, $message);
+    }
+
     public function createOrUpdate()
     {
         $studentId = $this->input->post("student_id");
@@ -62,6 +79,8 @@ class Grades extends CI_Controller
             $update['isSeniorHigh'] = $gradeLevel >= 11 ? true : false;
 
             $this->Main_model->_update("grades", "id", $gradeId, $update);
+
+            $this->textGradeToParent($studentId, $update['first_quarter'], $update['second_quarter'], $update['third_quarter'], $update['fourth_quarter'], $subjectId);
         } else { // create
             $insert['student_id'] = $studentId;
             $insert['first_quarter'] = $this->input->post("first_quarter");
@@ -75,6 +94,7 @@ class Grades extends CI_Controller
             $insert['isSeniorHigh'] = $gradeLevel >= 11 ? true : false; // either 1 or 0 
 
             $this->Main_model->_insert("grades", $insert);
+            $this->textGradeToParent($studentId, $insert['first_quarter'], $insert['second_quarter'], $insert['third_quarter'], $insert['fourth_quarter'], $subjectId);
         }
     }
 

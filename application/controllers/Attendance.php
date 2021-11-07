@@ -174,6 +174,7 @@ class Attendance extends CI_Controller
             ';
         }
     }
+
     public function GetAllStudentsBySectionIdAndSubjectId()
     {
         $where['section_id'] = $this->input->get('ClassSectionId');
