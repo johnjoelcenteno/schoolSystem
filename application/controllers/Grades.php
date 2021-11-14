@@ -18,6 +18,7 @@ class Grades extends CI_Controller
         $data['sectionId'] = $this->input->get("sectionId");
         $data['sectionName'] = $this->Main_model->get_where("sections", "id", $data['sectionId'])->row()->section_name;
         $data['subjectName'] = $this->Main_model->get_where("subjects", "id", $data['subjectId'])->row()->subject_name;
+        $data['teacherId'] = $this->Credentials_model->getUserId();
 
         $this->load->view("components/includes/header");
         $this->load->view('components/teacher_management/manage_grades', $data);
@@ -165,6 +166,34 @@ class Grades extends CI_Controller
         echo json_encode($this->Main_model->multiple_where("grades", $where)->result_array());
     }
     // QUERIES END
+
+    // SUBMIT REMARKS
+    function movingUpPost()
+    {
+        $insert['student_id'] = $this->input->post('student_id');
+        $insert['previous_section'] = $this->input->post('previous_section');
+
+        $movingUpTable = $this->Main_model->get_where("students_moving_up", 'student_id', $insert['student_id'])->result();
+
+        if (count($movingUpTable) == 0) $this->Main_model->_insert("students_moving_up", $insert);
+    }
+
+    function submitRemarks()
+    {
+        $data['student_id'] = $this->input->post("student_id");
+        $data['subject_id'] = $this->input->post("subject_id");
+        $data['teacher_id'] = $this->input->post("teacher_id");
+        $data['remarks'] = $this->input->post("remarks");
+
+        $where['student_id'] = $this->input->post("student_id");
+        $where['subject_id'] = $this->input->post("subject_id");
+        $where['teacher_id'] = $this->input->post("teacher_id");
+
+        $remarksTable = $this->Main_model->multiple_where("remarks", $where)->result_array();
+
+        count($remarksTable) == 0 ? $this->Main_model->_insert("remarks", $data) : $this->Main_model->_update('remarks', 'id', $remarksTable[0]['id'], $data); // one remark per subject
+    }
+    // SUBMIT REMARKS
 
 
 }

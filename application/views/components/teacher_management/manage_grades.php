@@ -147,7 +147,7 @@ $ClassSectionId = $sectionId;
 <script src="<?= base_url() ?>assets/admin/layout4/scripts/demo.js" type="text/javascript"></script>
 <script src="<?= base_url() ?>assets/admin/pages/scripts/table-advanced.js"></script> -->
 
-<!-- Modal -->
+<!-- grades Modal -->
 <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -185,11 +185,47 @@ $ClassSectionId = $sectionId;
         </div>
     </div>
 </div>
+<!-- grades Modal -->
+
+<!-- Remarks modal -->
+<div class="modal fade" id="remarksModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header" align="center">
+                <h3 class="modal-title" id="exampleModalLabel">STUDENT REMARKS</h3>
+                <h5 class="modal-title" style="font-weight: bold"><?= $subjectName ?></h5>
+                <h6 class="modal-title" style="font-weight: bold"><?= date("Y") ?></h6>
+            </div>
+            <div class="modal-body">
+
+                <div class="form-group">
+                    <label for="">Remark Type</label>
+                    <select id="remarkSelect" class="form-control" required>
+                        <option value="">Select type of remarks</option>
+                        <option value="grades">Grades</option>
+                        <option value="others">Others</option>
+                    </select>
+                </div>
+
+                <div class="form-group" id="divTextArea" style="display:none">
+                    <textarea id="remarksTextArea" class="form-control" placeholder="Enter remarks here" cols="30" rows="10"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">No remarks</button>
+                <button type="button" class="btn btn-primary" id="submitRemarkBtn">Submit remarks</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- Remarks modal -->
 
 <script>
+    let selectedStudent = null;
+    let studId = null;
     $(document).ready(function() {
         let gradeId = null; // pk of grades table
-        let studId = null;
 
         function refresh() {
             $('tbody').load("<?= base_url() ?>Grades/getForTable?sectionId=<?= $sectionId ?>&subjectId=<?= $subjectId ?>&gradeLevel=<?= $gradeLevel ?>&year=<?= date("Y") ?>");
@@ -199,6 +235,7 @@ $ClassSectionId = $sectionId;
         $(document).on("click", ".edit", function() {
             let studentId = $(this).val();
 
+            selectedStudent = studentId;
             studId = studentId;
             $.get("<?= base_url() ?>Grades/getByStudentId", {
                 subjectId: "<?= $subjectId ?>",
@@ -251,10 +288,23 @@ $ClassSectionId = $sectionId;
                     title: 'Grade uploaded successfully',
                     showConfirmButton: false,
                     timer: 1500
-                })
+                });
+
+                determineIfStudentGradeCompleted(studId);
             });
         });
     });
+
+    function determineIfStudentGradeCompleted(studId) {
+        let studentGrades = [$('#firstQuarter').val(), $('#secondQuarter').val(), $('#thirdQuarter').val(), $('#fourthQuarter').val()];
+        let hasIncompleteGrade = studentGrades.includes("0");
+
+        if (hasIncompleteGrade == false) {
+            postStudentMovingUp(studId);
+
+            $('#remarksModal').modal("show");
+        }
+    }
 </script>
 
 <script>
@@ -263,6 +313,44 @@ $ClassSectionId = $sectionId;
         Layout.init(); // init current layout
         Demo.init(); // init demo features
         TableAdvanced.init();
+    });
+</script>
+
+<!-- Grade Completion -->
+<script>
+    function postStudentMovingUp(studId) {
+        $.post("<?= base_url() ?>Grades/movingUpPost", {
+            student_id: studId,
+            previous_section: <?= $sectionId ?>
+        });
+    }
+
+    $('#remarkSelect').change(function() {
+        let selectValue = $(this).val();
+        selectValue == 'others' ? $('#divTextArea').slideDown() : $('#divTextArea').slideUp();
+    });
+
+    $('#submitRemarkBtn').click(function() {
+        let remarks = $('#remarksTextArea').val();
+
+        if ($('#remarkSelect').val() == 'grades') remarks = '6969';
+
+        $.post("<?= base_url() ?>Grades/submitRemarks", {
+            student_id: studId,
+            subject_id: "<?= $subjectId ?>",
+            teacher_id: "<?= $teacherId ?>",
+            remarks: remarks
+        }, function() {
+            $('#remarksModal').modal('hide');
+
+            Swal.fire({
+                position: 'center',
+                icon: 'success',
+                title: 'Remarks created',
+                showConfirmButton: false,
+                timer: 1500
+            });
+        });
     });
 </script>
 </body>
