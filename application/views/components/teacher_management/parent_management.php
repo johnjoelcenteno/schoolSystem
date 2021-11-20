@@ -142,7 +142,7 @@
 
                       <div class="form-group">
                           <label>Contact number</label>
-                          <input type="text" id="createContactNumber" class="form-control" placeholder="Enter contact number here">
+                          <input type="text" id="createContactNumber" class="form-control" placeholder="Enter contact number here" maxlength="11" pattern="\d{11}">
                       </div>
 
 
@@ -183,7 +183,7 @@
 
                       <div class="form-group">
                           <label>Contact number</label>
-                          <input type="text" id="updateContactNumber" class="form-control" placeholder="Enter contact number here">
+                          <input type="text" id="updateContactNumber" class="form-control" placeholder="Enter contact number here" maxlength="11" pattern="\d{11}">
                       </div>
               </div>
               <div class="modal-footer">
