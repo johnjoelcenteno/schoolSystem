@@ -192,6 +192,8 @@ class Grades extends CI_Controller
         $remarksTable = $this->Main_model->multiple_where("remarks", $where)->result_array();
 
         count($remarksTable) == 0 ? $this->Main_model->_insert("remarks", $data) : $this->Main_model->_update('remarks', 'id', $remarksTable[0]['id'], $data); // one remark per subject
+
+        $this->Main_model->_update("students_moving_up", "student_id", $data['student_id'], array("number_of_remarks" => $remarksTable['number_of_remarks'] + 1));
     }
     // SUBMIT REMARKS
 

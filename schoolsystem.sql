@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 20, 2021 at 06:39 AM
+-- Generation Time: Nov 20, 2021 at 02:58 PM
 -- Server version: 10.4.20-MariaDB
 -- PHP Version: 7.3.29
 
@@ -65,7 +65,8 @@ CREATE TABLE `attendance` (
 --
 
 INSERT INTO `attendance` (`id`, `student_id`, `date`, `time`, `year`, `subject_id`, `section_id`, `grade_level`, `status`, `isExcuse`, `excuse`) VALUES
-(1, 1, '2021-11-07', '04:24:39', '2021', 1, 1, 8, 'Absent', 1, 'patuli');
+(1, 1, '2021-11-07', '04:24:39', '2021', 1, 1, 8, 'Absent', 1, 'patuli'),
+(2, 1, '2021-11-20', '07:53:28', '2021', 1, 1, 8, 'Present', 0, '');
 
 -- --------------------------------------------------------
 
@@ -129,13 +130,6 @@ CREATE TABLE `remarks` (
   `remarks` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data for table `remarks`
---
-
-INSERT INTO `remarks` (`id`, `student_id`, `subject_id`, `teacher_id`, `remarks`) VALUES
-(4, 1, 1, 1, 'panagutan mo muna yung anak ko bago kita ipasa');
-
 -- --------------------------------------------------------
 
 --
@@ -146,15 +140,15 @@ CREATE TABLE `sections` (
   `id` int(65) NOT NULL,
   `section_name` varchar(65) NOT NULL,
   `grade_level` int(65) NOT NULL,
-  `students` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL CHECK (json_valid(`students`))
+  `section_is_cleared` int(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `sections`
 --
 
-INSERT INTO `sections` (`id`, `section_name`, `grade_level`, `students`) VALUES
-(1, 'Masipag', 8, '[]');
+INSERT INTO `sections` (`id`, `section_name`, `grade_level`, `section_is_cleared`) VALUES
+(1, 'Masipag', 8, 1);
 
 -- --------------------------------------------------------
 
@@ -179,7 +173,7 @@ CREATE TABLE `students` (
 --
 
 INSERT INTO `students` (`id`, `firstname`, `middlename`, `lastname`, `contact_number`, `parent_id`, `section_id`, `parent_fullname`, `parent_contact_number`) VALUES
-(1, 'test 1', 'test 1', 'test 1', '09654958572', 0, '1', 'parent 1', '09654958572');
+(1, 'test 1', 'test 1', 'test 1', '09654958572', 0, '0', 'parent 1', '09654958572');
 
 -- --------------------------------------------------------
 
@@ -199,7 +193,7 @@ CREATE TABLE `students_moving_up` (
 --
 
 INSERT INTO `students_moving_up` (`id`, `student_id`, `previous_section`, `number_of_remarks`) VALUES
-(1, 1, 1, 1);
+(1, 1, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -254,13 +248,6 @@ CREATE TABLE `teacher_loads` (
   `section_id` int(65) NOT NULL,
   `schedule` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `teacher_loads`
---
-
-INSERT INTO `teacher_loads` (`id`, `subject_id`, `teacher_id`, `section_id`, `schedule`) VALUES
-(1, 1, 1, 1, '10:30 - 12:30 am');
 
 --
 -- Indexes for dumped tables
@@ -346,7 +333,7 @@ ALTER TABLE `advisers`
 -- AUTO_INCREMENT for table `attendance`
 --
 ALTER TABLE `attendance`
-  MODIFY `id` int(65) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(65) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `credentials`
@@ -364,7 +351,7 @@ ALTER TABLE `grades`
 -- AUTO_INCREMENT for table `remarks`
 --
 ALTER TABLE `remarks`
-  MODIFY `id` int(65) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(65) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `sections`
@@ -400,7 +387,7 @@ ALTER TABLE `teachers`
 -- AUTO_INCREMENT for table `teacher_loads`
 --
 ALTER TABLE `teacher_loads`
-  MODIFY `id` int(65) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(65) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
