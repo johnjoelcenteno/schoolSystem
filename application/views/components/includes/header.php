@@ -52,6 +52,10 @@
     <link rel="shortcut icon" href="favicon.ico" />
 
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- Moved jquery cdn -->
+    <script src="<?= base_url() ?>assets/global/plugins/jquery.min.js" type="text/javascript"></script>
+
 </head>
 
 <body class="page-header-fixed page-sidebar-closed-hide-logo page-sidebar-closed-hide-logo">
@@ -195,8 +199,10 @@
                                         </li>
                                     </ul>
                                 </li>
-
                             </ul>
+                        </li>
+                        <li>
+                            <a href="<?= base_url() . 'StudentsMovingUp' ?>"><i class="fa fa-arrow-up"></i>Student moving up list</a>
                         </li>
                         <!-- Principal only end -->
                     <?php } ?>

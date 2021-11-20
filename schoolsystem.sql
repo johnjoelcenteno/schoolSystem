@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 07, 2021 at 06:01 AM
+-- Generation Time: Nov 20, 2021 at 06:39 AM
 -- Server version: 10.4.20-MariaDB
 -- PHP Version: 7.3.29
 
@@ -118,6 +118,27 @@ INSERT INTO `grades` (`id`, `student_id`, `first_quarter`, `second_quarter`, `th
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `remarks`
+--
+
+CREATE TABLE `remarks` (
+  `id` int(65) NOT NULL,
+  `student_id` int(65) NOT NULL,
+  `subject_id` int(65) NOT NULL,
+  `teacher_id` int(65) NOT NULL,
+  `remarks` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `remarks`
+--
+
+INSERT INTO `remarks` (`id`, `student_id`, `subject_id`, `teacher_id`, `remarks`) VALUES
+(4, 1, 1, 1, 'panagutan mo muna yung anak ko bago kita ipasa');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `sections`
 --
 
@@ -159,6 +180,26 @@ CREATE TABLE `students` (
 
 INSERT INTO `students` (`id`, `firstname`, `middlename`, `lastname`, `contact_number`, `parent_id`, `section_id`, `parent_fullname`, `parent_contact_number`) VALUES
 (1, 'test 1', 'test 1', 'test 1', '09654958572', 0, '1', 'parent 1', '09654958572');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `students_moving_up`
+--
+
+CREATE TABLE `students_moving_up` (
+  `id` int(65) NOT NULL,
+  `student_id` int(65) NOT NULL,
+  `previous_section` int(65) NOT NULL,
+  `number_of_remarks` int(65) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `students_moving_up`
+--
+
+INSERT INTO `students_moving_up` (`id`, `student_id`, `previous_section`, `number_of_remarks`) VALUES
+(1, 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -250,6 +291,12 @@ ALTER TABLE `grades`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `remarks`
+--
+ALTER TABLE `remarks`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `sections`
 --
 ALTER TABLE `sections`
@@ -259,6 +306,12 @@ ALTER TABLE `sections`
 -- Indexes for table `students`
 --
 ALTER TABLE `students`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `students_moving_up`
+--
+ALTER TABLE `students_moving_up`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -308,6 +361,12 @@ ALTER TABLE `grades`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
+-- AUTO_INCREMENT for table `remarks`
+--
+ALTER TABLE `remarks`
+  MODIFY `id` int(65) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
 -- AUTO_INCREMENT for table `sections`
 --
 ALTER TABLE `sections`
@@ -317,6 +376,12 @@ ALTER TABLE `sections`
 -- AUTO_INCREMENT for table `students`
 --
 ALTER TABLE `students`
+  MODIFY `id` int(65) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `students_moving_up`
+--
+ALTER TABLE `students_moving_up`
   MODIFY `id` int(65) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
