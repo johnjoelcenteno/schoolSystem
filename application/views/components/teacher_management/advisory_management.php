@@ -21,7 +21,8 @@
                   <!-- BEGIN EXAMPLE TABLE PORTLET-->
                   <?php if ($AdvisoryIdentifier > 0) { ?>
                       <div class="" style="margin-bottom:5px">
-                          <button type="button" class="btn btn-circle green-meadow" data-toggle="modal" data-target="#createModal"><i class="fa fa-plus"> Add student</i></button>
+                          <button type="button" class="btn btn-circle green-meadow" data-toggle="modal" data-target="#createModal"><i class="fa fa-plus"></i>&nbsp; Add student</button>
+                          <button type="button" class="btn btn-circle blue" data-toggle="modal" data-target="#getMovingUpStudents"><i class="fa fa-arrow-down"></i>&nbsp;Get students from moving up</button>
                       </div>
                   <?php } ?>
                   <div class="portlet box blue-hoki">
@@ -231,6 +232,38 @@
       </div>
   </div>
   <!-- update MODAL -->
+
+  <!-- STUDENTS MOVING UP MODAL -->
+  <div class="modal fade" id="getMovingUpStudents" tabindex="-1" role="dialog" aria-labelledby="createModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h2 align="center" class="modal-title" id="createModalLabel">Get from moving up students</h2>
+              </div>
+              <div class="modal-body">
+                  <form id="studentsMovingUpForm">
+                      <div class="form-group">
+                          <label>Select moving up students</label>
+                          <select name="" id="studentMovingUpSelect" class="form-control">
+                              <option value="">Select moving up student</option>
+                              <?php foreach ($studentsMovingUp->result() as $row) {
+                                    $fullname = $this->Main_model->getFullName("students", "id", $row->student_id);
+                                ?>
+
+                                  <option value="<?= $row->student_id ?>"><?= $fullname ?></option>
+                              <?php } ?>
+                          </select>
+                      </div>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="submit" class="btn btn-primary" id="updateSubmitButton">Submit</button>
+              </div>
+              </form>
+          </div>
+      </div>
+  </div>
+  <!-- STUDENTS MOVING UP MODAL -->
   <script>
       $(document).ready(function() {
           function refresh() {
@@ -346,6 +379,30 @@
                       });
                   }
               });
+          });
+
+          $("#studentsMovingUpForm").submit(function(e) {
+              e.preventDefault();
+              let studentId = $("#studentMovingUpSelect").val();
+              let sectionId = "<?= $sectionId ?>";
+
+              $.post("<?= base_url() ?>Teacher/getSectionStudentsFromStudentsMovingUpTable", {
+                  student_id: studentId,
+                  section_id: sectionId
+              }, function() {
+                  $('#getMovingUpStudents').modal('hide');
+                  // refresh selection
+                  $("#studentMovingUpSelect").load("<?= base_url() ?>/Teacher/getStudentsMovingUpForSelect");
+
+                  Swal.fire({
+                      position: 'center',
+                      icon: 'success',
+                      title: 'Student registration successfull',
+                      showConfirmButton: false,
+                      timer: 1500
+                  });
+              });
+
           });
       });
   </script>

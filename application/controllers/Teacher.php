@@ -35,6 +35,7 @@ class Teacher extends CI_Controller
             $data['sectionId'] = 'No Available';
             $data['SectionName'] = 'No Available';
         } else {
+            $data['studentsMovingUp'] = $this->Main_model->get("students_moving_up", 'id');
             $data['sectionId'] = $this->Main_model->get_where('advisers', 'teacher_id', $data['userId'])->row()->section_id;
             $data['SectionName'] = $this->Main_model->get_where('sections', 'id', $data['sectionId'])->row()->section_name;
         }
@@ -325,4 +326,32 @@ class Teacher extends CI_Controller
 
     // END: parent management
 
+    // ADITIONAL POST REQUEST
+    public function getSectionStudentsFromStudentsMovingUpTable()
+    {
+        $where['student_id'] = $this->input->post("student_id");
+        $section_id = $this->input->post('section_id');
+
+        $studentsMovingUpPk = $this->Main_model->multiple_where("students_moving_up", $where)->row()->id;
+
+        $update['section_id'] = $section_id;
+        $this->Main_model->_update("students", "id", $where['student_id'], $update);
+
+        $this->Main_model->_delete("students_moving_up", "id", $studentsMovingUpPk);
+    }
+    // ADITIONAL POST REQUESTS
+
+    // ADDITIONAL GET REQUEST
+    public function getStudentsMovingUpForSelect()
+    {
+        $table = $this->Main_model->get("students_moving_up", 'id')->result();
+        echo "<option>Select students moving up</option>";
+        foreach ($table as $row) {
+            $studentFullName = $this->Main_model->getFullName("students", "id", $row->student_id);
+            echo '
+                <option value="' . $row->student_id . '">' . $studentFullName . '</option>
+            ';
+        }
+    }
+    // ADDITIONAL GET REQUEST
 }
