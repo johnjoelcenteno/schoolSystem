@@ -161,4 +161,9 @@ class StudentsMovingUp extends CI_Controller
         }
         echo "nag update na ako sectionId: $sectionId";
     }
+
+    public function testing()
+    {
+        // testing purposes here
+    }
 }
